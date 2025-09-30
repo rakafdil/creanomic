@@ -1,4 +1,4 @@
-export type UserData = {
+export interface UserData {
     email: string
     password: string
     confirmPassword: string
@@ -11,12 +11,12 @@ export type UserData = {
     isSeller?: boolean
 }
 
-export type Credentials = {
+export interface Credentials {
     email: string
     password: string
 }
 
-export type UserProfile = {
+export interface UserProfile {
     id: string
     email: string
     username: string
