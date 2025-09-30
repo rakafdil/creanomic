@@ -23,7 +23,7 @@ const handleWebhook = async (payload) => {
     return payload;
 };
 
-module.exports = {
+export default {
     createTransaction,
     getTransactionStatus,
     getUserTransactions,

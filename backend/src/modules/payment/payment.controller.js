@@ -1,6 +1,6 @@
-const { catchAsyncError } = require("../../utils/catchAsyncError.js");
-const { AppError } = require("../../utils/AppError.js");
-const paymentService = require("./payment.service.js");
+import { catchAsyncError } from "../../utils/catchAsyncError.js";
+import { AppError } from "../../utils/AppError.js";
+import paymentService from "./payment.service.js";
 
 // POST /api/v1/payment/checkout
 const checkout = (supabase) =>
@@ -76,7 +76,7 @@ const webhook = (supabase) =>
         res.json({ message: "Webhook diterima", result });
     });
 
-module.exports = {
+export default {
     checkout,
     getStatus,
     getHistory,

@@ -1,7 +1,7 @@
-const express = require('express')
-const dotenv = require('dotenv')
-const { dbConnection } = require('./src/database/dbConnection.js')
-const { bootstrap } = require('./src/bootstrap.js')
+import express from 'express'
+import dotenv from 'dotenv'
+import { dbConnection } from './src/database/dbConnection.js'
+import { bootstrap } from './src/bootstrap.js'
 
 dotenv.config()
 const app = express()

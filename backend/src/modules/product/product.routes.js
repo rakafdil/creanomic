@@ -1,7 +1,7 @@
-const express = require('express')
-const { getAllProducts } = require('./product.controller.js')
+import express from 'express'
+import { getAllProducts } from './product.controller.js'
 
-module.exports = (supabase) => {
+export default (supabase) => {
     const router = express.Router()
     router.get('/', getAllProducts(supabase))
     return router
