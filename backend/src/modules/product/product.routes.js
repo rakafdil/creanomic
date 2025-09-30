@@ -1,5 +1,5 @@
 const express = require('express')
-const { getAllProducts } = require('../controllers/productController.js')
+const { getAllProducts } = require('./product.controller.js')
 
 module.exports = (supabase) => {
     const router = express.Router()

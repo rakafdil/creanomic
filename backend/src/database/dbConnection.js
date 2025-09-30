@@ -1,4 +1,3 @@
-// dbConnection.js
 const { createClient } = require('@supabase/supabase-js')
 
 async function dbConnection() {
