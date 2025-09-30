@@ -1,13 +1,15 @@
-const express = require("express");
+import express from "express";
+import paymentController from "./payment.controller.js";
+
 const {
     checkout,
     getStatus,
     getHistory,
     refund,
     webhook
-} = require("./payment.controller.js");
+} = paymentController;
 
-module.exports = (supabase) => {
+export default (supabase) => {
     const router = express.Router();
     router.post("/checkout", (req, res) => {
         console.log("Checkout route hit!");

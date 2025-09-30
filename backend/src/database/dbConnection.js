@@ -1,4 +1,4 @@
-const { createClient } = require('@supabase/supabase-js')
+import { createClient } from '@supabase/supabase-js'
 
 async function dbConnection() {
     const supabaseUrl = process.env.SUPABASE_URL
@@ -20,4 +20,4 @@ async function dbConnection() {
     return supabase
 }
 
-module.exports = { dbConnection }
+export { dbConnection }

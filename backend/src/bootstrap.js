@@ -1,13 +1,13 @@
-const productRouter = require("./modules/product/product.routes.js")
-const { AppError } = require("./utils/AppError.js")
-const { globalErrorHandling } = require("./middlewares/GlobalErrorHandling.js")
-const paymentRouter = require("./modules/payment/payment.routes.js");
+import productRouter from "./modules/product/product.routes.js"
+import { AppError } from "./utils/AppError.js"
+import { globalErrorHandling } from "./middlewares/GlobalErrorHandling.js"
+import paymentRouter from "./modules/payment/payment.routes.js"
 
 
 function bootstrap(app, supabase) {
     app.use("/api/v1/products", productRouter(supabase))
     app.use("/api/v1/payment", paymentRouter(supabase));
-    
+
 
     app.use((req, res, next) => {
         next(new AppError("Endpoint was not found", 404))
@@ -16,4 +16,4 @@ function bootstrap(app, supabase) {
     app.use(globalErrorHandling)
 }
 
-module.exports = { bootstrap }
+export { bootstrap }

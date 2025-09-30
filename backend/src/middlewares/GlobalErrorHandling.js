@@ -12,4 +12,4 @@ const globalErrorHandling = (err, req, res, next) => {
     }
 };
 
-module.exports = { globalErrorHandling };
+export { globalErrorHandling };

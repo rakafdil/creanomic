@@ -1,5 +1,5 @@
-const { AppError } = require('../utils/AppError.js');
-const { catchAsyncError } = require('../utils/catchAsyncError.js');
+import { AppError } from '../utils/AppError.js';
+import { catchAsyncError } from '../utils/catchAsyncError.js';
 
 const deleteOne = (model, name) => {
     return catchAsyncError(async (req, res, next) => {
@@ -19,4 +19,4 @@ const deleteOne = (model, name) => {
     });
 };
 
-module.exports = { deleteOne };
+export { deleteOne };

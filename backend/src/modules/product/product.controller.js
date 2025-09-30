@@ -1,7 +1,7 @@
-const slugify = require("slugify")
-const { catchAsyncError } = require("../../utils/catchAsyncError.js")
-const { AppError } = require("../../utils/AppError.js")
-const { deleteOne } = require("../../handlers/factor.js")
+import slugify from "slugify"
+import { catchAsyncError } from "../../utils/catchAsyncError.js"
+import { AppError } from "../../utils/AppError.js"
+import { deleteOne } from "../../handlers/factor.js"
 
 // Get all products
 const getAllProducts = (supabase) =>
@@ -15,4 +15,4 @@ const getAllProducts = (supabase) =>
         res.json({ message: "success", data })
     })
 
-module.exports = { getAllProducts }
+export { getAllProducts }
