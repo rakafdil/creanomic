@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-inter: var(--font-inter);
+  --color-yellow: #D0F348;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+} */
+
+body {
+  background: var(--background);
+  color: white;
+  font-family: var(--font-inter), sans-serif;
+  font-weight: 500;
+}
+
+#hero {
+  background: #000 url('/assets/hero.svg') center / cover no-repeat;
+  min-height: 140vh;
+  width: 100%;
+  position: relative;
+  z-index: -1;
+  overflow: hidden;
+}
+
+#hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+      rgba(102, 102, 102, 0.35) 0%,
+      rgba(0, 0, 0, 0.55) 100%);
+  pointer-events: none;
+}
+
+#big1 {
+  font-size: 3.812rem;
+  font-family: 'Inter';
+  word-wrap: 'break-word';
+}
+
+#big2 {
+  font-size: 3.062rem;
+  font-family: 'Inter';
+  word-wrap: 'break-word';
+}
+
+#big3 {
+  font-size: 2.438rem;
+  font-family: 'Inter';
+  word-wrap: 'break-word';
+}
+
+#medium1 {
+  font-size: 1.938rem;
+  font-family: 'Inter';
+  word-wrap: 'break-word';
+}
+
+#medium2 {
+  font-size: 1.562rem;
+  font-family: 'Inter';
+  word-wrap: 'break-word';
+}
+
+#medium3 {
+  font-size: 1.250rem;
+  font-family: 'Inter';
+  word-wrap: 'break-word';
+}
