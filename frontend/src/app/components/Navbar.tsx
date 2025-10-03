@@ -2,33 +2,45 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
+const navItems = [
+    { label: 'Home', href: '/' },
+    { label: 'About Us', href: '/about-us' },
+    { label: 'Services', href: '/services' },
+    { label: 'Contacts', href: '/contacts' },
+]
+
 const Navbar = () => {
     return (
-        // buat nav full-width tapi isinya dibatasi max-width dan di-center
-        <nav className='absolute top-0 left-0 w-full px-[7.5rem] py-10'>
+        <nav className='absolute top-0 left-0 w-full px-[7.5rem] py-10 z-100'>
             <div className='mx-auto px-6 flex items-center justify-between h-20'>
                 <div className='flex items-center'>
                     <Image
                         src='/assets/logo.svg'
                         width={250}
                         height={40}
-                        alt='logo healthwell'
+                        alt='Healthwell logo'
+                        priority
                     />
                 </div>
 
                 <div id='medium3' className='flex gap-12 items-center'>
-                    <Link href='/'>Home</Link>
-                    <Link href='/about-us'>About Us</Link>
-                    <Link href='/services'>Services</Link>
-                    <Link href='/contacts'>Contacts</Link>
+                    {navItems.map(item => (
+                        <Link key={item.href} href={item.href} className='navLink transition-colors duration-300 hover:text-yellow-300'>
+                            {item.label}
+                        </Link>
+                    ))}
                 </div>
 
                 <div id='medium3' className='flex gap-10 items-center'>
-                    <Link href='/sign-up'>Sign Up</Link>
+                    <Link href='/sign-up' className='navLink transition-colors duration-300 hover:text-yellow-300'>
+                        Sign Up
+                    </Link>
                     <Link
                         href='/login'
-                        className='bg-yellow text-black px-5 py-2 rounded-3xl hover:bg-green-100 transition-colors duration-300 ease-out'
-                    >Login</Link>
+                        className='bg-yellow text-black px-5 py-2 rounded-3xl hover:bg-green-100 transition-all duration-300 ease-out hover:text-gray-400'
+                    >
+                        Login
+                    </Link>
                 </div>
             </div>
         </nav>
