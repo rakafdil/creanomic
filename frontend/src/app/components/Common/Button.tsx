@@ -27,12 +27,12 @@ const Button: React.FC<ButtonProps> = ({
             onClick={onClick}
             disabled={disabled}
             className={`
+                ${className}
         inline-flex items-center justify-center gap-2
-        rounded-[40px] px-5 py-4
-        bg-lime-300 text-black font-medium font-inter leading-none
+        rounded-[40px] px-6 py-4
+         text-black font-medium font-inter leading-none
         disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer
         transition-all duration-300 hover:brightness-55 hover:scale-110 active:scale-[0.97]
-        ${className}
       `}
         >
             <span className="whitespace-nowrap leading-none m-0 p-0">{children}</span>

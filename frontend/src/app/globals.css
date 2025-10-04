@@ -8,9 +8,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-inter: var(--font-inter);
+  --font-sans: var(--font-geist-inst-sans);
+  --font-inter: var(--font-geist-inter);
   --color-yellow: #D0F348;
 }
 
@@ -23,14 +22,12 @@
 
 body {
   background: var(--background);
-  color: white;
+  color: black;
   font-family: var(--font-inter), sans-serif;
-  font-weight: 500;
 }
 
 #big1 {
   font-size: 3.812rem;
-  font-family: 'Inter';
   word-wrap: 'break-word';
 }
 
