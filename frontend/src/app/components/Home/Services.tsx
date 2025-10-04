@@ -1,14 +1,9 @@
+import { ListWithIcon } from '@/Types/ListWithIcon'
 import Image from 'next/image'
 import React from 'react'
 
-type Service = {
-    iconSrc: string
-    alt: string
-    title: string
-    desc: string
-}
 
-const services: Service[] = [
+const services: ListWithIcon[] = [
     {
         iconSrc: '/assets/basket.svg',
         alt: 'basket',
@@ -29,7 +24,7 @@ const services: Service[] = [
     }
 ]
 
-const ServiceItem: React.FC<Service> = ({ iconSrc, alt, title, desc }) => (
+const ServiceItem: React.FC<ListWithIcon> = ({ iconSrc, alt, title, desc }) => (
     <div className='flex gap-9'>
         <div className="flex items-center justify-center shrink-0 w-[64px] h-[64px] bg-[#D0F348]/30 rounded-lg">
             <Image

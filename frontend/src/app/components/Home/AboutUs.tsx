@@ -1,16 +1,14 @@
-import React from 'react'
+"use client"
+
+import React, { useState } from 'react'
 import Button from '../Common/Button'
 import Image from 'next/image'
+import Mission from './Mission'
+import Vision from './Vision'
 
-const AboutUs = () => {
+const AboutUscontent: React.FC = () => {
     return (
-        <section className='py-20'>
-            <div className='border-b-4 border-[#DEDEDE] mb-10' />
-            <div className="flex gap-6 py-1">
-                <Button className='bg-lime-300 text-black'>About Us</Button>
-                <Button className='border-2 border-[#CDCDCD] text-black'>Vision</Button>
-                <Button className='border-2 border-[#CDCDCD] text-black'>Mission</Button>
-            </div>
+        <>
             <div className="flex gap-6.5 py-11">
                 <div className="relative min-w-[420px] min-h-[280px] overflow-hidden rounded-2xl bg-gray-100">
                     <Image
@@ -58,6 +56,43 @@ const AboutUs = () => {
                     <p className='font-medium text-lg'>Kami memastikan produk yang sampai ke tangan Anda memiliki kualitas terbaik. Pengguna mempercayai kami untuk menghadirkan hasil bumi segar langsung dari sumbernya.</p>
                 </div>
             </div>
+        </>
+    )
+}
+const AboutUs = () => {
+    const [linkIndex, setLinkIndex] = useState(0)
+
+    const tabs = [
+        { label: 'About Us', idx: 0 },
+        { label: 'Vision', idx: 1 },
+        { label: 'Mission', idx: 2 }
+    ]
+
+    const baseBtn = 'text-black font-medium'
+    const activeBtn = 'bg-lime-300 border border-lime-300'
+    const inactiveBtn = 'border-2 border-[#CDCDCD] bg-white hover:bg-[#F4F4F4]'
+
+    return (
+        <section className='py-20'>
+            <div className='border-b-4 border-[#DEDEDE] mb-10' />
+            <div className="flex gap-6 py-1">
+                {tabs.map(t => (
+                    <Button
+                        key={t.idx}
+                        onClick={() => setLinkIndex(t.idx)}
+                        className={`${baseBtn} ${linkIndex === t.idx ? activeBtn : inactiveBtn}`}
+                        aria-pressed={linkIndex === t.idx}
+                    >
+                        {t.label}
+                    </Button>
+                ))}
+            </div>
+            {
+                linkIndex === 0 ? <AboutUscontent /> :
+                    linkIndex === 1 ? <Vision /> :
+                        <Mission />
+            }
+
         </section>
     )
 }

@@ -1,5 +1,7 @@
+'use client'
+
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import Button from '../Common/Button'
 
 type Question = {
@@ -10,38 +12,55 @@ type Question = {
 const questions: Question[] = [
     {
         question: "Apa itu GrowthWell",
-        answer: ""
+        answer: "GrowthWell adalah marketplace digital yang menghubungkan petani, peternak, dan UMKM pangan lokal langsung dengan Anda. Misi kami adalah menyediakan akses mudah ke pangan segar berkualitas, sambil mendukung ekonomi lokal dan meningkatkan gizi komunitas melalui program donasi."
     },
     {
         question: "Bagaimana cara kerja sistem donasi di GrowthWell?",
-        answer: ""
+        answer: "Anda dapat membeli produk yang ditujukan khusus untuk donasi. Kami kemudian bekerja sama dengan mitra komunitas dan yayasan lokal untuk menyalurkan produk tersebut langsung kepada mereka yang membutuhkan melalui program makanan bergizi gratis."
     },
     {
         question: "Dari mana asal produk yang dijual?",
-        answer: ""
+        answer: "Semua produk di platform kami berasal langsung dari mitra lokal terkurasi, meliputi petani, peternak, dan UMKM pangan dari berbagai daerah di Indonesia. Kami mengutamakan transparansi, sehingga Anda sering kali dapat melihat asal-usul produk di halaman detailnya."
     },
     {
         question: "Bagaimana GrowthWell menjamin kualitas produk?",
-        answer: ""
+        answer: "Kami memiliki proses kurasi yang ketat untuk para mitra. Selain itu, tim kami menerapkan kontrol kualitas berlapis, mulai dari sumber di lahan hingga pengemasan, untuk memastikan setiap produk yang sampai ke tangan Anda memenuhi standar kesegaran tertinggi."
     },
     {
         question: "Saya seorang petani/produsen, bagaimana cara saya bergabung?",
-        answer: ""
+        answer: "Kami selalu terbuka untuk mitra baru yang memiliki visi yang sama! Silakan kunjungi halaman \"Mitra Kami\" dan isi formulir pendaftaran. Tim kami akan segera menghubungi Anda untuk proses kurasi dan onboarding lebih lanjut."
     },
 ]
 
-const QuestionItem: React.FC<Question> = ({ question, answer }) => (
-    <details className="w-full py-5 px-6 bg-[#E5E5E5] border border-[#999999] rounded-xl group">
-        <summary className="cursor-pointer list-none flex justify-between items-center text-2xl font-medium">
-            {question}
-            <span className="transition-transform duration-300 group-open:rotate-45 text-[#0A3917] text-4xl leading-none">+</span>
-        </summary>
-        <p className="mt-3 text-[#0A3917]/80 text-base">
-            {answer}
-        </p>
-    </details>
-)
+type QuestionItemProps = Question & {
+    isOpen: boolean
+    onToggle: () => void
+}
+
+const QuestionItem: React.FC<QuestionItemProps> = ({ question, answer, isOpen, onToggle }) => {
+    return (
+        <div className="w-full flex flex-col gap-3">
+            <button
+                type="button"
+                onClick={onToggle}
+                className="w-full px-6 py-5 bg-[#E5E5E5] border border-[#999999] rounded-xl flex justify-between items-center text-2xl font-medium text-left group transition-colors cursor-pointer hover:scale-101"
+            >
+                <span className="text-[#0A3917]">{question}</span>
+                <span className={`text-[#0A3917] text-4xl leading-none transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`}>+</span>
+            </button>
+
+            {isOpen && answer && (
+                <div className="w-full px-6 py-5 bg-[#0A3917] rounded-xl text-base text-white font-semibold animate-fade">
+                    {answer}
+                </div>
+            )}
+        </div>
+    )
+}
+
 const FreqAskQuestions = () => {
+    const [openIndex, setOpenIndex] = useState<number | null>(-1)
+
     return (
         <section className="flex flex-col gap-8 py-20">
             <div className='flex flex-col gap-6 justify-center items-center'>
@@ -68,12 +87,14 @@ const FreqAskQuestions = () => {
             </div>
 
             <div className="flex gap-16 justify-between">
-                <div className="flex-1 flex flex-col gap-9">
-                    {questions.map(q => (
+                <div className="flex-1 flex flex-col gap-6">
+                    {questions.map((q, i) => (
                         <QuestionItem
                             key={q.question}
                             question={q.question}
                             answer={q.answer}
+                            isOpen={openIndex === i}
+                            onToggle={() => setOpenIndex(openIndex === i ? null : i)}
                         />
                     ))}
                 </div>
@@ -82,13 +103,13 @@ const FreqAskQuestions = () => {
                     <div className="flex flex-col gap-5 w-[430px] bg-[#0A3917] rounded-3xl p-8 text-white text-center align-middle h-fit">
                         <Image
                             src='/assets/entypo_chat.svg'
-                            width={80}
-                            height={80}
+                            width={70}
+                            height={70}
                             alt='chat'
                             className='self-center'
                         />
                         <div className='flex flex-col gap-2'>
-                            <span className='text-xl font-semibold'>Punya pertanyaan lain?</span>
+                            <span className='text-2xl font-semibold'>Punya pertanyaan lain?</span>
                             <span className='text-xs'>Tim kami siap menjawab setiap pertanyaan Anda dengan respons yang cepat dan solutif.</span>
                         </div>
                         <Button className='bg-[#D0F348] self-center text-[#0A3917]'>
