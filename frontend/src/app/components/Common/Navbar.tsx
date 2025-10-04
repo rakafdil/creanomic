@@ -11,19 +11,19 @@ const navItems = [
 
 const Navbar = () => {
     return (
-        <nav className='absolute top-0 left-0 w-full px-[7.5rem] py-10 z-100'>
+        <nav className='absolute top-0 left-0 w-full px-[7.5rem] py-10 z-100 text-white'>
             <div className='mx-auto px-6 flex items-center justify-between h-20'>
                 <div className='flex items-center'>
                     <Image
                         src='/assets/logo.svg'
                         width={250}
-                        height={40}
+                        height={80}
                         alt='Healthwell logo'
                         priority
                     />
                 </div>
 
-                <div id='medium3' className='flex gap-12 items-center'>
+                <div id='medium2' className='flex gap-12 items-center'>
                     {navItems.map(item => (
                         <Link key={item.href} href={item.href} className='navLink transition-colors duration-300 hover:text-yellow-300'>
                             {item.label}
@@ -31,7 +31,7 @@ const Navbar = () => {
                     ))}
                 </div>
 
-                <div id='medium3' className='flex gap-10 items-center'>
+                <div id='medium2' className='flex gap-10 items-center'>
                     <Link href='/sign-up' className='navLink transition-colors duration-300 hover:text-yellow-300'>
                         Sign Up
                     </Link>
