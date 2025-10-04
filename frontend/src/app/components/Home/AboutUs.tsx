@@ -12,13 +12,15 @@ const AboutUs = () => {
                 <Button className='border-2 border-[#CDCDCD]'>Mission</Button>
             </div>
             <div className="flex gap-6.5 py-11">
-                <Image
-                    className='bg-gray-100 rounded-2xl min-w-[420px]'
-                    src='/assets/sawah.jpg'
-                    width={420}
-                    height={467}
-                    alt='sawah'
-                />
+                <div className="relative min-w-[420px] min-h-[280px] overflow-hidden rounded-2xl bg-gray-100">
+                    <Image
+                        src="/assets/sawah.jpg"
+                        alt="sawah"
+                        fill
+                        className="object-cover"
+                        priority
+                    />
+                </div>
                 <div className='flex flex-col gap-4 justify-center'>
                     <p className='text-5xl font-sans font-medium'>
                         Menjembatani Kebaikan dari Ladang ke Meja Makan.
@@ -29,7 +31,7 @@ const AboutUs = () => {
                 </div>
             </div>
             <div className='flex w-full gap-6'>
-                <div className="relative w-[285px] h-[378px] overflow-hidden rounded-2xl bg-[#E1E1E1]">
+                <div className="relative w-[285px] h-[400px] overflow-hidden rounded-2xl bg-[#E1E1E1]">
                     <Image
                         src="/assets/petani.jpg"
                         alt="petani"
@@ -37,12 +39,12 @@ const AboutUs = () => {
                         className="object-cover object-center"
                     />
                 </div>
-                <div className="flex-col gap-2 relative w-[285px] h-[378px] overflow-hidden rounded-2xl bg-[#E1E1E1] flex text-left py-5 px-8">
+                <div className="flex-col gap-2 relative w-[285px] h-[400px] overflow-hidden rounded-2xl bg-[#E1E1E1] flex text-left py-5 px-8">
                     <p className="font-bold text-4xl">500+</p>
                     <p className="font-bold text-xl">Mitra Petani & UMKM Lokal</p>
                     <p className='font-medium text-lg'>Kami telah bermitra dengan ratusan petani, peternak, dan UMKM pangan lokal, memberikan mereka platform yang adil dan transparan untuk bertumbuh dan sejahtera.</p>
                 </div>
-                <div className="relative w-[285px] h-[378px] overflow-hidden rounded-2xl bg-[#E1E1E1]">
+                <div className="relative w-[285px] h-[400px] overflow-hidden rounded-2xl bg-[#E1E1E1]">
                     <Image
                         src="/assets/tomat.jpg"
                         alt="tomat"
@@ -50,7 +52,7 @@ const AboutUs = () => {
                         className="object-cover object-center"
                     />
                 </div>
-                <div className="flex-col gap-2 relative w-[285px] h-[378px] overflow-hidden rounded-2xl bg-[#D0F348] flex text-left py-5 px-8">
+                <div className="flex-col gap-2 relative w-[285px] h-[400px] overflow-hidden rounded-2xl bg-[#D0F348] flex text-left py-5 px-8">
                     <p className="font-bold text-4xl">95%</p>
                     <p className="font-bold text-xl">Tingkat Kesegaran Produk</p>
                     <p className='font-medium text-lg'>Kami memastikan produk yang sampai ke tangan Anda memiliki kualitas terbaik. Pengguna mempercayai kami untuk menghadirkan hasil bumi segar langsung dari sumbernya.</p>
