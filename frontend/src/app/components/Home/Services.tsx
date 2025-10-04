@@ -51,7 +51,7 @@ const ServiceItem: React.FC<Service> = ({ iconSrc, alt, title, desc }) => (
 
 const Services = () => {
     return (
-        <section className='bg-black'>
+        <section className='bg-black py-20'>
             <div className="flex px-36 py-20 gap-20">
                 {/* Kolom gambar */}
                 <div className="flex flex-col gap-3.5">
@@ -81,7 +81,6 @@ const Services = () => {
                     </div>
                 </div>
 
-                {/* Kolom layanan */}
                 <div className='flex flex-col gap-20'>
                     <div className="flex flex-col gap-9">
                         <p className='text-6xl text-[#D0F348]'>Services</p>

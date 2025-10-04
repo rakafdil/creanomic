@@ -28,7 +28,7 @@ const Hero = () => {
                         GrowthWell adalah platform hibrida yang menghubungkan Anda langsung dengan hasil tani dan ternak terbaik dari petani lokal, sekaligus menyalurkan pangan bergizi untuk yang membutuhkan melalui program donasi.
                     </p>
                 </div>
-                <Button className='self-start bg-lime-300' iconSrc='assets/arrow.svg'>Get Started</Button>
+                <Button className='self-start bg-lime-300 text-black' iconSrc='assets/arrow.svg'>Get Started</Button>
             </div>
         </section>
     )
