@@ -9,7 +9,10 @@ async function getSupabase() {
     return supabase;
 }
 
+// Tambah item ke cart
 export const addToCart = async (userId, product) => {
+    const supabase = await getSupabase();
+
     // cek apakah user sudah punya cart
     let { data: cart, error: cartError } = await supabase
         .from("carts")
@@ -17,14 +20,13 @@ export const addToCart = async (userId, product) => {
         .eq("user_id", userId)
         .single();
 
-    if (cartError && cartError.code !== "PGRST116") { // bukan "No rows found"
+    if (cartError && cartError.code !== "PGRST116")
         throw new AppError(cartError.message, 400);
-    }
 
     if (!cart) {
         const { data: newCart, error: newCartError } = await supabase
             .from("carts")
-            .insert([{ user_id: userId, total_price: product.price * product.quantity }])
+            .insert([{ user_id: userId, total_price: product.price * product.quantity, coupon: "" }])
             .select()
             .single();
 
@@ -39,29 +41,28 @@ export const addToCart = async (userId, product) => {
         .eq("cart_id", cart.id)
         .eq("product_id", product.product_id)
         .eq("seller_id", product.seller_id)
-        .single();
+        .maybeSingle();
 
     if (existingItem) {
-        // update quantity
         const { error: updateError } = await supabase
             .from("cart_items")
             .update({ quantity: existingItem.quantity + product.quantity })
-            .eq("id", existingItem.id);
+            .eq("cart_id", cart.id)
+            .eq("product_id", product.product_id)
+            .eq("seller_id", product.seller_id);
         if (updateError) throw new AppError(updateError.message, 400);
     } else {
-        // insert item baru
-        const { error: insertError } = await supabase.from("cart_items").insert([
-            {
-                cart_id: cart.id,
-                product_id: product.product_id,
-                quantity: product.quantity,
-                price: product.price,
-            },
-        ]);
+        const { error: insertError } = await supabase.from("cart_items").insert([{
+            cart_id: cart.id,
+            product_id: product.product_id,
+            seller_id: product.seller_id,
+            quantity: product.quantity,
+            price: product.price,
+        }]);
         if (insertError) throw new AppError(insertError.message, 400);
     }
 
-    // update total_price
+    // hitung ulang total
     const { data: allItems, error: itemsError } = await supabase
         .from("cart_items")
         .select("*")
@@ -76,79 +77,86 @@ export const addToCart = async (userId, product) => {
     return { ...cart, total_price: totalPrice, items: allItems };
 };
 
-// Ambil cart user
 export const getCart = async (userId) => {
+    const supabase = await getSupabase();
+
     const { data: cart, error } = await supabase
         .from("carts")
-        .select(`
-            *,
-            cart_items (
-                id,
-                cart_id,
-                quantity,
-                price,
-                product_id,
-                seller_id,
-                products:product_id (
-                    product_id,
-                    product_name,
-                    price,
-                    discount,
-                    seller_id
-                )
-            )
-        `)
+        .select("*, cart_items(*)")
         .eq("user_id", userId)
         .single();
 
-    if (error) throw new AppError("Cart not found", 404);
+    if (error) throw new AppError(error.message, 400);
+
     return cart;
 };
 
-// Hapus item
-export const removeFromCart = async (userId, itemId) => {
-    const { data: cart } = await supabase.from("carts").select("id").eq("user_id", userId).single();
+export const removeFromCart = async (userId, productId) => {
+    const supabase = await getSupabase();
 
-    if (!cart) throw new AppError("Cart not found", 404);
-
-    const { error: delError } = await supabase.from("cart_items").delete().eq("id", itemId);
-    if (delError) throw new AppError(delError.message, 400);
-
-    return await getCart(userId);
-};
-
-// Update quantity
-export const updateCartItem = async (userId, itemId, quantity) => {
-    const { error: updError } = await supabase
-        .from("cart_items")
-        .update({ quantity })
-        .eq("id", itemId);
-    if (updError) throw new AppError(updError.message, 400);
-
-    return await getCart(userId);
-};
-
-// Apply coupon sederhana
-export const applyCoupon = async (userId, couponCode) => {
-    const { data: cart, error } = await supabase
+    // cari cart user
+    const { data: cart, error: cartError } = await supabase
         .from("carts")
-        .select("*")
+        .select("id")
         .eq("user_id", userId)
         .single();
-    if (error) throw new AppError("Cart not found", 404);
 
-    let newTotal = cart.total_price;
-    if (couponCode === "DISKON10") {
-        newTotal = cart.total_price * 0.9;
-    } else {
-        throw new AppError("Invalid coupon", 400);
-    }
+    if (cartError) throw new AppError(cartError.message, 400);
 
-    const { error: updError } = await supabase
+    // hapus item
+    const { error } = await supabase
+        .from("cart_items")
+        .delete()
+        .eq("cart_id", cart.id)
+        .eq("product_id", productId);
+
+    if (error) throw new AppError(error.message, 400);
+
+    return { message: "Item removed" };
+};
+
+export const updateCartItem = async (userId, productId, quantity) => {
+    const supabase = await getSupabase();
+
+    const { data: cart, error: cartError } = await supabase
         .from("carts")
-        .update({ total_price: newTotal, coupon: couponCode })
-        .eq("id", cart.id);
-    if (updError) throw new AppError(updError.message, 400);
+        .select("id")
+        .eq("user_id", userId)
+        .single();
 
-    return { ...cart, total_price: newTotal, coupon: couponCode };
+    if (cartError) throw new AppError(cartError.message, 400);
+
+    const { error } = await supabase
+        .from("cart_items")
+        .update({ quantity })
+        .eq("cart_id", cart.id)
+        .eq("product_id", productId);
+
+    if (error) throw new AppError(error.message, 400);
+
+    return { message: "Item updated", productId, quantity };
+};
+
+export const applyCoupon = async (userId, couponCode) => {
+    const supabase = await getSupabase();
+
+    // misalnya cek coupon valid
+    const { data: coupon, error: couponError } = await supabase
+        .from("coupons")
+        .select("*")
+        .eq("code", couponCode)
+        .single();
+
+    if (couponError) throw new AppError(couponError.message, 400);
+
+    const { data: cart, error: cartError } = await supabase
+        .from("carts")
+        .update({ coupon: couponCode })
+        .eq("user_id", userId)
+        .select()
+        .single();
+
+    if (cartError) throw new AppError(cartError.message, 400);
+
+    return cart;
 };
