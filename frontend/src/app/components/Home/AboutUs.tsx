@@ -7,9 +7,9 @@ const AboutUs = () => {
         <section className='py-20'>
             <div className='border-b-4 border-[#DEDEDE] mb-10' />
             <div className="flex gap-6 py-1">
-                <Button className='bg-lime-300'>About Us</Button>
-                <Button className='border-2 border-[#CDCDCD]'>Vision</Button>
-                <Button className='border-2 border-[#CDCDCD]'>Mission</Button>
+                <Button className='bg-lime-300 text-black'>About Us</Button>
+                <Button className='border-2 border-[#CDCDCD] text-black'>Vision</Button>
+                <Button className='border-2 border-[#CDCDCD] text-black'>Mission</Button>
             </div>
             <div className="flex gap-6.5 py-11">
                 <div className="relative min-w-[420px] min-h-[280px] overflow-hidden rounded-2xl bg-gray-100">
