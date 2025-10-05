@@ -7,7 +7,7 @@ import cartRouter from "./modules/cart/cart.routes.js"
 
 function bootstrap(app, supabase) {
     app.use("/api/v1/products", productRouter(supabase))
-    app.use("/api/v1/payment", paymentRouter(supabase));
+    app.use("/api/v1/payment", paymentRouter(supabase))
     app.use("/api/v1/auth", authRouter(supabase))
     app.use("/api/v1/cart", cartRouter(supabase))
 

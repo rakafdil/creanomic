@@ -1,40 +1,96 @@
-import * as cartService from "./cart.service.js";
-import { catchAsyncError } from "../../utils/catchAsyncError.js";
+//cart.controller.js
+import { catchAsyncError } from "../../utils/catchAsyncError.js"
+import { AppError } from "../../utils/AppError.js"
+import CartService from "./cart.service.js"
 
-// Tambah item ke cart
-export const addToCart = catchAsyncError(async (req, res) => {
-    const { userId, product } = req.body;
-    const cart = await cartService.addToCart(userId, product);
-    res.status(201).json({ status: "success", data: cart });
-});
+const addToCart = (supabase) =>
+    catchAsyncError(async (req, res, next) => {
+        const cartService = new CartService(supabase)
+        const { userId, productId, quantity, price, sellerId } = req.body
 
-// Ambil cart user
-export const getCart = catchAsyncError(async (req, res) => {
-    const userId = req.query.userId || req.body.userId;
-    const cart = await cartService.getCart(userId);
-    res.status(200).json({ status: "success", data: cart });
-});
+        if (!userId || !productId || !quantity || !price || !sellerId) {
+            return next(new AppError("Missing required fields", 400))
+        }
 
-// Hapus item
-export const removeFromCart = catchAsyncError(async (req, res) => {
-    const userId = req.query.userId || req.body.userId;
-    const productId = req.params.id;
-    const cart = await cartService.removeFromCart(userId, productId);
-    res.status(200).json({ status: "success", data: cart });
-});
+        const data = await cartService.addItem(userId, productId, quantity, price, sellerId)
+        res.status(201).json({
+            message: "Item added to cart successfully",
+            data
+        })
+    })
 
-// Update item
-export const updateCartItem = catchAsyncError(async (req, res) => {
-    const userId = req.query.userId || req.body.userId;
-    const productId = req.params.id;
-    const { quantity } = req.body;
-    const cart = await cartService.updateCartItem(userId, productId, quantity);
-    res.status(200).json({ status: "success", data: cart });
-});
+const getCart = (supabase) =>
+    catchAsyncError(async (req, res, next) => {
+        const cartService = new CartService(supabase)
+        const { userId } = req.query
 
-// Apply coupon
-export const applyCoupon = catchAsyncError(async (req, res) => {
-    const { userId, couponCode } = req.body;
-    const cart = await cartService.applyCoupon(userId, couponCode);
-    res.status(200).json({ status: "success", data: cart });
-});
+        if (!userId) {
+            return next(new AppError("UserId is required", 400))
+        }
+
+        const data = await cartService.getCart(userId)
+        res.json({ message: "success", data })
+    })
+
+const removeFromCart = (supabase) =>
+    catchAsyncError(async (req, res, next) => {
+        const cartService = new CartService(supabase)
+        const { productId } = req.params
+        const { userId } = req.body
+
+        if (!userId) {
+            return next(new AppError("UserId is required", 400))
+        }
+
+        const data = await cartService.removeItem(userId, productId)
+        res.json({ message: "success", data })
+    })
+
+const updateCartItem = (supabase) =>
+    catchAsyncError(async (req, res, next) => {
+        const cartService = new CartService(supabase)
+        const { productId } = req.params
+        const { userId, quantity } = req.body
+
+        if (!userId || quantity === undefined) {
+            return next(new AppError("UserId and quantity are required", 400))
+        }
+
+        const data = await cartService.updateItemQuantity(userId, productId, quantity)
+        res.json({ message: "Cart item updated successfully", data })
+    })
+
+const clearCart = (supabase) =>
+    catchAsyncError(async (req, res, next) => {
+        const cartService = new CartService(supabase)
+        const { userId } = req.body
+
+        if (!userId) {
+            return next(new AppError("UserId is required", 400))
+        }
+
+        const data = await cartService.clearCart(userId)
+        res.json({ message: "success", data })
+    })
+
+const applyCoupon = (supabase) =>
+    catchAsyncError(async (req, res, next) => {
+        const cartService = new CartService(supabase)
+        const { userId, couponCode } = req.body
+
+        if (!userId || !couponCode) {
+            return next(new AppError("UserId and couponCode are required", 400))
+        }
+
+        const data = await cartService.applyCoupon(userId, couponCode)
+        res.json({ message: "Coupon applied successfully", data })
+    })
+
+export {
+    addToCart,
+    getCart,
+    removeFromCart,
+    updateCartItem,
+    clearCart,
+    applyCoupon
+}

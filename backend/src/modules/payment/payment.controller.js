@@ -1,85 +1,110 @@
-import { catchAsyncError } from "../../utils/catchAsyncError.js";
-import { AppError } from "../../utils/AppError.js";
-import paymentService from "./payment.service.js";
+//payment.controller.js
+import { catchAsyncError } from "../../utils/catchAsyncError.js"
+import { AppError } from "../../utils/AppError.js"
+import PaymentService from "./payment.service.js"
 
-// POST /api/v1/payment/checkout
 const checkout = (supabase) =>
     catchAsyncError(async (req, res, next) => {
-        const { cartId, userId } = req.body;
+        const paymentService = new PaymentService(supabase)
+        const { userId, cartId, paymentMethod } = req.body
 
-        if (!cartId || !userId) {
-            return next(new AppError("CartId dan UserId wajib diisi", 400));
+        if (!userId || !cartId || !paymentMethod) {
+            return next(new AppError("Missing required fields", 400))
         }
 
-        const paymentUrl = await paymentService.createTransaction(cartId, userId);
+        const validMethods = ['wallet', 'bank_transfer', 'cod', 'ewallet']
+        if (!validMethods.includes(paymentMethod)) {
+            return next(new AppError("Invalid payment method", 400))
+        }
 
-        res.status(201).json({ message: "Checkout berhasil", paymentUrl });
-    });
+        const transactions = await paymentService.createTransaction(
+            userId, 
+            cartId, 
+            paymentMethod
+        )
 
-// GET /api/v1/payment/status/:orderId
+        // TODO: Generate payment URL from payment gateway
+        const paymentUrl = `https://payment-gateway.com/pay/${transactions[0].id}`
+
+        res.status(201).json({ 
+            message: "Checkout successful", 
+            transactions,
+            paymentUrl 
+        })
+    })
+
 const getStatus = (supabase) =>
     catchAsyncError(async (req, res, next) => {
-        const { orderId } = req.params;
+        const paymentService = new PaymentService(supabase)
+        const { transactionId } = req.params
 
-        if (!orderId) {
-            return next(new AppError("OrderId wajib diisi", 400));
+        if (!transactionId) {
+            return next(new AppError("Transaction ID is required", 400))
         }
 
-        const status = await paymentService.getTransactionStatus(orderId);
+        const status = await paymentService.getTransactionStatus(transactionId)
+        res.json({ message: "success", data: status })
+    })
 
-        res.json({ message: "success", status });
-    });
-
-// GET /api/v1/payment/history/:userId
 const getHistory = (supabase) =>
     catchAsyncError(async (req, res, next) => {
-        const { userId } = req.params;
+        const paymentService = new PaymentService(supabase)
+        const { userId } = req.params
+        const { role } = req.query
 
         if (!userId) {
-            return next(new AppError("UserId wajib diisi", 400));
+            return next(new AppError("User ID is required", 400))
         }
 
-        const history = await paymentService.getUserTransactions(userId);
+        const history = await paymentService.getUserTransactions(userId, role)
+        res.json({ message: "success", results: history.length, data: history })
+    })
 
-        res.json({ message: "success", history });
-    });
+const updateStatus = (supabase) =>
+    catchAsyncError(async (req, res, next) => {
+        const paymentService = new PaymentService(supabase)
+        const { transactionId } = req.params
+        const { status } = req.body
 
-// POST /api/v1/payment/refund/:orderId
+        if (!transactionId || !status) {
+            return next(new AppError("Transaction ID and status are required", 400))
+        }
+
+        const data = await paymentService.updateTransactionStatus(transactionId, status)
+        res.json({ message: "Status updated successfully", data })
+    })
+
 const refund = (supabase) =>
     catchAsyncError(async (req, res, next) => {
-        const { orderId } = req.params;
+        const paymentService = new PaymentService(supabase)
+        const { transactionId } = req.params
 
-        if (!orderId) {
-            return next(new AppError("OrderId wajib diisi", 400));
+        if (!transactionId) {
+            return next(new AppError("Transaction ID is required", 400))
         }
 
-        const refundResult = await paymentService.refundTransaction(orderId);
+        const refundResult = await paymentService.refundTransaction(transactionId)
+        res.json({ message: "Refund processed successfully", data: refundResult })
+    })
 
-        if (!refundResult) {
-            return next(new AppError("Refund gagal", 400));
-        }
-
-        res.json({ message: "Refund berhasil", refund: refundResult });
-    });
-
-// POST /api/v1/payment/webhook
 const webhook = (supabase) =>
     catchAsyncError(async (req, res, next) => {
-        const payload = req.body;
+        const paymentService = new PaymentService(supabase)
+        const payload = req.body
 
         if (!payload) {
-            return next(new AppError("Payload webhook kosong", 400));
+            return next(new AppError("Webhook payload is empty", 400))
         }
 
-        const result = await paymentService.handleWebhook(payload);
+        const result = await paymentService.handleWebhook(payload)
+        res.json({ message: "Webhook received", data: result })
+    })
 
-        res.json({ message: "Webhook diterima", result });
-    });
-
-export default {
+export {
     checkout,
     getStatus,
     getHistory,
+    updateStatus,
     refund,
-    webhook,
-};
+    webhook
+}

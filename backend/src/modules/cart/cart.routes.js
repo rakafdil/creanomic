@@ -1,16 +1,24 @@
-// cart.routes.js
-import { Router } from "express";
-import * as cartController from "./cart.controller.js";
+// cart.router.js
 
-export default function cartRouter(supabase) {
-    const router = Router();
+import express from "express"
+import {
+    addToCart,
+    getCart,
+    removeFromCart,
+    updateCartItem,
+    clearCart,
+    applyCoupon
+} from "./cart.controller.js"
 
-    // kalau controller butuh supabase, bisa passing via closure
-    router.post("/", (req, res, next) => cartController.addToCart(req, res, next, supabase));
-    router.get("/", (req, res, next) => cartController.getCart(req, res, next, supabase));
-    router.delete("/:id", (req, res, next) => cartController.removeFromCart(req, res, next, supabase));
-    router.put("/:id", (req, res, next) => cartController.updateCartItem(req, res, next, supabase));
-    router.post("/apply-coupon", (req, res, next) => cartController.applyCoupon(req, res, next, supabase));
+export default (supabase) => {
+    const router = express.Router()
 
-    return router;
+    router.post("/", addToCart(supabase))
+    router.get("/", getCart(supabase))
+    router.delete("/:productId", removeFromCart(supabase))
+    router.put("/:productId", updateCartItem(supabase))
+    router.post("/clear", clearCart(supabase))
+    router.post("/apply-coupon", applyCoupon(supabase))
+
+    return router
 }
