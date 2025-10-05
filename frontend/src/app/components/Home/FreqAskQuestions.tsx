@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
 import Button from '../Common/Button'
+import { AnimatePresence, motion } from 'framer-motion'
 
 type Question = {
     question: string
@@ -39,22 +40,51 @@ type QuestionItemProps = Question & {
 
 const QuestionItem: React.FC<QuestionItemProps> = ({ question, answer, isOpen, onToggle }) => {
     return (
-        <div className="w-full flex flex-col gap-3">
+        <motion.div
+            layout
+            className="w-full flex flex-col gap-3"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}
+        >
             <button
                 type="button"
                 onClick={onToggle}
-                className="w-full px-6 py-5 bg-[#E5E5E5] border border-[#999999] rounded-xl flex justify-between items-center text-2xl font-medium text-left group transition-colors cursor-pointer hover:scale-101"
+                className="w-full px-6 py-5 bg-[#E5E5E5] border border-[#999999] rounded-xl flex justify-between items-center text-2xl font-medium text-left group transition-colors cursor-pointer hover:bg-[#dcdcdc]"
             >
                 <span className="text-[#0A3917]">{question}</span>
-                <span className={`text-[#0A3917] text-4xl leading-none transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`}>+</span>
+                <motion.span
+                    animate={{ rotate: isOpen ? 45 : 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="text-[#0A3917] text-4xl leading-none"
+                >
+                    +
+                </motion.span>
             </button>
 
-            {isOpen && answer && (
-                <div className="w-full px-6 py-5 bg-[#0A3917] rounded-xl text-base text-white font-semibold animate-fade">
-                    {answer}
-                </div>
-            )}
-        </div>
+            <AnimatePresence initial={false}>
+                {isOpen && (
+                    <motion.div
+                        key="answer"
+                        initial="collapsed"
+                        animate="open"
+                        exit="collapsed"
+                        variants={{
+                            open: { height: 'auto', opacity: 1 },
+                            collapsed: { height: 0, opacity: 0 }
+                        }}
+                        transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+                        className="overflow-hidden"
+                        layout
+                    >
+                        <div className="w-full px-6 py-5 bg-[#0A3917] rounded-xl text-base text-white font-semibold">
+                            {answer}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.div>
     )
 }
 
@@ -88,15 +118,17 @@ const FreqAskQuestions = () => {
 
             <div className="flex gap-16 justify-between">
                 <div className="flex-1 flex flex-col gap-6">
-                    {questions.map((q, i) => (
-                        <QuestionItem
-                            key={q.question}
-                            question={q.question}
-                            answer={q.answer}
-                            isOpen={openIndex === i}
-                            onToggle={() => setOpenIndex(openIndex === i ? null : i)}
-                        />
-                    ))}
+                    <AnimatePresence mode="popLayout">
+                        {questions.map((q, i) => (
+                            <QuestionItem
+                                key={q.question}
+                                question={q.question}
+                                answer={q.answer}
+                                isOpen={openIndex === i}
+                                onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+                            />
+                        ))}
+                    </AnimatePresence>
                 </div>
 
                 <div className='flex flex-col gap-12'>

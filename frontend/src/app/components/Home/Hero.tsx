@@ -1,6 +1,13 @@
+"use client"
 import React from 'react'
 import Image from 'next/image'
 import Button from '../Common/Button'
+import { AnimatePresence, motion } from 'framer-motion'
+
+const fade = {
+    hidden: { opacity: 0, y: 24 },
+    show: { opacity: 1, y: 0 }
+}
 
 const Hero = () => {
     return (
@@ -18,17 +25,42 @@ const Hero = () => {
             </div>
 
             <div className='flex flex-col gap-5 max-w-4xl pl-38 pr-8 text-left items-start'>
-                <div className='backdrop-blur-xs text-2xl px-7 py-3 rounded-[40px] bg-black/20'>Ekonomi Hijau & Pangan Inklusif</div>
+                <motion.div
+                    variants={fade}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ amount: 0.4 }}
+                    transition={{ duration: 1.2, ease: 'easeOut' }}
+                    className='backdrop-blur-xs text-2xl px-7 py-3 rounded-[40px] bg-black/20'>Ekonomi Hijau & Pangan Inklusif
+                </motion.div>
                 <div className='flex flex-col gap-6'>
-                    <h1 className='text-5xl leading-tight font-semibold'>
+                    <motion.h1
+                        variants={fade}
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ amount: 0.4 }}
+                        transition={{ duration: 1.2, ease: 'easeOut' }}
+                        className='text-5xl leading-tight font-semibold'>
                         Pangan Segar Lokal<br />
                         Tumbuh Bersama Komunitas.
-                    </h1>
-                    <p className='text-2xl text-white font-medium'>
+                    </motion.h1>
+                    <motion.p
+                        variants={fade}
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ amount: 0.4 }}
+                        transition={{ duration: 1.2, ease: 'easeOut' }}
+                        className='text-2xl text-white font-medium'>
                         GrowthWell adalah platform hibrida yang menghubungkan Anda langsung dengan hasil tani dan ternak terbaik dari petani lokal, sekaligus menyalurkan pangan bergizi untuk yang membutuhkan melalui program donasi.
-                    </p>
+                    </motion.p>
                 </div>
-                <Button className='self-start bg-lime-300 text-black' iconSrc='assets/arrow.svg'>Get Started</Button>
+                <motion.span
+                    initial={{ opacity: 0, scale: 0 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                >
+                    <Button className='self-start bg-lime-300 text-black' iconSrc='assets/arrow.svg'>Get Started</Button>
+                </motion.span>
             </div>
         </section>
     )

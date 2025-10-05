@@ -1,6 +1,14 @@
+"use client"
+
 import { ListWithIcon } from '@/Types/ListWithIcon'
 import Image from 'next/image'
 import React from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+
+const fade = {
+    hidden: { opacity: 0, x: 24 },
+    show: { opacity: 1, x: 0 }
+}
 
 const visionsHow: ListWithIcon[] = [
     {
@@ -47,7 +55,12 @@ const visionsBenefit: ListWithIcon[] = [
 const VisionContent: React.FC<ListWithIcon> = ({ iconSrc, alt, title, desc }) => {
     return (
         <>
-            <div className='flex align-middle gap-5'>
+            <motion.div
+                initial={{ scale: 0.5, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ amount: 0.4 }}
+                transition={{ type: 'spring', stiffness: 60, damping: 18, mass: 1.1 }}
+                className='flex align-middle gap-5'>
                 <Image
                     src={iconSrc}
                     width={40}
@@ -63,7 +76,7 @@ const VisionContent: React.FC<ListWithIcon> = ({ iconSrc, alt, title, desc }) =>
                         {desc}
                     </span>
                 </div>
-            </div>
+            </motion.div>
         </>
     )
 }
@@ -71,15 +84,25 @@ const Vision = () => {
     return (
         <div className='flex flex-col gap-6 py-11'>
             <div className='flex gap-6'>
-                <div className="relative flex-1 aspect-[3/2] overflow-hidden rounded-2xl bg-gray-100 px-12 py-5">
+                <motion.div
+                    initial={{ x: -100, opacity: 0 }}
+                    whileInView={{ x: 0, opacity: 1 }}
+                    viewport={{ amount: 0.4 }}
+                    transition={{ type: 'spring', stiffness: 60, damping: 18, mass: 1.1 }}
+                    className="relative flex-1 aspect-[3/2] overflow-hidden rounded-2xl bg-gray-100 px-12 py-5">
                     <Image
                         src="/assets/potong.png"
                         alt='cutting plants'
                         fill
                         className="object-cover"
                     />
-                </div>
-                <div className="flex flex-col text-white relative flex-1 aspect-[3/2] overflow-hidden rounded-2xl bg-[#1D582E] px-12 py-5 gap-6">
+                </motion.div>
+                <motion.div
+                    initial={{ x: 100, opacity: 0 }}
+                    whileInView={{ x: 0, opacity: 1 }}
+                    viewport={{ amount: 0.4 }}
+                    transition={{ type: 'spring', stiffness: 60, damping: 18, mass: 1.1 }}
+                    className="flex flex-col text-white relative flex-1 aspect-[3/2] overflow-hidden rounded-2xl bg-[#1D582E] px-12 py-5 gap-6">
                     <span className='text-3xl font-semibold'>
                         Bagaimana Kami Mendukung Petani & Produsen Lokal
                     </span>
@@ -92,18 +115,28 @@ const Vision = () => {
                             alt={v.alt}
                         />
                     ))}
-                </div>
+                </motion.div>
             </div>
             <div className='flex flex-row-reverse gap-6'>
-                <div className="relative flex-1 aspect-[3/2] overflow-hidden rounded-2xl bg-gray-100 px-12 py-5">
+                <motion.div
+                    initial={{ x: 100, opacity: 0 }}
+                    whileInView={{ x: 0, opacity: 1 }}
+                    viewport={{ amount: 0.4 }}
+                    transition={{ type: 'spring', stiffness: 60, damping: 18, mass: 1.1 }}
+                    className="relative flex-1 aspect-[3/2] overflow-hidden rounded-2xl bg-gray-100 px-12 py-5">
                     <Image
                         src="/assets/bermain_sayur.png"
                         alt='playing on table'
                         fill
                         className="object-cover"
                     />
-                </div>
-                <div className="flex flex-col text-black relative flex-1 aspect-[3/2] overflow-hidden rounded-2xl bg-[#D0F348] px-12 py-5 gap-6">
+                </motion.div>
+                <motion.div
+                    initial={{ x: -100, opacity: 0 }}
+                    whileInView={{ x: 0, opacity: 1 }}
+                    viewport={{ amount: 0.4 }}
+                    transition={{ type: 'spring', stiffness: 60, damping: 18, mass: 1.1 }}
+                    className="flex flex-col text-black relative flex-1 aspect-[3/2] overflow-hidden rounded-2xl bg-[#D0F348] px-12 py-5 gap-6">
                     <span className='text-3xl font-semibold'>
                         Manfaat Untuk Anda dan Komunitas
                     </span>
@@ -116,7 +149,7 @@ const Vision = () => {
                             alt={v.alt}
                         />
                     ))}
-                </div>
+                </motion.div>
             </div>
         </div>
     )

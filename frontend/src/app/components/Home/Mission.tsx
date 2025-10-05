@@ -1,5 +1,8 @@
+"use client"
+
 import Image from 'next/image'
 import React from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const missions = [
     {
@@ -22,29 +25,43 @@ const missions = [
 
 const MissionContent: React.FC<{ title: string; desc: string }> = ({ title, desc }) => {
     return (
-        <li>
+        <motion.div
+            initial={{ scale: 0.5, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ amount: 0.4 }}
+            transition={{ type: 'spring', stiffness: 60, damping: 18, mass: 1.1 }}>
             <div className="flex flex-col gap-1 pb-3 border-b-3 border-white">
                 <span className="text-2xl">{title}</span>
                 <span className="text-base">
                     {desc}
                 </span>
             </div>
-        </li>
+        </motion.div>
     )
 }
 const Mission = () => {
     return (
         <div className='flex flex-col gap-6 py-11'>
             <div className='flex gap-6'>
-                <div className="relative flex-1 aspect-[3/4] overflow-hidden rounded-2xl bg-gray-100 px-12 py-5">
+                <motion.div
+                    initial={{ x: 100, opacity: 0 }}
+                    whileInView={{ x: 0, opacity: 1 }}
+                    viewport={{ amount: 0.4 }}
+                    transition={{ type: 'spring', stiffness: 60, damping: 18, mass: 1.1 }}
+                    className="relative flex-1 aspect-[3/4] overflow-hidden rounded-2xl bg-gray-100 px-12 py-5">
                     <Image
                         src="/assets/laugh_together_to_veggies.png"
                         alt='laughing to veggies'
                         fill
                         className="object-cover"
                     />
-                </div>
-                <div className="flex flex-col text-white relative flex-1 aspect-[3/4] overflow-hidden rounded-2xl bg-[#1D582E] p-12 gap-8 font-semibold">
+                </motion.div>
+                <motion.div
+                    initial={{ x: 100, opacity: 0 }}
+                    whileInView={{ x: 0, opacity: 1 }}
+                    viewport={{ amount: 0.4 }}
+                    transition={{ type: 'spring', stiffness: 60, damping: 18, mass: 1.1 }}
+                    className="flex flex-col text-white relative flex-1 aspect-[3/4] overflow-hidden rounded-2xl bg-[#1D582E] p-12 gap-8 font-semibold">
                     <span className='text-4xl'>
                         Misi Kami dalam Aksi
                     </span>
@@ -64,7 +81,7 @@ const Mission = () => {
                             </ul>
                         </div>
                     </div>
-                </div>
+                </motion.div>
             </div>
         </div>
     )
