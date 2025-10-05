@@ -20,12 +20,38 @@
   }
 } */
 
+<<<<<<< HEAD
+=======
+html {
+  scroll-behavior: smooth;
+}
+
+>>>>>>> 36c660dcdefb3216eafb97627e6a717e96f9a47a
 body {
   background: var(--background);
   color: black;
   font-family: var(--font-inter), sans-serif;
 }
 
+<<<<<<< HEAD
+=======
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade {
+  animation: fadeIn .25s ease;
+}
+
+>>>>>>> 36c660dcdefb3216eafb97627e6a717e96f9a47a
 #big1 {
   font-size: 3.812rem;
   word-wrap: 'break-word';

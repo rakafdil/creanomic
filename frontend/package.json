@@ -10,6 +10,7 @@
     "format": "biome format --write"
   },
   "dependencies": {
+<<<<<<< HEAD
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "next": "15.5.4"
@@ -22,5 +23,21 @@
     "@tailwindcss/postcss": "^4",
     "tailwindcss": "^4",
     "@biomejs/biome": "2.2.0"
+=======
+    "motion": "^12.23.22",
+    "next": "15.5.4",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-icons": "^5.5.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.0",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+>>>>>>> 36c660dcdefb3216eafb97627e6a717e96f9a47a
   }
 }
