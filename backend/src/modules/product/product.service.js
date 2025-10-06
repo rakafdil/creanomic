@@ -64,62 +64,6 @@ class ProductService {
         return data
     }
 
-    // Create new product
-    async createProduct(productData) {
-        const { data, error } = await this.supabase
-            .from("products")
-            .insert([productData])
-            .select()
-            .single()
-
-        if (error) throw error
-        return data
-    }
-
-    // Update product
-    async updateProduct(id, productData) {
-        const { data, error } = await this.supabase
-            .from("products")
-            .update(productData)
-            .eq('id', id)
-            .select()
-            .single()
-
-        if (error) throw error
-        return data
-    }
-
-    // Delete product
-    async deleteProduct(id) {
-        const { data, error } = await this.supabase
-            .from("products")
-            .delete()
-            .eq('id', id)
-
-        if (error) throw error
-        return data
-    }
-
-    // Get products by seller
-    async getProductsBySeller(sellerId) {
-        const { data, error } = await this.supabase
-            .from("products")
-            .select(`
-                *,
-                seller:seller_id (
-                    seller_id,
-                    stores:store_id (
-                        id,
-                        store_name
-                    )
-                )
-            `)
-            .eq('seller_id', sellerId)
-
-        if (error) throw error
-        return data
-    }
-
     // Get products by store
     async getProductsByStore(storeId) {
         const { data, error } = await this.supabase
@@ -153,19 +97,6 @@ class ProductService {
                 )
             `)
             .or(`name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`)
-
-        if (error) throw error
-        return data
-    }
-
-    // Update stock quantity
-    async updateStock(id, quantity) {
-        const { data, error } = await this.supabase
-            .from("products")
-            .update({ stock_quantity: quantity })
-            .eq('id', id)
-            .select()
-            .single()
 
         if (error) throw error
         return data
