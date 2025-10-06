@@ -5,10 +5,20 @@ export default function sellerRouter(supabase) {
     const router = express.Router()
     const controller = new SellerController(supabase)
 
-    router.get("/products:product_id", controller.getProduct)
-    router.post("/products", controller.addProduct)
-    router.patch("/products:product_id", controller.editProduct)
-    router.delete("/products:product_id", controller.deletProduct)
+    // Create a product for a seller
+    router.post("/products/:sellerId", controller.addProduct)
+
+    // Get all products for a seller
+    router.get("/products/:sellerId", controller.getProducts)
+
+    // Edit a product for a seller
+    router.patch("/products/:sellerId/:productId", controller.editProduct)
+
+    // Delete a product for a seller
+    router.delete("/products/:sellerId/:productId", controller.deleteProduct)
+
+    // Change user role to seller
+    router.post("/become-seller/:userId", controller.changeRole)
 
     return router
 }

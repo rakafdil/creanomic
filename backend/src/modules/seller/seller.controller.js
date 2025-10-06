@@ -1,4 +1,4 @@
-import SellerService from "./seller.service.js" // ✅ FIXED: Import without destructuring
+import SellerService from "./seller.service.js"
 import { catchAsyncError } from "../../utils/catchAsyncError.js"
 import { AppError } from "../../utils/AppError.js"
 
@@ -21,6 +21,7 @@ export class SellerController {
         this.addProduct = catchAsyncError(this.addProduct.bind(this))
         this.editProduct = catchAsyncError(this.editProduct.bind(this))
         this.deleteProduct = catchAsyncError(this.deleteProduct.bind(this))
+        this.changeRole = catchAsyncError(this.changeRole.bind(this))
     }
 
     /**
@@ -57,12 +58,12 @@ export class SellerController {
             throw new AppError('Seller ID is required', 400)
         }
 
-        const newProduct = await this.sellerService.addProduct(productData, sellerId)
+        const result = await this.sellerService.addProduct(productData, sellerId)
 
         res.status(201).json({
             status: 'success',
-            message: 'Product added successfully',
-            data: { product: newProduct }
+            message: result.message || 'Product added successfully',
+            data: { product: result.newProduct }
         })
     }
 
@@ -79,12 +80,12 @@ export class SellerController {
             throw new AppError('Seller ID and Product ID are required', 400)
         }
 
-        const updatedProduct = await this.sellerService.editProduct(sellerId, productId, changedData)
+        const result = await this.sellerService.editProduct(sellerId, productId, changedData)
 
         res.status(200).json({
             status: 'success',
-            message: 'Product updated successfully',
-            data: { product: updatedProduct }
+            message: result.message || 'Product updated successfully',
+            data: { product: result.newData }
         })
     }
 
@@ -106,6 +107,31 @@ export class SellerController {
             status: 'success',
             message: result.message,
             data: { deletedProduct: result.deletedProduct }
+        })
+    }
+
+    /**
+     * Change user role to seller
+     * @param {Request} req
+     * @param {Response} res
+     */
+    async changeRole(req, res) {
+        const { userId } = req.params
+        const reqData = req.body
+
+        if (!userId) {
+            throw new AppError('User ID is required', 400)
+        }
+
+        const result = await this.sellerService.changeRoleToSeller(userId, reqData)
+
+        res.status(200).json({
+            status: 'success',
+            message: result.message,
+            data: {
+                user: result.user,
+                seller: result.seller
+            }
         })
     }
 }

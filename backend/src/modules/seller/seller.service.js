@@ -1,3 +1,4 @@
+import e from "express"
 import { AppError } from "../../utils/AppError.js"
 import { createClient } from "@supabase/supabase-js"
 
@@ -24,6 +25,32 @@ class SellerService {
         )
     }
 
+    async getProducts(sellerId) {
+        // await this.accessDatabaseWithSellerId(sellerId)
+        console.log("DEBUG sellerId:", sellerId, typeof sellerId, sellerId.length);
+
+        const { data: products, error: productsError } = await this.supabase
+            .from("products")
+            .select("*")
+            .eq("seller_id", sellerId)
+            .order('created_at', { ascending: false })
+        console.log(products)
+        if (productsError) throw new AppError(productsError.message, productsError?.status || 500)
+
+        return products?.map(product => ({
+            product_id: product.id,
+            created_at: product.created_at,
+            seller_id: product.seller_id,
+            price: product.price,
+            product_name: product.name,
+            product_description: product.description,
+            discount: product.discount,
+            img_url: product.img_url,
+            stock_quantity: product.stock_quantity,
+            category: product.category
+        })) || []
+    }
+
     async accessDatabaseWithSellerId(sellerId) {
         const { data: { session }, error: errorSession } = await this.supabase.auth.getSession()
         if (errorSession) throw new AppError(errorSession.message, errorSession?.status || 401)
@@ -38,15 +65,17 @@ class SellerService {
     async changeRoleToSeller(userId, reqData) {
         const { ktp_url, nik } = reqData
 
-        const { data: dataUser, error: errorGet } = await this.supabase
+        console.log("DEBUG userId:", userId, typeof userId, userId.length);
+
+        const { data: dataUser, error: errorGet } = await this.adminClient
             .from('users')
             .select('email_verified, phone_verified')
             .eq('id', userId)
-            .single()
+            .maybeSingle()
 
         if (errorGet) throw new AppError('Failed to fetch user data: ' + errorGet.message, 500)
 
-        if (!dataUser) throw new AppError('User not found', 404)
+        if (!dataUser) throw new AppError('User not found' + errorGet.message, errorGet.status || 404)
 
         if (!dataUser.email_verified && !dataUser.phone_verified) {
             throw new AppError('Email and phone number must be verified!', 400)
@@ -83,31 +112,6 @@ class SellerService {
         }
     }
 
-    async getProducts(sellerId) {
-        await this.accessDatabaseWithSellerId(sellerId)
-
-        const { data: products, error: productsError } = await this.supabase
-            .from("products")
-            .select("*")
-            .eq("seller_id", sellerId)
-            .order('created_at', { ascending: false })
-
-        if (productsError) throw new AppError(productsError.message, productsError?.status || 500)
-
-        return products?.map(product => ({
-            product_id: product.product_id,
-            created_at: product.created_at,
-            seller_id: product.seller_id,
-            price: product.price,
-            product_name: product.product_name,
-            product_description: product.product_description,
-            discount: product.discount,
-            img_url: product.img_url,
-            stock_quantity: product.stock_quantity,
-            category: product.category
-        })) || []
-    }
-
     async addProduct(productData, sellerId) {
         const { name, description, price, stock_quantity, category, img_url } = productData
 
@@ -120,16 +124,16 @@ class SellerService {
         const { data: newProduct, error: insertError } = await this.adminClient
             .from('products')
             .insert({
-                product_name: name,
-                product_description: description,
+                name: name,
+                description: description,
                 price: parseInt(price),
                 stock_quantity: parseInt(stock_quantity),
-                category,
+                category: category,
                 img_url: img_url || null,
                 seller_id: sellerId,
                 created_at: new Date().toISOString()
             })
-            .select('product_id, product_name, product_description, price, stock_quantity, category, img_url, created_at')
+            .select('id, name, description, price, stock_quantity, category, img_url, created_at')
             .single()
 
         if (insertError) {
@@ -149,11 +153,11 @@ class SellerService {
             throw new AppError('Change at least one attribute!', 400)
         }
 
-        await this.accessDatabaseWithSellerId(sellerId)
+        // await this.accessDatabaseWithSellerId(sellerId)
 
         const updateData = {}
-        if (name) updateData.product_name = name
-        if (description) updateData.product_description = description
+        if (name) updateData.name = name
+        if (description) updateData.description = description
         if (price) updateData.price = parseInt(price)
         if (stock_quantity) updateData.stock_quantity = parseInt(stock_quantity)
         if (category) updateData.category = category
@@ -164,7 +168,7 @@ class SellerService {
             .from('products')
             .update(updateData)
             .eq('seller_id', sellerId)
-            .eq('product_id', productId)
+            .eq('id', productId)
             .select('*')
             .single()
 
