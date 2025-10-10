@@ -30,10 +30,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${instrumentSans.variable} antialiased`}
       >
-        <Navbar />
         {children}
-        <ToTop />
-        <Footer />
       </body>
     </html>
   );
