@@ -1,11 +1,12 @@
-// app/auth/page.tsx
 import LoginForm from "../components/Auth/LoginForm";
 import RegisterForm from "../components/Auth/RegisterForm";
 
-export default function AuthPage({ searchParams }: { searchParams: { mode?: string } }) {
+export default async function AuthPage({ searchParams }: { searchParams: Promise<{ mode?: string }> }) {
+    const params = await searchParams;
+    
     return (
         <div>
-            {searchParams.mode === "register" ? <RegisterForm /> : <LoginForm />}
+            {params.mode === "signup" ? <RegisterForm /> : <LoginForm />}
         </div>
     );
 }
