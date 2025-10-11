@@ -2,15 +2,19 @@ import React from "react";
 import Logo from "../Common/Logo";
 import SearchBar from "./SearchBar";
 import Image from "next/image";
+import Link from "next/link";
 
 const Navbar = () => {
   return (
     <nav className="w-full bg-white py-3">
       <div className="flex items-center justify-between gap-6">
         {/* Logo */}
-        <div className="flex items-center h-auto">
+        <Link
+          href="/products"
+          className="flex items-center h-auto cursor-pointer"
+        >
           <Logo width={40} height={40} />
-        </div>
+        </Link>
 
         {/* Search Bar */}
         <div className="flex-1 flex justify-center">

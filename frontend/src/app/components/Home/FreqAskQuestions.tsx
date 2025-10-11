@@ -1,179 +1,192 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import React, { useState } from 'react'
-import Button from '../Common/Button'
-import { AnimatePresence, motion } from 'framer-motion'
+import Image from "next/image";
+import React, { useState } from "react";
+import Button from "../Common/Button";
+import { AnimatePresence, motion } from "framer-motion";
 
 type Question = {
-    question: string
-    answer: string
-}
+  question: string;
+  answer: string;
+};
 
 const questions: Question[] = [
-    {
-        question: "Apa itu GrowthWell",
-        answer: "GrowthWell adalah marketplace digital yang menghubungkan petani, peternak, dan UMKM pangan lokal langsung dengan Anda. Misi kami adalah menyediakan akses mudah ke pangan segar berkualitas, sambil mendukung ekonomi lokal dan meningkatkan gizi komunitas melalui program donasi."
-    },
-    {
-        question: "Bagaimana cara kerja sistem donasi di GrowthWell?",
-        answer: "Anda dapat membeli produk yang ditujukan khusus untuk donasi. Kami kemudian bekerja sama dengan mitra komunitas dan yayasan lokal untuk menyalurkan produk tersebut langsung kepada mereka yang membutuhkan melalui program makanan bergizi gratis."
-    },
-    {
-        question: "Dari mana asal produk yang dijual?",
-        answer: "Semua produk di platform kami berasal langsung dari mitra lokal terkurasi, meliputi petani, peternak, dan UMKM pangan dari berbagai daerah di Indonesia. Kami mengutamakan transparansi, sehingga Anda sering kali dapat melihat asal-usul produk di halaman detailnya."
-    },
-    {
-        question: "Bagaimana GrowthWell menjamin kualitas produk?",
-        answer: "Kami memiliki proses kurasi yang ketat untuk para mitra. Selain itu, tim kami menerapkan kontrol kualitas berlapis, mulai dari sumber di lahan hingga pengemasan, untuk memastikan setiap produk yang sampai ke tangan Anda memenuhi standar kesegaran tertinggi."
-    },
-    {
-        question: "Saya seorang petani/produsen, bagaimana cara saya bergabung?",
-        answer: "Kami selalu terbuka untuk mitra baru yang memiliki visi yang sama! Silakan kunjungi halaman \"Mitra Kami\" dan isi formulir pendaftaran. Tim kami akan segera menghubungi Anda untuk proses kurasi dan onboarding lebih lanjut."
-    },
-]
+  {
+    question: "Apa itu GrowthWell",
+    answer:
+      "GrowthWell adalah marketplace digital yang menghubungkan petani, peternak, dan UMKM pangan lokal langsung dengan Anda. Misi kami adalah menyediakan akses mudah ke pangan segar berkualitas, sambil mendukung ekonomi lokal dan meningkatkan gizi komunitas melalui program donasi.",
+  },
+  {
+    question: "Bagaimana cara kerja sistem donasi di GrowthWell?",
+    answer:
+      "Anda dapat membeli produk yang ditujukan khusus untuk donasi. Kami kemudian bekerja sama dengan mitra komunitas dan yayasan lokal untuk menyalurkan produk tersebut langsung kepada mereka yang membutuhkan melalui program makanan bergizi gratis.",
+  },
+  {
+    question: "Dari mana asal produk yang dijual?",
+    answer:
+      "Semua produk di platform kami berasal langsung dari mitra lokal terkurasi, meliputi petani, peternak, dan UMKM pangan dari berbagai daerah di Indonesia. Kami mengutamakan transparansi, sehingga Anda sering kali dapat melihat asal-usul produk di halaman detailnya.",
+  },
+  {
+    question: "Bagaimana GrowthWell menjamin kualitas produk?",
+    answer:
+      "Kami memiliki proses kurasi yang ketat untuk para mitra. Selain itu, tim kami menerapkan kontrol kualitas berlapis, mulai dari sumber di lahan hingga pengemasan, untuk memastikan setiap produk yang sampai ke tangan Anda memenuhi standar kesegaran tertinggi.",
+  },
+  {
+    question: "Saya seorang petani/produsen, bagaimana cara saya bergabung?",
+    answer:
+      'Kami selalu terbuka untuk mitra baru yang memiliki visi yang sama! Silakan kunjungi halaman "Mitra Kami" dan isi formulir pendaftaran. Tim kami akan segera menghubungi Anda untuk proses kurasi dan onboarding lebih lanjut.',
+  },
+];
 
 type QuestionItemProps = Question & {
-    isOpen: boolean
-    onToggle: () => void
-}
+  isOpen: boolean;
+  onToggle: () => void;
+};
 
-const QuestionItem: React.FC<QuestionItemProps> = ({ question, answer, isOpen, onToggle }) => {
-    return (
-        <motion.div
-            layout
-            className="w-full flex flex-col gap-3"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25 }}
+const QuestionItem: React.FC<QuestionItemProps> = ({
+  question,
+  answer,
+  isOpen,
+  onToggle,
+}) => {
+  return (
+    <motion.div
+      layout
+      className="w-full flex flex-col gap-3"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ duration: 0.25 }}
+    >
+      <button
+        type="button"
+        onClick={onToggle}
+        className="w-full px-6 py-5 bg-[#E5E5E5] border border-[#999999] rounded-xl flex justify-between items-center text-2xl font-medium text-left group transition-colors cursor-pointer hover:bg-[#dcdcdc]"
+      >
+        <span className="text-[#0A3917]">{question}</span>
+        <motion.span
+          animate={{ rotate: isOpen ? 45 : 0 }}
+          transition={{ duration: 0.25 }}
+          className="text-[#0A3917] text-4xl leading-none"
         >
-            <button
-                type="button"
-                onClick={onToggle}
-                className="w-full px-6 py-5 bg-[#E5E5E5] border border-[#999999] rounded-xl flex justify-between items-center text-2xl font-medium text-left group transition-colors cursor-pointer hover:bg-[#dcdcdc]"
-            >
-                <span className="text-[#0A3917]">{question}</span>
-                <motion.span
-                    animate={{ rotate: isOpen ? 45 : 0 }}
-                    transition={{ duration: 0.25 }}
-                    className="text-[#0A3917] text-4xl leading-none"
-                >
-                    +
-                </motion.span>
-            </button>
+          +
+        </motion.span>
+      </button>
 
-            <AnimatePresence initial={false}>
-                {isOpen && (
-                    <motion.div
-                        key="answer"
-                        initial="collapsed"
-                        animate="open"
-                        exit="collapsed"
-                        variants={{
-                            open: { height: 'auto', opacity: 1 },
-                            collapsed: { height: 0, opacity: 0 }
-                        }}
-                        transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
-                        className="overflow-hidden"
-                        layout
-                    >
-                        <div className="w-full px-6 py-5 bg-[#0A3917] rounded-xl text-base text-white font-semibold">
-                            {answer}
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </motion.div>
-    )
-}
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            key="answer"
+            initial="collapsed"
+            animate="open"
+            exit="collapsed"
+            variants={{
+              open: { height: "auto", opacity: 1 },
+              collapsed: { height: 0, opacity: 0 },
+            }}
+            transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+            className="overflow-hidden"
+            layout
+          >
+            <div className="w-full px-6 py-5 bg-[#0A3917] rounded-xl text-base text-white font-semibold">
+              {answer}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
 
 const FreqAskQuestions = () => {
-    const [openIndex, setOpenIndex] = useState<number | null>(-1)
+  const [openIndex, setOpenIndex] = useState<number | null>(-1);
 
-    return (
-        <section className="flex flex-col gap-8 py-20">
-            <div className='flex flex-col gap-6 justify-center items-center'>
-                <div className="flex items-center justify-center gap-3.5">
-                    <span className='flex items-center gap-1.5'>
-                        <Image
-                            src="/assets/logo_icon.svg"
-                            alt="GrowthWell logo"
-                            width={48}
-                            height={48}
-                            priority
-                        />
-                        <span className="text-[#74AB35] text-2xl font-semibold">GrowthWell</span>
-                    </span>
-                    <span className="text-[#74AB35] text-3xl font-semibold">
-                        FAQs
-                    </span>
-                </div>
-                <span
-                    className='text-5xl font-semibold text-[#0A3917]'
-                >
-                    Ada Pertanyaan? Cari di Sini.
-                </span>
+  return (
+    <section className="flex flex-col gap-8 py-20 pb-80">
+      <div className="flex flex-col gap-6 justify-center items-center">
+        <div className="flex items-center justify-center gap-3.5">
+          <span className="flex items-center gap-1.5">
+            <Image
+              src="/assets/logo_icon.svg"
+              alt="GrowthWell logo"
+              width={48}
+              height={48}
+              priority
+            />
+            <span className="text-[#74AB35] text-2xl font-semibold">
+              GrowthWell
+            </span>
+          </span>
+          <span className="text-[#74AB35] text-3xl font-semibold">FAQs</span>
+        </div>
+        <span className="text-5xl font-semibold text-[#0A3917]">
+          Ada Pertanyaan? Cari di Sini.
+        </span>
+      </div>
+
+      <div className="flex gap-16 justify-between">
+        <div className="flex-1 flex flex-col gap-6">
+          <AnimatePresence mode="popLayout">
+            {questions.map((q, i) => (
+              <QuestionItem
+                key={q.question}
+                question={q.question}
+                answer={q.answer}
+                isOpen={openIndex === i}
+                onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+              />
+            ))}
+          </AnimatePresence>
+        </div>
+
+        <div className="flex flex-col gap-12">
+          <div className="flex flex-col gap-5 w-[430px] bg-[#0A3917] rounded-3xl p-8 text-white text-center align-middle h-fit">
+            <Image
+              src="/assets/entypo_chat.svg"
+              width={70}
+              height={70}
+              alt="chat"
+              className="self-center"
+            />
+            <div className="flex flex-col gap-2">
+              <span className="text-2xl font-semibold">
+                Punya pertanyaan lain?
+              </span>
+              <span className="text-xs">
+                Tim kami siap menjawab setiap pertanyaan Anda dengan respons
+                yang cepat dan solutif.
+              </span>
             </div>
-
-            <div className="flex gap-16 justify-between">
-                <div className="flex-1 flex flex-col gap-6">
-                    <AnimatePresence mode="popLayout">
-                        {questions.map((q, i) => (
-                            <QuestionItem
-                                key={q.question}
-                                question={q.question}
-                                answer={q.answer}
-                                isOpen={openIndex === i}
-                                onToggle={() => setOpenIndex(openIndex === i ? null : i)}
-                            />
-                        ))}
-                    </AnimatePresence>
-                </div>
-
-                <div className='flex flex-col gap-12'>
-                    <div className="flex flex-col gap-5 w-[430px] bg-[#0A3917] rounded-3xl p-8 text-white text-center align-middle h-fit">
-                        <Image
-                            src='/assets/entypo_chat.svg'
-                            width={70}
-                            height={70}
-                            alt='chat'
-                            className='self-center'
-                        />
-                        <div className='flex flex-col gap-2'>
-                            <span className='text-2xl font-semibold'>Punya pertanyaan lain?</span>
-                            <span className='text-xs'>Tim kami siap menjawab setiap pertanyaan Anda dengan respons yang cepat dan solutif.</span>
-                        </div>
-                        <Button className='bg-[#D0F348] self-center text-[#0A3917]'>
-                            Hubungi Kami
-                        </Button>
-                    </div>
-                    <div className="flex flex-row gap-5 w-[430px] bg-[#E1E1E1] rounded-3xl p-8 text-white text-center align-middle h-fit border-1 border-[#999]">
-                        <div className='flex justify-center bg-[#D0F348] rounded-full p-3 self-start'>
-                            <Image
-                                src='/assets/phone.svg'
-                                width={20}
-                                height={20}
-                                alt='chat'
-                                className='self-center'
-                            />
-                        </div>
-                        <div className='flex flex-col gap-2.5'>
-                            <span className='text-xl font-semibold text-[#494949] text-left'>
-                                Dukungan Penuh Untuk Anda
-                            </span>
-                            <span className='text-4xl font-semibold text-[#0A3917] text-left'>
-                                24/7  Service
-                            </span>
-                            <span className='text-xl font-semibold text-[#494949] text-left'>
-                                (021) 000-0000
-                            </span>
-                        </div>
-                    </div>
-                </div>
+            <Button className="bg-[#D0F348] self-center text-[#0A3917]">
+              Hubungi Kami
+            </Button>
+          </div>
+          <div className="flex flex-row gap-5 w-[430px] bg-[#E1E1E1] rounded-3xl p-8 text-white text-center align-middle h-fit border-1 border-[#999]">
+            <div className="flex justify-center bg-[#D0F348] rounded-full p-3 self-start">
+              <Image
+                src="/assets/phone.svg"
+                width={20}
+                height={20}
+                alt="chat"
+                className="self-center"
+              />
             </div>
-        </section>
-    )
-}
+            <div className="flex flex-col gap-2.5">
+              <span className="text-xl font-semibold text-[#494949] text-left">
+                Dukungan Penuh Untuk Anda
+              </span>
+              <span className="text-4xl font-semibold text-[#0A3917] text-left">
+                24/7 Service
+              </span>
+              <span className="text-xl font-semibold text-[#494949] text-left">
+                (021) 000-0000
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
-export default FreqAskQuestions
+export default FreqAskQuestions;
