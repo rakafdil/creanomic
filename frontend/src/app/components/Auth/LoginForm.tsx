@@ -1,23 +1,73 @@
 "use client"
-import { useState, type MouseEvent } from "react";
+import { useState, type MouseEvent, type FormEvent } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+    const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
 
-    const handleSubmit = (e: MouseEvent<HTMLButtonElement>) => {
+    const handleSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        console.log("Form submitted", { email, password, rememberMe });
+        setError("");
+        setIsLoading(true);
+
+        try {
+            const response = await fetch("http://localhost:5000/v1/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    email,
+                    password,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Login failed");
+            }
+
+            // Simpan token jika diperlukan
+            if (rememberMe && data.data.token) {
+                localStorage.setItem("authToken", data.data.token);
+            } else if (data.data.token) {
+                sessionStorage.setItem("authToken", data.data.token);
+            }
+
+            // Simpan data user
+            localStorage.setItem("user", JSON.stringify(data.data.user));
+
+            // Redirect ke dashboard atau home
+            router.push("/dashboard");
+        } catch (err: any) {
+            setError(err.message || "An error occurred during login");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleGoogleSignIn = async () => {
+        try {
+            // Redirect ke endpoint Google Sign-In backend
+            window.location.href = "http://localhost:5000/v1/auth/google-signin";
+        } catch (err: any) {
+            setError(err.message || "Failed to initiate Google sign-in");
+        }
     };
 
     return (
         <section className="relative w-full h-screen flex items-center overflow-hidden font-sans">
             {/* LEFT SIDE - Branding with Background Image */}
-            <div
-                className="hidden lg:flex lg:w-1/2 items-center justify-center relative bg-cover bg-center min-h-screen">
+            <div className="hidden lg:flex lg:w-1/2 items-center justify-center relative bg-cover bg-center min-h-screen">
                 <img
                     src="/assets/auth1.png"
                     alt="GrowthWell background"
@@ -52,6 +102,13 @@ export default function LoginPage() {
                         <p className="text-gray-500 text-lg">it's nice to see you again</p>
                     </div>
 
+                    {/* Error Message */}
+                    {error && (
+                        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-2xl">
+                            <p className="text-red-600 text-sm">{error}</p>
+                        </div>
+                    )}
+
                     {/* Form */}
                     <div className="space-y-5">
                         <input
@@ -59,7 +116,8 @@ export default function LoginPage() {
                             placeholder="Your username or email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full border-2 border-gray-300 rounded-2xl px-6 py-4 text-base focus:outline-none focus:border-gray-400 transition-colors placeholder:text-gray-400"
+                            disabled={isLoading}
+                            className="w-full border-2 border-gray-300 rounded-2xl px-6 py-4 text-base focus:outline-none focus:border-gray-400 transition-colors placeholder:text-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                         />
 
                         <div className="relative">
@@ -68,12 +126,14 @@ export default function LoginPage() {
                                 placeholder="Your Password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full border-2 border-gray-300 rounded-2xl px-6 py-4 pr-14 text-base focus:outline-none focus:border-gray-400 transition-colors placeholder:text-gray-400"
+                                disabled={isLoading}
+                                className="w-full border-2 border-gray-300 rounded-2xl px-6 py-4 pr-14 text-base focus:outline-none focus:border-gray-400 transition-colors placeholder:text-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                disabled={isLoading}
+                                className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 disabled:cursor-not-allowed"
                             >
                                 {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
                             </button>
@@ -81,9 +141,20 @@ export default function LoginPage() {
 
                         <button
                             onClick={handleSubmit}
-                            className="w-full bg-[#0A3917] hover:bg-[#145016] text-white font-semibold py-4 rounded-2xl transition-colors text-lg mt-6"
+                            disabled={isLoading || !email || !password}
+                            className="w-full bg-[#0A3917] hover:bg-[#145016] text-white font-semibold py-4 rounded-2xl transition-colors text-lg mt-6 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
                         >
-                            Login
+                            {isLoading ? (
+                                <>
+                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Loading...
+                                </>
+                            ) : (
+                                "Login"
+                            )}
                         </button>
                     </div>
 
@@ -94,11 +165,12 @@ export default function LoginPage() {
                                 type="checkbox"
                                 checked={rememberMe}
                                 onChange={(e) => setRememberMe(e.target.checked)}
-                                className="w-5 h-5 rounded border-2 border-gray-300 text-[#1B5E20] focus:ring-0 focus:ring-offset-0 cursor-pointer"
+                                disabled={isLoading}
+                                className="w-5 h-5 rounded border-2 border-gray-300 text-[#1B5E20] focus:ring-0 focus:ring-offset-0 cursor-pointer disabled:cursor-not-allowed"
                             />
                             <span className="ml-2 text-gray-700 font-medium">Remember me</span>
                         </label>
-                        <a href="#" className="text-[#2377E7] hover:underline font-medium">
+                        <a href="/auth/forgot-password" className="text-[#2377E7] hover:underline font-medium">
                             Forgot your password?
                         </a>
                     </div>
@@ -113,7 +185,9 @@ export default function LoginPage() {
                     {/* Continue with Google */}
                     <button
                         type="button"
-                        className="w-full border-2 border-gray-300 rounded-2xl py-4 flex items-center justify-center gap-3 hover:bg-gray-50 transition-colors"
+                        onClick={handleGoogleSignIn}
+                        disabled={isLoading}
+                        className="w-full border-2 border-gray-300 rounded-2xl py-4 flex items-center justify-center gap-3 hover:bg-gray-50 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
                     >
                         <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
