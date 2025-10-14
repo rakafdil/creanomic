@@ -1,10 +1,4 @@
 import React from "react";
-import { useState } from "react";
-import Navbar from "../../components/Products/Navbar";
-import ProductList from "../../components/Products/Cart/ProductList";
-import PaymentMethodSelector from "../../components/Products/Cart/PaymentMethodSelector";
-import OrderSummary from "../../components/Products/Cart/OrderSummary";
-
 export default function ProductDetailPage() {
   //   const [products, setProducts] = useState([
   //     {
