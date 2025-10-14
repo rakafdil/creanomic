@@ -1,34 +1,44 @@
+import { motion } from "framer-motion";
+
 type TabKey = "description" | "info" | "review";
 
 interface TabsHeaderProps {
-    activeTab: TabKey;
-    setActiveTab: (key: TabKey) => void;
+  activeTab: TabKey;
+  setActiveTab: (key: TabKey) => void;
 }
 
-const TabsHeader = ({ activeTab, setActiveTab }: TabsHeaderProps) => {
-    const tabs: { key: TabKey; label: string }[] = [
-        { key: "description", label: "Description" },
-        { key: "info", label: "Additional Information" },
-        { key: "review", label: "Review" },
-    ];
+const tabs: { key: TabKey; label: string }[] = [
+  { key: "description", label: "Description" },
+  { key: "info", label: "Additional Information" },
+  { key: "review", label: "Review" },
+];
 
-    return (
-        <div className="flex items-center justify-center gap-10 border-b border-gray-200 pb-10">
-            {tabs.map((tab) => (
-                <button
-                    key={tab.key}
-                    onClick={() => setActiveTab(tab.key)}
-                    className={`relative pb-2 text-3xl transition-colors duration-200 ${
-                        activeTab === tab.key
-                            ? "text-[#0A3917] font-semibold after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:w-10 after:h-[3px] after:rounded-full after:bg-[#0A3917]"
-                            : "text-gray-700 font-medium hover:text-[#0A3917]"
-                    }`}
-                >
-                    {tab.label}
-                </button>
-            ))}
-        </div>
-    );
+const TabsHeader = ({ activeTab, setActiveTab }: TabsHeaderProps) => {
+  return (
+    <div className="flex items-center justify-center gap-6 sm:gap-10 pb-6 sm:pb-10 relative">
+      {tabs.map((tab) => (
+        <button
+          key={tab.key}
+          onClick={() => setActiveTab(tab.key)}
+          className={`relative pb-3 text-lg sm:text-2xl md:text-3xl transition-colors duration-200 cursor-pointer ${
+            activeTab === tab.key
+              ? "text-[#0A3917] font-semibold"
+              : "text-gray-700 font-medium hover:text-[#0A3917]"
+          }`}
+          style={{ outline: "none" }}
+        >
+          {tab.label}
+          {activeTab === tab.key && (
+            <motion.div
+              layoutId="tab-underline"
+              className="absolute left-0 bottom-0 w-full h-[5px] rounded-full bg-[#0A3917]"
+              transition={{ type: "spring", stiffness: 500, damping: 30 }}
+            />
+          )}
+        </button>
+      ))}
+    </div>
+  );
 };
 
 export default TabsHeader;

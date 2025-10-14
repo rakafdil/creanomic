@@ -24,7 +24,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   return (
     <div className="bg-[#F0F0F0] rounded-2xl shadow-md py-7.5 px-5 flex flex-col h-80 gap-11">
-      {/* Gambar Produk */}
       <div className="flex relative w-full justify-center h-25">
         <Image
           src={imgUrl}
@@ -35,19 +34,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
         />
       </div>
 
-      {/* Info Produk */}
       <div className="flex flex-col gap-2.5 mt-3 text-left">
         <h3 className="text-green-950 text-2xl font-bold truncate">{name}</h3>
         <div className="flex justify-between text-neutral-400 text-base font-semibold">
           <p className="">{quantity}</p>
-          {/* Rating */}
           <div className="flex items-center justify-center gap-1.5">
             <FaStar className="text-[#FFC107]" />
             <span className="">({rating}/5)</span>
           </div>
         </div>
 
-        {/* Harga */}
         <div className="flex justify-between items-center">
           <p className="font-bold text-[#0A3917] text-lg">
             Rp{price.toLocaleString("id-ID")}
