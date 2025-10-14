@@ -131,7 +131,7 @@ class SellerService {
   }
 
   async checkCategory(category) {
-    const category = category.toLowerCase();
+    category = category.toLowerCase();
 
     const { data, error } = await this.supabase
       .from("categories")
@@ -141,7 +141,11 @@ class SellerService {
 
     if (error) throw new AppError(error.message, error.status);
 
-    if(!data){}
+    if (!data) {
+      throw new AppError("Category not found", 404);
+    }
+
+    return data;
   }
 
   async addProduct(productData, sellerId) {
