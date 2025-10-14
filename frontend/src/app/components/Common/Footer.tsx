@@ -14,7 +14,7 @@ const Footer: React.FC<FooterProps> = ({
 }) => {
   return (
     <footer
-      className={`${bgColor} flex gap-32 px-20 py-12 font-semibold text-white text-xl ${className}`}
+      className={`mt-20 ${bgColor} flex gap-32 px-20 py-12 font-semibold text-white text-xl ${className}`}
     >
       <div className="flex flex-2 flex-col gap-5">
         <Image src="/assets/logo.svg" alt="logo" width={250} height={250} />

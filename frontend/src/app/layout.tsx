@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "./components/Common/Navbar";
 import ToTop from "./components/Common/ToTop";
 import Footer from "./components/Common/Footer";
+import ConditionalFooter from "./components/Common/ConditionalFooter";
 
 const inter = Inter({
   variable: "--font-geist-inter",
@@ -31,6 +32,7 @@ export default function RootLayout({
         className={`${inter.variable} ${instrumentSans.variable} antialiased`}
       >
         {children}
+        <ConditionalFooter />
       </body>
     </html>
   );

@@ -23,17 +23,21 @@ const Navbar = () => {
 
         {/* Cart & Avatar */}
         <div className="flex items-center gap-4">
-          <div className="bg-[#0A3917] h-15 w-15 rounded-full p-3 flex items-center justify-center">
-            <Image src="/assets/cart.svg" alt="cart" width={32} height={32} />
-          </div>
-          <div className="bg-[#083D57] h-15 w-15 rounded-full p-3 flex items-center justify-center">
-            <Image
-              src="/assets/default-avatar.png"
-              alt="avatar"
-              width={32}
-              height={32}
-            />
-          </div>
+          <Link href="/products/cart" className="cursor-pointer">
+            <div className="bg-[#0A3917] h-15 w-15 rounded-full p-3 flex items-center justify-center">
+              <Image src="/assets/cart.svg" alt="cart" width={32} height={32} />
+            </div>
+          </Link>
+          <Link href="/avatar" className="cursor-pointer">
+            <div className="bg-[#083D57] h-15 w-15 rounded-full p-3 flex items-center justify-center">
+              <Image
+                src="/assets/default-avatar.png"
+                alt="avatar"
+                width={32}
+                height={32}
+              />
+            </div>
+          </Link>
         </div>
       </div>
     </nav>

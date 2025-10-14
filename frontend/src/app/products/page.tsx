@@ -57,7 +57,6 @@ export default function ProductsPage() {
         </div>
         <ProductsDisplay gridRow={true} className="" />
       </div>
-      <Footer bgColor="bg-green-950" />
     </div>
   );
 }

@@ -9,10 +9,8 @@ const ProductsDetail = () => {
   const weights = ["500 g", "1 Kg", "2 Kg", "5 Kg"];
 
   return (
-    <section className="w-full max-w-6xl mx-auto py-12 px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 font-sans">
-      {/* LEFT SIDE — Image Gallery */}
+    <section className="w-full mx-auto py-12 grid grid-cols-1 lg:grid-cols-2 gap-10 font-sans">
       <div>
-        {/* Main Image */}
         <div className="w-full aspect-square rounded-2xl border border-gray-200 overflow-hidden flex items-center justify-center">
           <Image
             src="/assets/banana-main.png"
@@ -24,7 +22,6 @@ const ProductsDetail = () => {
           />
         </div>
 
-        {/* Thumbnails */}
         <div className="flex gap-4 mt-4">
           {["banana-1.png", "banana-2.png", "banana-3.png"].map((img, i) => (
             <div
@@ -43,13 +40,10 @@ const ProductsDetail = () => {
         </div>
       </div>
 
-      {/* RIGHT SIDE — Product Info */}
       <div className="flex flex-col justify-start">
-        {/* Category & Status */}
         <p className="text-[#0A3917] font-medium text-2xl mb-5">Fruits</p>
         <h1 className="text-4xl font-bold text-gray-900 mb-5">Sweet Banana</h1>
 
-        {/* Rating */}
         <div className="flex items-center gap-2 mb-5">
           {Array.from({ length: 5 }).map((_, i) => (
             <svg
@@ -67,16 +61,13 @@ const ProductsDetail = () => {
           <span className="text-gray-400 text-lg">(255 Review)</span>
         </div>
 
-        {/* Price */}
         <p className="text-3xl font-bold text-gray-900 mb-3">Rp 15.000</p>
 
-        {/* Description */}
         <p className="text-[#595959] leading-relaxed mb-15">
           Pisang Cavendish premium dengan rasa manis pas dan tekstur lembut.
           Pilihan tepat untuk camilan sehat dan penambah energi instan.
         </p>
 
-        {/* Weight Options */}
         <div className="mb-6">
           <p className="font-semibold text-gray-800 mb-2">Weight</p>
           <div className="flex gap-3 flex-wrap">
@@ -98,7 +89,6 @@ const ProductsDetail = () => {
           </div>
         </div>
 
-        {/* Quantity & Buttons */}
         <div className="flex items-center gap-4 mb-8 flex-wrap">
           <div className="flex items-center border border-gray-300 rounded-full">
             <motion.button
@@ -136,7 +126,6 @@ const ProductsDetail = () => {
           </motion.button>
         </div>
 
-        {/* Product Info */}
         <div className="text-lx text-gray-600 space-y-2">
           <p>
             <span className="font-semibold text-gray-800">SKU:</span>{" "}

@@ -21,7 +21,6 @@ export default function ProductDetailPage({
         <ProductsDetail />
         <ProductTabs />
       </div>
-      <Footer bgColor="bg-green-950" />
     </div>
   );
 }

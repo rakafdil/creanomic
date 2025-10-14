@@ -11,6 +11,7 @@ interface ProductCardProps {
   quantity: string;
   rating: number;
   price: number;
+  action: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -21,6 +22,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   quantity,
   rating,
   price,
+  action,
 }) => {
   return (
     <div className="bg-[#F0F0F0] rounded-2xl shadow-md py-7.5 px-5 flex flex-col h-80 gap-11">
@@ -48,7 +50,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <p className="font-bold text-[#0A3917] text-lg">
             Rp{price.toLocaleString("id-ID")}
           </p>
-          <button className="cursor-pointer transform hover:scale-120 transition-transform duration-200">
+          <button
+            className="cursor-pointer transform hover:scale-120 transition-transform duration-200"
+            onClick={action}
+          >
             <AiFillPlusCircle className="text-[#0A3917] text-4xl" />
           </button>
         </div>

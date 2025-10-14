@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import ProductCard from "../Common/ProductCard";
+import { useRouter } from "next/navigation";
 
 interface Product {
   id: number;
@@ -88,6 +91,7 @@ const ProductsDisplay: React.FC<ProductDisplayProps> = ({
   gridRow = false,
   className = "",
 }) => {
+  const router = useRouter();
   return (
     <div
       className={`${
@@ -109,6 +113,7 @@ const ProductsDisplay: React.FC<ProductDisplayProps> = ({
             quantity={product.unit}
             rating={product.rating}
             price={product.price}
+            action={() => router.push(`/products/details/${product.id}`)}
           />
         </div>
       ))}
