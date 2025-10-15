@@ -1,20 +1,38 @@
 import express from "express";
+import cors from "cors";
 import dotenv from "dotenv";
 import { dbConnection } from "./src/database/dbConnection.js";
 import { bootstrap } from "./src/bootstrap.js";
 
 dotenv.config();
+
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 
-app.get("/", (req, res) => res.send("API is running"));
+app.use(
+  cors({
+    origin: ["https://creanomic.vercel.app"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+
+app.get("/", (req, res) => {
+  res.send("API is running with CORS enabled");
+});
 
 const handler = async (req, res) => {
-  const supabase = await dbConnection();
-  bootstrap(app, supabase);
-  app(req, res); // langsung pass ke Express handler
+  try {
+    const supabase = await dbConnection();
+    bootstrap(app, supabase);
+
+    app(req, res);
+  } catch (error) {
+    console.error("Handler error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
 
 export default handler;
