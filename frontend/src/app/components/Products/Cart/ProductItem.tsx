@@ -39,7 +39,7 @@ export default function ProductItem({
       {/* Quantity */}
       <div className="flex justify-center">
         <QuantityControl
-          quantity={product.quantity}
+          quantity={Number(product.quantity)}
           onIncrease={() => onIncrease(product.id)}
           onDecrease={() => onDecrease(product.id)}
         />
@@ -47,7 +47,7 @@ export default function ProductItem({
 
       {/* Sub Total */}
       <p className="pr-11 text-right font-semibold text-gray-800">
-        {formatCurrency(product.price * product.quantity)}
+        {formatCurrency(product.price * Number(product.quantity))}
       </p>
     </div>
   );

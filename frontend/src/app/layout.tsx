@@ -5,6 +5,7 @@ import Navbar from "./components/Common/Navbar";
 import ToTop from "./components/Common/ToTop";
 import Footer from "./components/Common/Footer";
 import ConditionalFooter from "./components/Common/ConditionalFooter";
+import ConditionalHeader from "./components/Common/ConditionalHeader";
 
 const inter = Inter({
   variable: "--font-geist-inter",
@@ -29,10 +30,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${instrumentSans.variable} antialiased`}
+        className={`${inter.variable} ${instrumentSans.variable} antialiased min-h-screen`}
       >
-        {children}
-        <ConditionalFooter />
+        <div className="max-w-[1920px] mx-auto w-full flex flex-col min-h-screen">
+          <ConditionalHeader />
+          {children}
+          <ConditionalFooter />
+        </div>
       </body>
     </html>
   );

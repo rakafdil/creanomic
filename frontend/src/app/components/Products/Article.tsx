@@ -65,7 +65,7 @@ const Article = () => {
               alt="farmer reading"
               width={320}
               height={320}
-              className="object-contain relative z-20"
+              className="object-contain relative z-20 top-5"
             />
           </motion.div>
         </div>

@@ -24,7 +24,6 @@ export default function Home() {
         <FreqAskQuestions />
       </div>
       <ToTop />
-      <Footer />
     </div>
   );
 }

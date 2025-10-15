@@ -47,20 +47,30 @@ export default function ShoppingCartPage() {
 
   const handleIncrease = (id: number) => {
     setProducts((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, quantity: p.quantity + 1 } : p))
+      prev.map((p) =>
+        p.id === id ? { ...p, quantity: Number(p.quantity) + 1 } : p
+      )
     );
   };
 
   const handleDecrease = (id: number) => {
     setProducts((prev) =>
       prev.map((p) =>
-        p.id === id && p.quantity > 1 ? { ...p, quantity: p.quantity - 1 } : p
+        p.id === id && Number(p.quantity) > 1
+          ? { ...p, quantity: Number(p.quantity) - 1 }
+          : p
       )
     );
   };
 
-  const totalItemsCount = products.reduce((sum, p) => sum + p.quantity, 0);
-  const subTotal = products.reduce((sum, p) => sum + p.price * p.quantity, 0);
+  const totalItemsCount = products.reduce(
+    (sum, p) => sum + Number(p.quantity),
+    0
+  );
+  const subTotal = products.reduce(
+    (sum, p) => sum + p.price * Number(p.quantity),
+    0
+  );
 
   const summary = {
     items: totalItemsCount,
@@ -72,13 +82,6 @@ export default function ShoppingCartPage() {
 
   return (
     <>
-      <div className="w-full p-2.5 bg-gradient-to-r from-green-950 via-green-800 to-green-950 text-center text-white text-sm font-bold">
-        Welcome to GrowthWell
-      </div>
-      <div className="py-4 px-4 md:px-16 lg:px-32">
-        <Navbar />
-      </div>
-
       <main className="px-4 md:px-16 lg:px-32 pb-16">
         <h1 className="text-3xl font-bold text-center mb-8">Shopping Cart</h1>
         <div className="flex flex-col gap-8">
