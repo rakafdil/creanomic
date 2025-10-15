@@ -64,14 +64,14 @@ const Navbar = () => {
         <div id="medium2" className="flex gap-8 items-center">
           <Link
             href="/auth?mode=register"
-            onClick={handleScroll("sign-up")}
+            onClick={() => handleScroll("sign-up")}
             className="transition-colors duration-300 hover:text-yellow-300"
           >
             Sign Up
           </Link>
           <Link
             href="/auth?mode=login"
-            onClick={handleScroll("login")}
+            onClick={() => handleScroll("login")}
             className="bg-yellow text-black px-5 py-2 rounded-3xl hover:bg-green-100 transition-all duration-300 ease-out hover:text-gray-700"
           >
             Login

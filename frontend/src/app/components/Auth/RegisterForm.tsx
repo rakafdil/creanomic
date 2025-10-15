@@ -2,6 +2,7 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useState, type MouseEvent } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -325,12 +326,12 @@ export default function RegisterPage() {
               />
               <span className="ml-2 text-gray-700 text-sm">
                 I agree to the{" "}
-                <a
+                <Link
                   href="#"
                   className="text-[#0A3917] hover:underline font-medium"
                 >
                   Terms & Conditions
-                </a>
+                </Link>
               </span>
             </label>
           </div>
@@ -382,12 +383,12 @@ export default function RegisterPage() {
             <span className="text-black font-bold">
               Already have an account?{" "}
             </span>
-            <a
+            <Link
               href="/auth?mode=login"
               className="text-[#0A3917] font-bold hover:underline"
             >
               Sign in
-            </a>
+            </Link>
           </div>
         </div>
       </div>

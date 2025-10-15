@@ -2,6 +2,7 @@
 import { useState, type MouseEvent, type FormEvent } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,7 +19,7 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/v1/auth/login", {
+      const response = await fetch("https://api-growthwell.vercel.app/api/v1/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +59,7 @@ export default function LoginPage() {
   const handleGoogleSignIn = async () => {
     try {
       // Redirect ke endpoint Google Sign-In backend
-      window.location.href = "http://localhost:5000/api/v1/auth/google-signin";
+      window.location.href = "https://api-growthwell.vercel.app/api/v1/auth/google-signin";
     } catch (err: any) {
       setError(err.message || "Failed to initiate Google sign-in");
     }
@@ -192,12 +193,12 @@ export default function LoginPage() {
                 Remember me
               </span>
             </label>
-            <a
+            <Link
               href="/auth/forgot-password"
               className="text-[#2377E7] hover:underline font-medium"
             >
               Forgot your password?
-            </a>
+            </Link>
           </div>
 
           {/* Divider */}
@@ -247,12 +248,12 @@ export default function LoginPage() {
             <span className="text-black font-bold">
               Don't have an account?{" "}
             </span>
-            <a
+            <Link
               href="/auth?mode=signup"
               className="text-[#0A3917] font-bold hover:underline"
             >
               Sign up
-            </a>
+            </Link>
           </div>
         </div>
       </div>

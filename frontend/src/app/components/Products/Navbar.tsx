@@ -34,7 +34,7 @@ const Navbar = () => {
               )}
             </div>
           </Link>
-          <Link href="/avatar" className="cursor-pointer">
+          <Link href="/profile" className="cursor-pointer">
             <div className="bg-[#083D57] h-15 w-15 rounded-full p-3 flex items-center justify-center">
               <Image
                 src="/assets/default-avatar.png"
