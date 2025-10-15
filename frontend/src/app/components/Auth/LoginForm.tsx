@@ -33,6 +33,10 @@ export default function LoginPage() {
 
       const data = await response.json();
 
+      // Debug log
+      console.log("Response status:", response.status);
+      console.log("Response data:", data);
+
       if (!response.ok) {
         throw new Error(data.message || "Login failed");
       }
@@ -47,8 +51,7 @@ export default function LoginPage() {
       // Simpan data user
       localStorage.setItem("user", JSON.stringify(data.data.user));
 
-      // Redirect ke dashboard atau home
-      router.push("/dashboard");
+      router.push("/products");
     } catch (err: any) {
       setError(err.message || "An error occurred during login");
     } finally {
