@@ -4,5 +4,11 @@ import { usePathname } from "next/navigation";
 
 export default function ConditionalFooter() {
   const pathname = usePathname();
-  return pathname === "/" ? <Footer /> : <Footer bgColor="bg-green-950" />;
+  return pathname === "/" ? (
+    <Footer />
+  ) : pathname === "/auth" ? (
+    ""
+  ) : (
+    <Footer bgColor="bg-green-950" />
+  );
 }
