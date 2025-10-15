@@ -63,7 +63,7 @@ const Navbar = () => {
 
         <div id="medium2" className="flex gap-8 items-center">
           <Link
-            href="/auth?mode=register"
+            href="/auth?mode=signup"
             onClick={() => handleScroll("sign-up")}
             className="transition-colors duration-300 hover:text-yellow-300"
           >

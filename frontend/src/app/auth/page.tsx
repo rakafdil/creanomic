@@ -1,12 +1,16 @@
 import LoginForm from "../components/Auth/LoginForm";
 import RegisterForm from "../components/Auth/RegisterForm";
 
-export default async function AuthPage({ searchParams }: { searchParams: Promise<{ mode?: string }> }) {
-    const params = await searchParams;
-    
+export default function AuthPage({
+    searchParams,
+}: {
+    searchParams: { mode?: string };
+}) {
+    const mode = searchParams.mode;
+
     return (
         <div>
-            {params.mode === "signup" ? <RegisterForm /> : <LoginForm />}
+            {mode === "signup" ? <RegisterForm /> : <LoginForm />}
         </div>
     );
 }
