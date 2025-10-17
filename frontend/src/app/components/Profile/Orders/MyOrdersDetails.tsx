@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Link from "next/link";
 import { Order, Product } from "@/Types/Products";
 
 /* ------------------ Helper untuk format harga ------------------ */
@@ -111,9 +112,9 @@ const MyOrderDetails = ({ order }: OrderDetailsProps) => {
 
                     {/* Tombol Aksi */}
                     <div className="flex gap-3">
-                        <button className="bg-[#0A3917] text-white text-sm py-2 px-5 rounded-3xl hover:bg-green-900 transition">
+                        <Link href="./orders/trackorder" className="bg-[#0A3917] text-white text-sm py-2 px-5 rounded-3xl hover:bg-green-900 transition inline-block">
                             Track Order
-                        </button>
+                        </Link>
                         <button className="bg-[#FF5757] text-white text-sm py-2 px-5 rounded-3xl hover:bg-red-600 transition">
                             Cancel Order
                         </button>

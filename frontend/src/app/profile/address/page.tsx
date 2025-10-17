@@ -1,5 +1,5 @@
 import React from "react";
-import MyOrders from "../../components/Profile/Orders/MyOrdersPage";
+import AddressSection from "@/app/components/Profile/Address/AddressSection";
 import Footer from "../../components/Common/Footer";
 
 export default function ProductsPage() {
@@ -10,7 +10,7 @@ export default function ProductsPage() {
                     Welcome to GrowthWell
                 </div>
             </div>
-            <MyOrders />
+            <AddressSection />
             {/* <Footer /> */}
         </div>
     );

@@ -1,14 +1,12 @@
-"use client";
 import React from "react";
 import Link from "next/link";
-import { IoIosArrowBack } from "react-icons/io";
-import ProfileSidebar from "./ProfileSidebar";
-
-// Komponen modular dari folder Orders=
-import OrderDetailsCard from "@/app/components/Profile/MyOrdersDetails";
 import { Order } from "@/Types/Products";
-
+import OrderProgress from "@/app/components/Orders/OrderProgress";
+import OrderSummaryBar from "@/app/components/Orders/OrderSummaryBar";
+import OrderDetailsCard from "@/app/components/Orders/OrderDetailsCard";
+import { IoIosArrowBack } from "react-icons/io";
 // --- Mock Data ---
+// Biasanya data ini akan datang dari API
 const orderData: Order = {
     orderId: "#PSNG12341",
     paymentMethod: "OVO",
@@ -48,29 +46,36 @@ const orderData: Order = {
     taxes: 3000,
     total: 105000,
 };
+// Catatan: Pastikan Anda memiliki gambar di folder /public/images/
 
-export default function MyOrdersPage() {
+const TrackOrder = () => {
     return (
-        <div className="min-h-screen bg-white text-[#0A3917] flex justify-center py-12">
-            <div className="flex w-full max-w-6xl gap-40">
-                {/* Sidebar */}
-                <div className="w-[240px]">
+        <>
+            <div className="mx-32">
+                <nav className="my-4 text-[#0A3917]">
                     <Link
-                        href="/products"
-                        className="text-lg mb-4 font-semibold inline-block hover:underline"
+                        href="/profile"
+                        className="text-xl hover:text-black flex gap-1 items-center"
                     >
-                        <IoIosArrowBack className="inline-block mr-2" />
-                        Back to Shopping
+                        <IoIosArrowBack /> <span>Back to Profile</span>
                     </Link>
-                    <ProfileSidebar activeItem="My Orders" />
-                </div>
+                </nav>
 
-                {/* Main Content */}
-                <div className="flex flex-col flex-1">
-                    {/* Komponen status dan summary */}
+                <main>
+                    <div className="mb-25">
+                        <OrderProgress />
+                    </div>
+                    <OrderSummaryBar
+                        orderId={orderData.orderId}
+                        paymentMethod={orderData.paymentMethod}
+                        transactionId={orderData.transactionId}
+                        estimatedDelivery={orderData.estimatedDelivery}
+                    />
                     <OrderDetailsCard order={orderData} />
-                </div>
+                </main>
             </div>
-        </div>
+        </>
     );
-}
+};
+
+export default TrackOrder;
