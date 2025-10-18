@@ -8,7 +8,7 @@ const CheckmarkIcon = () => (
     initial={{ scale: 0, rotate: -90 }}
     animate={{ scale: 1, rotate: 0 }}
     transition={{ type: "spring", stiffness: 400, damping: 20, duration: 0.8 }}
-    className="w-24 h-24 text-white bg-[#0A3917] rounded-full p-3 shadow-lg"
+    className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 text-white bg-[#0A3917] rounded-full p-2 sm:p-2.5 lg:p-3 shadow-lg"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
@@ -32,14 +32,14 @@ const OrderConfirmationStatus = () => {
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
-      className="flex flex-col items-center text-center mt-14 mb-12"
+      className="flex flex-col items-center text-center mt-8 sm:mt-10 lg:mt-14 mb-8 sm:mb-10 lg:mb-12 px-4"
     >
       <CheckmarkIcon />
       <motion.h1
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.7, duration: 0.5 }}
-        className="text-2xl font-semibold mt-4"
+        className="text-xl sm:text-2xl font-semibold mt-3 sm:mt-4"
       >
         Your Order is completed!
       </motion.h1>
@@ -47,7 +47,7 @@ const OrderConfirmationStatus = () => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1, duration: 0.5 }}
-        className="text-gray-600 mt-1"
+        className="text-gray-600 mt-1 text-sm sm:text-base"
       >
         Thank you. Your order has been received
       </motion.p>

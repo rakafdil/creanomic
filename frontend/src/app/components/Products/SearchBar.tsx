@@ -62,6 +62,8 @@ const SearchBar = ({
           <button
             type="button"
             onClick={handleClear}
+            title="Clear search"
+            aria-label="Clear search"
             className="text-zinc-500 hover:text-zinc-700 transition-colors flex-shrink-0"
           >
             <X className="w-4 h-4 sm:w-5 sm:h-5" />
