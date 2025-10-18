@@ -10,14 +10,18 @@ import Footer from "../components/Common/Footer";
 
 export default function ProductsPage() {
   return (
-    <div className="flex flex-col gap-8">
-      <div className="mx-32 flex flex-col gap-8">
+    <div className="flex flex-col gap-5 sm:gap-6 lg:gap-8">
+      <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 flex flex-col gap-5 sm:gap-6 lg:gap-8">
         <Hero />
         <Categories />
-        <div className="flex justify-between items-center" id="product">
-          <span className="text-black text-4xl font-bold">All Products</span>
+        
+        {/* All Products Section */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0" id="product">
+          <span className="text-black text-2xl sm:text-3xl lg:text-4xl font-bold">
+            All Products
+          </span>
           <Link
-            className="text-neutral-400 text-2xl font-bold duration-200 transition-all hover:border-b-1"
+            className="text-neutral-400 text-base sm:text-xl lg:text-2xl font-bold duration-200 transition-all hover:border-b-1"
             href="/products/all"
           >
             View All
@@ -25,25 +29,30 @@ export default function ProductsPage() {
         </div>
 
         <ProductsDisplay />
+        
         <Article />
-        <div className="flex justify-between items-center">
-          <span className="text-black text-4xl font-bold">
+        
+        {/* Nearby Available Section */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
+          <span className="text-black text-2xl sm:text-3xl lg:text-4xl font-bold">
             Nearby Available
           </span>
           <Link
-            className="text-neutral-400 text-2xl font-bold duration-200 transition-all hover:border-b-1"
+            className="text-neutral-400 text-base sm:text-xl lg:text-2xl font-bold duration-200 transition-all hover:border-b-1"
             href="/products/nearby-available"
           >
             View All
           </Link>
         </div>
         <ProductsDisplay gridRow={true} />
-        <div className="flex justify-between items-center">
-          <span className="text-black text-4xl font-bold">
+        
+        {/* Popular in Your Area Section */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
+          <span className="text-black text-2xl sm:text-3xl lg:text-4xl font-bold">
             Popular in your area
           </span>
           <Link
-            className="text-neutral-400 text-2xl font-bold duration-200 transition-all hover:border-b-1"
+            className="text-neutral-400 text-base sm:text-xl lg:text-2xl font-bold duration-200 transition-all hover:border-b-1"
             href="/products/popular"
           >
             View All

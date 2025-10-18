@@ -11,13 +11,13 @@ const Article = () => {
   return (
     <div
       ref={ref}
-      className="flex flex-row gap-14 text-white font-semibold rounded-2xl bg-[#0A3917] overflow-hidden min-h-[308px]"
+      className="flex flex-col lg:flex-row gap-6 sm:gap-10 lg:gap-14 text-white font-semibold rounded-2xl bg-[#0A3917] overflow-hidden min-h-[400px] sm:min-h-[350px] lg:min-h-[308px]"
     >
       {/* Left Content - Image */}
-      <div className="flex-1 relative flex items-center justify-end">
+      <div className="flex-1 relative flex items-center justify-center lg:justify-end order-2 lg:order-1 pb-6 lg:pb-0">
         {/* Background pattern */}
         <motion.div
-          className="absolute inset-0 z-0 right-40"
+          className="absolute inset-0 z-0 left-0 sm:left-20 lg:right-40 lg:left-auto"
           initial={{ opacity: 0, x: -50 }}
           animate={isInView ? { opacity: 0.8, x: 0 } : {}}
           transition={{
@@ -37,9 +37,9 @@ const Article = () => {
         </motion.div>
 
         {/* White circle and farmer image */}
-        <div className="relative z-10 flex items-center justify-center top-10">
+        <div className="relative z-10 flex items-center justify-center lg:top-10">
           <motion.div
-            className="absolute w-80 h-80 bg-white rounded-full blur-3xl top-20"
+            className="absolute w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 bg-white rounded-full blur-3xl sm:top-10 lg:top-20"
             initial={{ scale: 0, opacity: 0 }}
             animate={isInView ? { scale: 1, opacity: 0.4 } : {}}
             transition={{
@@ -65,7 +65,7 @@ const Article = () => {
               alt="farmer reading"
               width={320}
               height={320}
-              className="object-contain relative z-20 top-5"
+              className="object-contain relative z-20 w-44 h-44 sm:w-64 sm:h-64 lg:w-80 lg:h-80 lg:top-5"
             />
           </motion.div>
         </div>
@@ -73,7 +73,7 @@ const Article = () => {
 
       {/* Right Content - Text */}
       <motion.div
-        className="flex-1 flex flex-col gap-7 py-8 pr-16"
+        className="flex-1 flex flex-col gap-5 sm:gap-6 lg:gap-7 py-6 px-6 sm:py-7 sm:px-8 lg:py-8 lg:pr-16 lg:pl-0 order-1 lg:order-2"
         initial={{ x: 100, opacity: 0 }}
         animate={isInView ? { x: 0, opacity: 1 } : {}}
         transition={{
@@ -84,7 +84,7 @@ const Article = () => {
         }}
       >
         <motion.div
-          className="flex flex-col gap-6"
+          className="flex flex-col gap-4 sm:gap-5 lg:gap-6"
           initial={{ y: 30, opacity: 0 }}
           animate={isInView ? { y: 0, opacity: 1 } : {}}
           transition={{
@@ -95,7 +95,7 @@ const Article = () => {
           }}
         >
           <motion.h2
-            className="text-white text-4xl font-semibold leading-tight"
+            className="text-white text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={isInView ? { scale: 1, opacity: 1 } : {}}
             transition={{
@@ -111,7 +111,7 @@ const Article = () => {
           </motion.h2>
 
           <motion.p
-            className="text-zinc-300 text-lg font-medium leading-relaxed"
+            className="text-zinc-300 text-sm sm:text-base lg:text-lg font-medium leading-relaxed"
             initial={{ y: 20, opacity: 0 }}
             animate={isInView ? { y: 0, opacity: 1 } : {}}
             transition={{
@@ -139,7 +139,7 @@ const Article = () => {
           }}
         >
           <motion.button
-            className="bg-white text-black text-2xl font-bold px-8 py-4 rounded-lg shadow-lg cursor-pointer"
+            className="bg-white text-black text-lg sm:text-xl lg:text-2xl font-bold px-6 py-3 sm:px-7 sm:py-3.5 lg:px-8 lg:py-4 rounded-lg shadow-lg cursor-pointer"
             whileHover={{
               scale: 1.05,
               boxShadow: "0 15px 35px rgba(255, 255, 255, 0.3)",

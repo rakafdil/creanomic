@@ -52,7 +52,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   return (
     <motion.div
       layout
-      className="w-full flex flex-col gap-3"
+      className="w-full flex flex-col gap-2 sm:gap-3"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}
@@ -61,13 +61,13 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
       <button
         type="button"
         onClick={onToggle}
-        className="w-full px-6 py-5 bg-[#E5E5E5] border border-[#999999] rounded-xl flex justify-between items-center text-2xl font-medium text-left group transition-colors cursor-pointer hover:bg-[#dcdcdc]"
+        className="w-full px-4 py-3 sm:px-5 sm:py-4 lg:px-6 lg:py-5 bg-[#E5E5E5] border border-[#999999] rounded-xl flex justify-between items-center text-base sm:text-lg lg:text-xl xl:text-2xl font-medium text-left group transition-colors cursor-pointer hover:bg-[#dcdcdc]"
       >
-        <span className="text-[#0A3917]">{question}</span>
+        <span className="text-[#0A3917] pr-2">{question}</span>
         <motion.span
           animate={{ rotate: isOpen ? 45 : 0 }}
           transition={{ duration: 0.25 }}
-          className="text-[#0A3917] text-4xl leading-none"
+          className="text-[#0A3917] text-2xl sm:text-3xl lg:text-4xl leading-none flex-shrink-0"
         >
           +
         </motion.span>
@@ -88,7 +88,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
             className="overflow-hidden"
             layout
           >
-            <div className="w-full px-6 py-5 bg-[#0A3917] rounded-xl text-base text-white font-semibold">
+            <div className="w-full px-4 py-3 sm:px-5 sm:py-4 lg:px-6 lg:py-5 bg-[#0A3917] rounded-xl text-sm sm:text-base text-white font-semibold">
               {answer}
             </div>
           </motion.div>
@@ -102,30 +102,33 @@ const FreqAskQuestions = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(-1);
 
   return (
-    <section className="flex flex-col gap-8 py-20 pb-80">
-      <div className="flex flex-col gap-6 justify-center items-center">
-        <div className="flex items-center justify-center gap-3.5">
-          <span className="flex items-center gap-1.5">
+    <section className="flex flex-col gap-6 sm:gap-8 py-12 sm:py-16 lg:py-20 pb-32 sm:pb-48 lg:pb-80 px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col gap-4 sm:gap-5 lg:gap-6 justify-center items-center">
+        <div className="flex items-center justify-center gap-2 sm:gap-3 lg:gap-3.5">
+          <span className="flex items-center gap-1 sm:gap-1.5">
             <Image
               src="/assets/logo_icon.svg"
               alt="GrowthWell logo"
               width={48}
               height={48}
+              className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12"
               priority
             />
-            <span className="text-[#74AB35] text-2xl font-semibold">
+            <span className="text-[#74AB35] text-lg sm:text-xl lg:text-2xl font-semibold">
               GrowthWell
             </span>
           </span>
-          <span className="text-[#74AB35] text-3xl font-semibold">FAQs</span>
+          <span className="text-[#74AB35] text-xl sm:text-2xl lg:text-3xl font-semibold">
+            FAQs
+          </span>
         </div>
-        <span className="text-5xl font-semibold text-[#0A3917]">
+        <span className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold text-[#0A3917] text-center">
           Ada Pertanyaan? Cari di Sini.
         </span>
       </div>
 
-      <div className="flex gap-16 justify-between">
-        <div className="flex-1 flex flex-col gap-6">
+      <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 lg:gap-12 xl:gap-16 justify-between">
+        <div className="flex-1 flex flex-col gap-4 sm:gap-5 lg:gap-6">
           <AnimatePresence mode="popLayout">
             {questions.map((q, i) => (
               <QuestionItem
@@ -139,20 +142,20 @@ const FreqAskQuestions = () => {
           </AnimatePresence>
         </div>
 
-        <div className="flex flex-col gap-12">
-          <div className="flex flex-col gap-5 w-[430px] bg-[#0A3917] rounded-3xl p-8 text-white text-center align-middle h-fit">
+        <div className="flex flex-col gap-6 sm:gap-8 lg:gap-12">
+          <div className="flex flex-col gap-4 sm:gap-5 w-full lg:w-[380px] xl:w-[430px] bg-[#0A3917] rounded-2xl sm:rounded-3xl p-6 sm:p-7 lg:p-8 text-white text-center align-middle h-fit">
             <Image
               src="/assets/entypo_chat.svg"
               width={70}
               height={70}
               alt="chat"
-              className="self-center"
+              className="self-center w-14 h-14 sm:w-16 sm:h-16 lg:w-[70px] lg:h-[70px]"
             />
-            <div className="flex flex-col gap-2">
-              <span className="text-2xl font-semibold">
+            <div className="flex flex-col gap-1.5 sm:gap-2">
+              <span className="text-xl sm:text-2xl font-semibold">
                 Punya pertanyaan lain?
               </span>
-              <span className="text-xs">
+              <span className="text-xs sm:text-sm">
                 Tim kami siap menjawab setiap pertanyaan Anda dengan respons
                 yang cepat dan solutif.
               </span>
@@ -161,24 +164,24 @@ const FreqAskQuestions = () => {
               Hubungi Kami
             </Button>
           </div>
-          <div className="flex flex-row gap-5 w-[430px] bg-[#E1E1E1] rounded-3xl p-8 text-white text-center align-middle h-fit border-1 border-[#999]">
-            <div className="flex justify-center bg-[#D0F348] rounded-full p-3 self-start">
+          <div className="flex flex-row gap-4 sm:gap-5 w-full lg:w-[380px] xl:w-[430px] bg-[#E1E1E1] rounded-2xl sm:rounded-3xl p-6 sm:p-7 lg:p-8 text-white text-center align-middle h-fit border-1 border-[#999]">
+            <div className="flex justify-center bg-[#D0F348] rounded-full p-2.5 sm:p-3 self-start">
               <Image
                 src="/assets/phone.svg"
                 width={20}
                 height={20}
                 alt="chat"
-                className="self-center"
+                className="self-center w-4 h-4 sm:w-5 sm:h-5"
               />
             </div>
-            <div className="flex flex-col gap-2.5">
-              <span className="text-xl font-semibold text-[#494949] text-left">
+            <div className="flex flex-col gap-2 sm:gap-2.5">
+              <span className="text-base sm:text-lg lg:text-xl font-semibold text-[#494949] text-left">
                 Dukungan Penuh Untuk Anda
               </span>
-              <span className="text-4xl font-semibold text-[#0A3917] text-left">
+              <span className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#0A3917] text-left">
                 24/7 Service
               </span>
-              <span className="text-xl font-semibold text-[#494949] text-left">
+              <span className="text-base sm:text-lg lg:text-xl font-semibold text-[#494949] text-left">
                 (021) 000-0000
               </span>
             </div>
