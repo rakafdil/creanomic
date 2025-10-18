@@ -21,35 +21,41 @@ const DescriptionTab = () => {
   ];
 
   return (
-    <div className="text-gray-700">
-      <p className="self-stretch text-justify justify-start text-[#545454] text-3xl font-medium mb-20">
+    <div className="text-gray-700 px-0 sm:px-6">
+      {/* Deskripsi Panjang */}
+      <p className="self-stretch text-justify justify-start text-[#545454] text-lg sm:text-2xl md:text-3xl font-medium mb-10 lg:mb-20">
         Pisang ini cocok dijadikan camilan sehat, pelengkap sarapan, atau bahan
         smoothie favorit Anda. Ditanam dengan perawatan terbaik, Sweet Banana
         bebas bahan pengawet dan dikemas dengan higienis untuk menjaga kualitas
         serta cita rasanya.
       </p>
 
+      {/* Button Keunggulan */}
       <div className="flex justify-center">
-        <button className="bg-[#0A3917] text-white text-2xl font-semibold px-15 py-3 rounded-[20px] hover:bg-green-900 transition-all">
+        <button 
+          // Ukuran text dan padding lebih kecil di mobile
+          className="bg-[#0A3917] text-white text-xl lg:text-2xl font-semibold px-10 py-2 rounded-xl lg:px-15 lg:py-3 lg:rounded-[20px] hover:bg-green-900 transition-all"
+        >
           Keunggulan Produk
         </button>
       </div>
 
       {/* Advantages Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 py-10">
+      {/* Grid: 2 kolom di layar kecil (sm), 4 kolom di layar medium ke atas (md) */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 py-8 lg:py-10">
         {advantages.map((item, i) => (
           <div
             key={i}
-            className="relative rounded-xl overflow-hidden w-full aspect-[4/5]"
+            className="relative rounded-lg lg:rounded-xl overflow-hidden w-full aspect-[4/5]"
           >
             <Image
               src={item.img}
               alt={item.text}
               fill
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             />
-            <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-center text-2xl font-semibold">
+            <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-center text-sm sm:text-lg lg:text-2xl font-semibold p-2">
               {item.text.split("\n").map((line, j) => (
                 <p key={j}>{line}</p>
               ))}

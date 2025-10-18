@@ -11,7 +11,7 @@ export default function ProductDetailPage({
 }) {
   return (
     <div className="flex flex-col gap-8">
-      <div className="mx-32 flex flex-col gap-1">
+      <div className="px-4 sm:px-6 lg:mx-30 flex flex-col gap-1">
         <ProductsDetail />
         <ProductTabs />
       </div>

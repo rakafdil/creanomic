@@ -15,12 +15,14 @@ const tabs: { key: TabKey; label: string }[] = [
 
 const TabsHeader = ({ activeTab, setActiveTab }: TabsHeaderProps) => {
   return (
-    <div className="flex items-center justify-center gap-6 sm:gap-10 pb-6 sm:pb-10 relative">
+    // Default gap/padding lebih kecil (mobile), sm:gap-10 dan sm:pb-10 adalah default asli
+    <div className="flex items-center justify-center gap-4 pb-4 sm:gap-10 sm:pb-10 relative">
       {tabs.map((tab) => (
         <button
           key={tab.key}
           onClick={() => setActiveTab(tab.key)}
-          className={`relative pb-3 text-lg sm:text-2xl md:text-3xl transition-colors duration-200 cursor-pointer ${
+          // Default text-base (mobile), sm:text-2xl, md:text-3xl adalah default asli
+          className={`relative pb-3 text-base sm:text-2xl md:text-3xl transition-colors duration-200 cursor-pointer ${
             activeTab === tab.key
               ? "text-[#0A3917] font-semibold"
               : "text-gray-700 font-medium hover:text-[#0A3917]"
@@ -31,7 +33,8 @@ const TabsHeader = ({ activeTab, setActiveTab }: TabsHeaderProps) => {
           {activeTab === tab.key && (
             <motion.div
               layoutId="tab-underline"
-              className="absolute left-0 bottom-0 w-full h-[5px] rounded-full bg-[#0A3917]"
+              // Tinggi garis bawah 3px (mobile) dan 5px (desktop/md:h-[5px])
+              className="absolute left-0 bottom-0 w-full h-[3px] md:h-[5px] rounded-full bg-[#0A3917]"
               transition={{ type: "spring", stiffness: 500, damping: 30 }}
             />
           )}

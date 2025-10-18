@@ -18,12 +18,14 @@ const ProductTabs = () => {
   );
 
   return (
-    <section className="w-full mx-auto py-6">
-      {/* Header Tabs */}
+    // Menggunakan padding vertikal lebih kecil (py-4) di mobile, dan py-6 untuk desktop (md:py-6)
+    <section className="w-full mx-auto py-4 md:py-6 px-4 sm:px-6 md:px-0">
+      {/* Header Tabs (asumsi TabsHeader sudah responsif berdasarkan modifikasi sebelumnya) */}
       <TabsHeader activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* Content */}
-      <div className="mt-6 min-h-[200px]">
+      {/* Margin top lebih kecil (mt-4) di mobile, dan mt-6 untuk desktop (md:mt-6) */}
+      <div className="mt-4 md:mt-6 min-h-[200px]">
         <AnimatePresence mode="wait">
           {activeTab === "description" && (
             <motion.div
