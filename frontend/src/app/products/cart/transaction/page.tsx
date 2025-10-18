@@ -5,6 +5,7 @@ import OrderConfirmationStatus from "@/app/components/Orders/OrderConfirmationSt
 import OrderSummaryBar from "@/app/components/Orders/OrderSummaryBar";
 import OrderDetailsCard from "@/app/components/Orders/OrderDetailsCard";
 import { IoIosArrowBack } from "react-icons/io";
+
 // --- Mock Data ---
 // Biasanya data ini akan datang dari API
 const orderData: Order = {
@@ -46,25 +47,30 @@ const orderData: Order = {
   taxes: 3000,
   total: 105000,
 };
-// Catatan: Pastikan Anda memiliki gambar di folder /public/images/
 
 const Transaction = () => {
   return (
     <>
-      <div className="mx-32">
-        <nav className="my-4 text-[#0A3917]">
+      <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 pb-8 sm:pb-12 lg:pb-16">
+        {/* Back Navigation */}
+        <nav className="my-3 sm:my-4 text-[#0A3917]">
           <Link
             href="/products"
-            className="text-xl hover:text-black flex gap-1 items-center"
+            className="text-base sm:text-lg lg:text-xl hover:text-black flex gap-1 items-center transition-colors"
           >
-            <IoIosArrowBack /> <span>Back to Shopping</span>
+            <IoIosArrowBack className="text-xl sm:text-2xl" />
+            <span>Back to Shopping</span>
           </Link>
         </nav>
 
-        <span className="flex justify-center font-extrabold text-4xl">
-          Order Completed
-        </span>
+        {/* Page Title */}
+        <div className="flex justify-center">
+          <h1 className="font-extrabold text-2xl sm:text-3xl lg:text-4xl text-center">
+            Order Completed
+          </h1>
+        </div>
 
+        {/* Main Content */}
         <main>
           <OrderConfirmationStatus />
           <OrderSummaryBar

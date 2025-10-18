@@ -9,41 +9,97 @@ const cartCount = 12;
 
 const Navbar = () => {
   return (
-    <nav className="w-full bg-white py-3">
-      <div className="flex items-center justify-between gap-6">
+    <nav className="w-full bg-white py-2 sm:py-3">
+      {/* Desktop & Tablet View */}
+      <div className="hidden sm:flex items-center justify-between gap-2 sm:gap-4 lg:gap-6 px-3 sm:px-4 lg:px-0">
         {/* Logo */}
         <Link
           href="/products"
-          className="flex items-center h-auto cursor-pointer"
+          className="flex items-center h-auto cursor-pointer flex-shrink-0"
         >
-          <Logo width={40} height={40} />
+          <Logo width={36} height={36} className="lg:w-[40px] lg:h-[40px]" />
         </Link>
 
         {/* Search Bar */}
-        <div className="flex-1 flex justify-center">
+        <div className="flex-1 flex justify-center max-w-2xl">
           <SearchBar className="w-full" />
         </div>
 
         {/* Cart & Avatar */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 lg:gap-4 flex-shrink-0">
           <Link href="/products/cart" className="cursor-pointer relative">
-            <div className="bg-[#0A3917] h-15 w-15 rounded-full p-3 flex items-center justify-center relative">
-              <Image src="/assets/cart.svg" alt="cart" width={32} height={32} />
+            <div className="bg-[#0A3917] h-12 w-12 lg:h-15 lg:w-15 rounded-full p-2.5 lg:p-3 flex items-center justify-center relative">
+              <Image 
+                src="/assets/cart.svg" 
+                alt="cart" 
+                width={32} 
+                height={32}
+                className="w-6 h-6 lg:w-8 lg:h-8"
+              />
               {cartCount > 0 && (
-                <span className="absolute top-2.5 right-4 bg-[#F44336] text-white font-bold rounded-full w-3 h-3 flex items-center justify-center"></span>
+                <span className="absolute top-2 right-3 lg:top-2.5 lg:right-4 bg-[#F44336] text-white font-bold rounded-full w-3 h-3 flex items-center justify-center"></span>
               )}
             </div>
           </Link>
           <Link href="/profile" className="cursor-pointer">
-            <div className="bg-[#083D57] h-15 w-15 rounded-full p-3 flex items-center justify-center">
+            <div className="bg-[#083D57] h-12 w-12 lg:h-15 lg:w-15 rounded-full p-2.5 lg:p-3 flex items-center justify-center">
               <Image
                 src="/assets/default-avatar.png"
                 alt="avatar"
                 width={32}
                 height={32}
+                className="w-6 h-6 lg:w-8 lg:h-8"
               />
             </div>
           </Link>
+        </div>
+      </div>
+
+      {/* Mobile View */}
+      <div className="sm:hidden flex flex-col gap-3 px-4">
+        {/* Top Row: Logo, Cart, Avatar */}
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <Link
+            href="/products"
+            className="flex items-center h-auto cursor-pointer"
+          >
+            <Logo width={32} height={32} />
+          </Link>
+
+          {/* Cart & Avatar */}
+          <div className="flex items-center gap-2.5">
+            <Link href="/products/cart" className="cursor-pointer relative">
+              <div className="bg-[#0A3917] h-10 w-10 rounded-full p-2 flex items-center justify-center relative">
+                <Image 
+                  src="/assets/cart.svg" 
+                  alt="cart" 
+                  width={20} 
+                  height={20}
+                  className="w-5 h-5"
+                />
+                {cartCount > 0 && (
+                  <span className="absolute top-1 right-1.5 bg-[#F44336] text-white font-bold rounded-full w-2.5 h-2.5 flex items-center justify-center"></span>
+                )}
+              </div>
+            </Link>
+            <Link href="/profile" className="cursor-pointer">
+              <div className="bg-[#083D57] h-10 w-10 rounded-full p-2 flex items-center justify-center">
+                <Image
+                  src="/assets/default-avatar.png"
+                  alt="avatar"
+                  width={20}
+                  height={20}
+                  className="w-5 h-5"
+                />
+              </div>
+            </Link>
+          </div>
+        </div>
+
+        {/* Bottom Row: Search Bar Full Width */}
+        <div className="w-full">
+          <SearchBar className="w-full" />
         </div>
       </div>
     </nav>

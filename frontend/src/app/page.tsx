@@ -12,21 +12,25 @@ export default function Home() {
   return (
     <div className="font-inter">
       <Navbar />
+
       <div id="home">
         <Hero />
       </div>
       <div id="gis">
         <GIS />
       </div>
-      <div id="about-us" className="px-36">
+      <div id="about-us" className="px-6 sm:px-12 md:px-24 lg:px-36">
         <AboutUs />
       </div>
+
       <div id="services">
         <Services />
       </div>
-      <div id="contacts" className="px-36">
+
+      <div id="contacts" className="px-6 sm:px-12 md:px-24 lg:px-36">
         <FreqAskQuestions />
       </div>
+
       <ToTop />
     </div>
   );

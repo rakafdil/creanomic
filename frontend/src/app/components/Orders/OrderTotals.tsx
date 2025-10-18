@@ -14,7 +14,7 @@ const formatRupiah = (amount: number) => {
 };
 
 const TotalRow = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex justify-between text-2xl text-black">
+  <div className="flex justify-between text-base sm:text-lg lg:text-2xl text-black">
     <p>{label}</p>
     <p className="font-semibold">{value}</p>
   </div>
@@ -23,12 +23,12 @@ const TotalRow = ({ label, value }: { label: string; value: string }) => (
 const OrderTotals = ({ shipping, taxes, total }: OrderTotalsProps) => {
   return (
     <>
-      <div className="space-y-11 p-8">
+      <div className="space-y-4 sm:space-y-6 lg:space-y-11 p-4 sm:p-6 lg:p-8">
         <TotalRow label="Shipping" value={formatRupiah(shipping)} />
         <TotalRow label="Taxes" value={formatRupiah(taxes)} />
       </div>
-      <div className="w-full h-[1.65px] bg-[#8C8C8C]" />
-      <div className=" p-8">
+      <div className="w-full h-[1.5px] sm:h-[1.65px] bg-[#8C8C8C]" />
+      <div className="p-4 sm:p-6 lg:p-8">
         <TotalRow label="Total" value={formatRupiah(total)} />
       </div>
     </>

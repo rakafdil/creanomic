@@ -12,9 +12,9 @@ export default function SummaryRow({
   const formattedValue = `Rp ${value.toLocaleString("id-ID")}`;
 
   return (
-    <div className={`flex justify-between items-center text-lg  ${className}`}>
-      <span className={"font-light"}>{label}</span>
-      <span className={"font-medium"}>{formattedValue}</span>
+    <div className={`flex justify-between items-center text-base sm:text-lg ${className}`}>
+      <span className="font-light">{label}</span>
+      <span className="font-medium">{formattedValue}</span>
     </div>
   );
 }

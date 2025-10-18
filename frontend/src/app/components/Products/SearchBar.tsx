@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { CiSearch } from "react-icons/ci";
-import { IoClose } from "react-icons/io5";
+import { Search, X } from "lucide-react";
 
 interface SearchProps {
   placeholder?: string;
@@ -38,16 +37,16 @@ const SearchBar = ({
     <form onSubmit={handleSubmit} className={`relative ${className}`}>
       <div
         className={`
-          flex items-center gap-3 bg-zinc-100 px-4 py-3 rounded-full border-1 transition-all duration-200 
+          flex items-center gap-2 sm:gap-3 bg-zinc-100 px-3 sm:px-4 py-2 sm:py-3 rounded-full border-1 transition-all duration-200 
           ${
             isFocused
               ? "border-green-500 bg-white shadow-lg"
-              : " hover:bg-zinc-200"
+              : "hover:bg-zinc-200"
           }
-          min-w-[300px] md:min-w-[400px]
+          w-full sm:min-w-[280px] md:min-w-[400px]
         `}
       >
-        <CiSearch className="text-zinc-600 text-xl flex-shrink-0" />
+        <Search className="text-zinc-600 w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
 
         <input
           type="text"
@@ -56,16 +55,18 @@ const SearchBar = ({
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           placeholder={placeholder}
-          className="flex-1 bg-transparent outline-none text-gray-700 placeholder-zinc-500 text-sm"
+          className="flex-1 bg-transparent outline-none text-gray-700 placeholder-zinc-500 text-xs sm:text-sm min-w-0"
         />
 
         {searchQuery && (
           <button
             type="button"
             onClick={handleClear}
-            className="text-zinc-500 hover:text-zinc-700 transition-colors"
+            title="Clear search"
+            aria-label="Clear search"
+            className="text-zinc-500 hover:text-zinc-700 transition-colors flex-shrink-0"
           >
-            <IoClose className="text-lg" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         )}
       </div>

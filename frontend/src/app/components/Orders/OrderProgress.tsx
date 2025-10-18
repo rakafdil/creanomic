@@ -14,8 +14,8 @@ export default function OrderProgress() {
     const [currentStep, setCurrentStep] = useState(2);
 
     return (
-        <div className="flex flex-col items-center w-full max-w-5xl mx-auto mt-15 select-none">
-            {/* Bagian ikon + judul */}
+        <div className="flex flex-col items-center w-full max-w-5xl mx-auto mt-8 sm:mt-12 lg:mt-15 select-none px-2 sm:px-4">
+            {/* Icons + Titles */}
             <div className="flex justify-between w-full">
                 {steps.map((step, index) => {
                     const Icon = step.icon;
@@ -29,13 +29,15 @@ export default function OrderProgress() {
                             onClick={() => setCurrentStep(index + 1)}
                         >
                             <Icon
-                                size={50}
-                                className={`mb-2 transition-colors duration-300 ${isCompleted || isActive ? "text-green-900" : "text-gray-400"
-                                    }`}
+                                size={32}
+                                className={`sm:w-10 sm:h-10 lg:w-[50px] lg:h-[50px] mb-1 sm:mb-2 transition-colors duration-300 ${
+                                    isCompleted || isActive ? "text-green-900" : "text-gray-400"
+                                }`}
                             />
                             <p
-                                className={`text-lg font-medium transition-colors duration-300 ${isCompleted || isActive ? "text-black" : "text-gray-500"
-                                    }`}
+                                className={`text-xs sm:text-sm lg:text-lg font-medium transition-colors duration-300 ${
+                                    isCompleted || isActive ? "text-black" : "text-gray-500"
+                                }`}
                             >
                                 {step.title}
                             </p>
@@ -44,20 +46,20 @@ export default function OrderProgress() {
                 })}
             </div>
 
-            {/* Garis progres + kotak checklist */}
-            <div className="relative w-full mt-10 flex justify-between items-center">
-                {/* Garis background */}
-                <div className="absolute left-0 w-full h-[4px] bg-gray-300 rounded-full z-0"></div>
+            {/* Progress Line + Checkboxes */}
+            <div className="relative w-full mt-6 sm:mt-8 lg:mt-10 flex justify-between items-center">
+                {/* Background line */}
+                <div className="absolute left-0 w-full h-[3px] sm:h-[4px] bg-gray-300 rounded-full z-0"></div>
 
-                {/* Garis aktif */}
+                {/* Active line */}
                 <div
-                    className="absolute left-0 h-[10px] bg-green-900 rounded-full z-10 transition-all duration-700 ease-in-out"
+                    className="absolute left-0 h-[6px] sm:h-[8px] lg:h-[10px] bg-green-900 rounded-full z-10 transition-all duration-700 ease-in-out"
                     style={{
                         width: `${((currentStep - 1) / (steps.length - 1)) * 100}%`,
                     }}
                 ></div>
 
-                {/* Kotak checklist */}
+                {/* Checkboxes */}
                 {steps.map((step, index) => {
                     const isCompleted = index + 1 <= currentStep;
 
@@ -65,21 +67,22 @@ export default function OrderProgress() {
                         <div
                             key={step.id}
                             onClick={() => setCurrentStep(index + 1)}
-                            className={`flex items-center justify-center w-10 h-10 rounded-[4px] border cursor-pointer z-20 transition-all duration-300 ${isCompleted
+                            className={`flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-[3px] sm:rounded-[4px] border cursor-pointer z-20 transition-all duration-300 ${
+                                isCompleted
                                     ? "bg-green-900 border-green-900 text-white hover:bg-green-800"
                                     : "bg-gray-300 border-gray-300 text-gray-500 hover:bg-gray-400"
-                                }`}
+                            }`}
                         >
-                            <Check size={25} />
+                            <Check size={18} className="sm:w-5 sm:h-5 lg:w-[25px] lg:h-[25px]" />
                         </div>
                     );
                 })}
             </div>
 
-            {/* Tanggal di bawah */}
-            <div className="flex justify-between w-full mt-2">
+            {/* Dates */}
+            <div className="flex justify-between w-full mt-1.5 sm:mt-2">
                 {steps.map((step) => (
-                    <p key={step.id} className="text-lx text-gray-500 font-medium">
+                    <p key={step.id} className="text-[10px] sm:text-xs lg:text-base text-gray-500 font-medium">
                         18 Okt 2025
                     </p>
                 ))}

@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import Navbar from "../../components/Products/Navbar"; // Asumsi komponen ini ada
+import Navbar from "../../components/Products/Navbar";
 import ProductList from "../../components/Products/Cart/ProductList";
 import PaymentMethodSelector from "../../components/Products/Cart/PaymentMethodSelector";
 import OrderSummary from "../../components/Products/Cart/OrderSummary";
-import { Product } from "@/Types/Products"; // Asumsi tipe ini ada
+import { Product } from "@/Types/Products";
 
 export default function ShoppingCartPage() {
   const [products, setProducts] = useState<Product[]>([
@@ -15,7 +15,7 @@ export default function ShoppingCartPage() {
       weight: "500 gram",
       price: 15000,
       quantity: 1,
-      image: "/assets/products/banana.svg", // Menggunakan URL gambar placeholder
+      image: "/assets/products/banana.svg",
     },
     {
       id: 2,
@@ -82,23 +82,32 @@ export default function ShoppingCartPage() {
 
   return (
     <>
-      <main className="px-4 md:px-16 lg:px-32 pb-16">
-        <h1 className="text-3xl font-bold text-center mb-8">Shopping Cart</h1>
-        <div className="flex flex-col gap-8">
+      <main className="px-4 sm:px-6 md:px-16 lg:px-32 pb-8 sm:pb-12 lg:pb-16">
+        {/* Page Title - Hidden on mobile, shown on desktop */}
+        <h1 className="hidden lg:block text-3xl font-bold text-center mb-8">
+          Shopping Cart
+        </h1>
+
+        <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8">
+          {/* Product List */}
           <ProductList
             products={products}
             onIncrease={handleIncrease}
             onDecrease={handleDecrease}
           />
 
-          <div className="flex justify-between w-full gap-22">
-            <div className="flex-2">
+          {/* Payment & Summary Section */}
+          <div className="flex flex-col lg:flex-row justify-between w-full gap-4 sm:gap-6 lg:gap-22">
+            {/* Payment Method - Full width on mobile, flex-2 on desktop */}
+            <div className="w-full lg:flex-2">
               <PaymentMethodSelector
                 method={paymentMethod}
                 onSelect={setPaymentMethod}
               />
             </div>
-            <div className="flex-1">
+
+            {/* Order Summary - Full width on mobile, flex-1 on desktop */}
+            <div className="w-full lg:flex-1">
               <OrderSummary summary={summary} />
             </div>
           </div>
