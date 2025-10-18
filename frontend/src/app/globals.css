@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 :root {
   --background: #ffffff;
@@ -10,7 +11,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-inst-sans);
   --font-inter: var(--font-geist-inter);
-  --color-yellow: #D0F348;
+  --color-yellow: #d0f348;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -43,40 +44,63 @@ body {
 }
 
 .animate-fade {
-  animation: fadeIn .25s ease;
+  animation: fadeIn 0.25s ease;
 }
 
 #big1 {
   font-size: 3.812rem;
-  word-wrap: 'break-word';
+  word-wrap: "break-word";
 }
 
 #big2 {
   font-size: 3.062rem;
-  font-family: 'Inter';
-  word-wrap: 'break-word';
+  font-family: "Inter";
+  word-wrap: "break-word";
 }
 
 #big3 {
   font-size: 2.438rem;
-  font-family: 'Inter';
-  word-wrap: 'break-word';
+  font-family: "Inter";
+  word-wrap: "break-word";
 }
 
 #medium1 {
   font-size: 1.938rem;
-  font-family: 'Inter';
-  word-wrap: 'break-word';
+  font-family: "Inter";
+  word-wrap: "break-word";
 }
 
 #medium2 {
   font-size: 1.562rem;
-  font-family: 'Inter';
-  word-wrap: 'break-word';
+  font-family: "Inter";
+  word-wrap: "break-word";
 }
 
 #medium3 {
-  font-size: 1.250rem;
-  font-family: 'Inter';
-  word-wrap: 'break-word';
+  font-size: 1.25rem;
+  font-family: "Inter";
+  word-wrap: "break-word";
+}
+
+.leaflet-container {
+  height: 80%;
+  width: 80%;
+  z-index: 10;
+}
+
+/* Kustomisasi untuk divIcon Leaflet agar tidak ada style default */
+.custom-leaflet-icon {
+  background: transparent;
+  border: none;
+}
+
+.map-tiles {
+  /* Filter ini akan mengubah:
+    - Abu-abu (daratan) menjadi biru-kehijauan (teal)
+    - Hitam (air) akan tetap hitam
+    - Teks label akan sedikit berwarna
+    Anda bisa menyesuaikan nilai-nilai ini untuk mendapatkan warna yang pas.
+  */
+  filter: grayscale(40%) hue-rotate(160deg) saturate(180%) brightness(0.7)
+    contrast(120%);
 }

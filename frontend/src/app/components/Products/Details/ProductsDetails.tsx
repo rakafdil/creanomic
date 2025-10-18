@@ -2,34 +2,56 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
+const productsPath = [
+  "banana-big.png",
+  "banana-small-1.png",
+  "banana-small-2.png",
+  "banana-small-3.png",
+];
 const ProductsDetail = () => {
   const [selectedWeight, setSelectedWeight] = useState("500 g");
   const [quantity, setQuantity] = useState(1);
   const weights = ["500 g", "1 Kg", "2 Kg", "5 Kg"];
+  const [bigImage, setBigImage] = useState(productsPath[0]);
 
+  const router = useRouter();
   return (
     <section className="w-full mx-auto py-12 grid grid-cols-1 lg:grid-cols-2 gap-10 font-sans">
       <div>
         <div className="w-full aspect-square rounded-2xl border border-gray-200 overflow-hidden flex items-center justify-center">
-          <Image
-            src="/assets/banana-main.png"
-            alt="Sweet Banana"
-            width={500}
-            height={500}
-            className="object-contain w-full h-full"
-            priority
-          />
+          <motion.div
+            key={bigImage}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="w-full h-full flex items-center justify-center"
+          >
+            <Image
+              src={`/assets/products/${bigImage}`}
+              alt="Sweet Banana"
+              width={500}
+              height={500}
+              className="object-contain w-full h-full"
+              priority
+            />
+          </motion.div>
         </div>
 
         <div className="flex gap-4 mt-4">
-          {["banana-1.png", "banana-2.png", "banana-3.png"].map((img, i) => (
+          {productsPath.map((img, i) => (
             <div
               key={i}
-              className="w-24 h-24 rounded-xl border border-gray-200 overflow-hidden hover:border-green-700 transition-all cursor-pointer"
+              className={`w-24 h-24 rounded-xl border overflow-hidden transition-all cursor-pointer hover:scale-105 ${
+                bigImage === img
+                  ? "border-green-700"
+                  : "border-gray-200 hover:border-green-700"
+              }`}
+              onClick={() => setBigImage(img)}
             >
               <Image
-                src={`/assets/${img}`}
+                src={`/assets/products/${img}`}
                 alt={`Banana ${i + 1}`}
                 width={100}
                 height={100}
@@ -90,7 +112,7 @@ const ProductsDetail = () => {
         </div>
 
         <div className="flex items-center gap-4 mb-8 flex-wrap">
-          <div className="flex items-center border border-gray-300 rounded-full">
+          <div className="grid grid-cols-3 items-center border border-gray-300 rounded-full w-35">
             <motion.button
               onClick={() => setQuantity((q) => Math.max(1, q - 1))}
               className="px-3 py-2 text-gray-600 text-xl font-bold hover:text-green-700 cursor-pointer"
@@ -99,7 +121,7 @@ const ProductsDetail = () => {
             >
               −
             </motion.button>
-            <span className="px-4 py-2 text-lg font-medium">{quantity}</span>
+            <span className="py-2 text-lg font-medium mx-auto">{quantity}</span>
             <motion.button
               onClick={() => setQuantity((q) => q + 1)}
               className="px-3 py-2 text-gray-600 text-xl font-bold hover:text-green-700 cursor-pointer"
@@ -121,6 +143,7 @@ const ProductsDetail = () => {
             className="bg-[#D0F348] hover:bg-[#B3E03B] text-black font-semibold py-3 px-8 rounded-full transition-all cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
+            onClick={() => router.push("/products/cart")}
           >
             Buy Now
           </motion.button>
