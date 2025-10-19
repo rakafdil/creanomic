@@ -3,6 +3,7 @@
 import Image from "next/image";
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import Link from "next/link";
 
 const Article = () => {
   const ref = useRef(null);
@@ -138,18 +139,20 @@ const Article = () => {
             delay: 1.1,
           }}
         >
-          <motion.button
-            className="bg-white text-black text-lg sm:text-xl lg:text-2xl font-bold px-6 py-3 sm:px-7 sm:py-3.5 lg:px-8 lg:py-4 rounded-lg shadow-lg cursor-pointer"
-            whileHover={{
-              scale: 1.05,
-              boxShadow: "0 15px 35px rgba(255, 255, 255, 0.3)",
-              y: -2,
-            }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", bounce: 0.4 }}
-          >
-            Explore Articles
-          </motion.button>
+          <Link href="/articles">
+            <motion.button
+              className="bg-white text-black text-lg sm:text-xl lg:text-2xl font-bold px-6 py-3 sm:px-7 sm:py-3.5 lg:px-8 lg:py-4 rounded-lg shadow-lg cursor-pointer"
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 15px 35px rgba(255, 255, 255, 0.3)",
+                y: -2,
+              }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", bounce: 0.4 }}
+            >
+              Explore Articles
+            </motion.button>
+          </Link>
         </motion.div>
       </motion.div>
     </div>

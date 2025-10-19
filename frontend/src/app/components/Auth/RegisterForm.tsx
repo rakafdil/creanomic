@@ -315,7 +315,7 @@ export default function RegisterPage() {
           </div>
 
           {/* Terms and Conditions */}
-          <div className="flex items-center justify-center mt-5">
+          <div className="flex items-center justify-start mt-5">
             <label className="flex items-start cursor-pointer">
               <input
                 type="checkbox"
@@ -324,7 +324,7 @@ export default function RegisterPage() {
                 disabled={isLoading}
                 className="w-5 h-5 rounded border-2 border-gray-300 text-[#1B5E20] focus:ring-0 focus:ring-offset-0 cursor-pointer disabled:cursor-not-allowed mt-0.5"
               />
-              <span className="ml-2 text-gray-700 text-sm">
+              <span className="ml-2 text-gray-700 text-[15px] leading-relaxed">
                 I agree to the{" "}
                 <Link
                   href="#"

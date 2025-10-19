@@ -5,6 +5,7 @@ import OrderProgress from "@/app/components/Orders/OrderProgress";
 import OrderSummaryBar from "@/app/components/Orders/OrderSummaryBar";
 import OrderDetailsCard from "@/app/components/Orders/OrderDetailsCard";
 import { IoIosArrowBack } from "react-icons/io";
+
 // --- Mock Data ---
 // Biasanya data ini akan datang dari API
 const orderData: Order = {
@@ -46,23 +47,23 @@ const orderData: Order = {
     taxes: 3000,
     total: 105000,
 };
-// Catatan: Pastikan Anda memiliki gambar di folder /public/images/
 
 const TrackOrder = () => {
     return (
         <>
-            <div className="mx-32">
-                <nav className="my-4 text-[#0A3917]">
+            <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-32">
+                <nav className="my-3 md:my-4 text-[#0A3917]">
                     <Link
                         href="/profile"
-                        className="text-xl hover:text-black flex gap-1 items-center"
+                        className="text-base md:text-xl hover:text-black flex gap-1 items-center"
                     >
-                        <IoIosArrowBack /> <span>Back to Profile</span>
+                        <IoIosArrowBack className="w-5 h-5 md:w-6 md:h-6" /> 
+                        <span>Back to Profile</span>
                     </Link>
                 </nav>
 
                 <main>
-                    <div className="mb-25">
+                    <div className="mb-12 md:mb-25">
                         <OrderProgress />
                     </div>
                     <OrderSummaryBar
