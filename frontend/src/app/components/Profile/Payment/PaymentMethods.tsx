@@ -34,25 +34,25 @@ export default function PaymentMethods() {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10 space-y-4">
+        <div className="w-full mx-auto mt-4 sm:mt-6 lg:mt-10 space-y-3 sm:space-y-4">
             {methods.map((method) => (
                 <div
                     key={method.id}
-                    className="flex items-center justify-between border border-gray-300 rounded-lg px-6 py-5 bg-white shadow-sm min-w-[650px]"
+                    className="flex items-center justify-between border border-gray-300 rounded-lg px-4 py-3 sm:px-5 sm:py-4 lg:px-6 lg:py-0 bg-white shadow-sm w-full lg:min-w-[650px]"
                 >
-                    <div className="flex items-center gap-3 flex-1">
+                    <div className="flex items-center gap-2 sm:gap-3 flex-1">
                         <Image
                             src={method.logo}
                             alt={`${method.name} logo`}
                             width={90}
                             height={90}
-                            className="object-contain"
+                            className="object-contain w-16 h-16 sm:w-20 sm:h-20 lg:w-[90px] lg:h-[90px]"
                         />
                     </div>
 
                     <button
                         onClick={() => toggleLink(method.id)}
-                        className={`text-lg font-semibold transition-colors whitespace-nowrap ml-4 ${
+                        className={`text-sm sm:text-base lg:text-lg font-semibold transition-colors whitespace-nowrap ml-2 sm:ml-3 lg:ml-4 ${
                             method.linked
                                 ? "text-[#FF5757] hover:text-red-600"
                                 : "text-[#3F9241] hover:text-green-700"
