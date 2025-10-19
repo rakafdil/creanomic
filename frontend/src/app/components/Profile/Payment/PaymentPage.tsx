@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { IoIosArrowBack } from "react-icons/io";
 import ProfileSidebar from "../ProfileSidebar";
+import PaymentMethods from "./PaymentMethods";
 
 export default function paymentPage() {
     return (
@@ -20,8 +21,9 @@ export default function paymentPage() {
                 </div>
 
                 {/* Main Content */}
-                <div className="flex flex-col flex-1">
+                <div className="flex flex-col">
                     {/* Komponen status dan summary */}
+                    <PaymentMethods />
                 </div>
             </div>
         </div>

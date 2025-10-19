@@ -15,13 +15,13 @@ export default function InputField({
 }: InputFieldProps) {
     return (
         <div className="flex flex-col space-y-1">
-            <label className="text-lx font-semibold text-black">
+            <label className="text-base md:text-lx font-semibold text-black">
                 {label} {optional && <span className="text-[#595959]">(Optional)</span>}
             </label>
             <input
                 type={type}
                 placeholder={placeholder}
-                className="border border-gray-300 rounded-md p-4 text-lx focus:outline-none focus:ring-2 focus:ring-green-600"
+                className="border border-gray-300 rounded-md p-3 md:p-4 text-base md:text-lx focus:outline-none focus:ring-2 focus:ring-green-600"
             />
         </div>
     );

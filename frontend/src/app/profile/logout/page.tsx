@@ -1,6 +1,6 @@
 import React from "react";
 import Footer from "../../components/Common/Footer";
-import PaymentPage from "@/app/components/Profile/Payment/PaymentPage";
+import LogoutPage from "@/app/components/Profile/Logout/LogoutPage";
 
 export default function ProductsPage() {
     return (
@@ -10,8 +10,7 @@ export default function ProductsPage() {
                     Welcome to GrowthWell
                 </div>
             </div>
-            <PaymentPage />
-            {/* <Footer /> */}
+            <LogoutPage />
         </div>
     );
 }

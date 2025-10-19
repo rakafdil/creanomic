@@ -7,13 +7,13 @@ import ProfileSidebar from "../ProfileSidebar";
 
 export default function AddressSection() {
     return (
-        <div className="min-h-screen bg-white text-black flex justify-center py-12">
-            <div className="flex w-full max-w-6xl gap-40">
+        <div className="min-h-screen bg-white text-black flex justify-center py-8 md:py-12 px-4 md:px-0">
+            <div className="flex flex-col md:flex-row w-full max-w-6xl gap-8 md:gap-40">
                 {/* Sidebar */}
-                <div className="w-[240px]">
+                <div className="w-full md:w-[240px]">
                     <Link
                         href="/products"
-                        className="text-lg mb-4 font-semibold inline-block hover:underline"
+                        className="text-base md:text-lg mb-4 font-semibold inline-block hover:underline"
                     >
                         <IoIosArrowBack className="inline-block mr-2" />
                         Back to Shopping

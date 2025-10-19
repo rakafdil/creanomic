@@ -23,13 +23,13 @@ export default function ProfilePage() {
     };
 
     return (
-        <div className="min-h-screen bg-white text-black flex justify-center py-20 text-lg sm:text-lg">
-            <div className="flex w-full max-w-6xl gap-40">
+        <div className="min-h-screen bg-white text-black flex justify-center py-8 md:py-20 text-lg sm:text-lg px-4 md:px-0">
+            <div className="flex flex-col md:flex-row w-full max-w-6xl gap-8 md:gap-40">
                 {/* Sidebar */}
-                <div className="w-[240px]">
+                <div className="w-full md:w-[240px]">
                     <Link
                         href="/products"
-                        className="text-lg mb-4 font-semibold inline-block hover:underline">
+                        className="text-base md:text-lg mb-4 font-semibold inline-block hover:underline">
                             <img
                             src="/Vector.svg"
                             alt="Back to Shopping"
@@ -43,8 +43,8 @@ export default function ProfilePage() {
                 {/* Main Content */}
                 <div className="flex flex-col items-start flex-1">
                     {/* Avatar */}
-                    <div className="relative mb-8">
-                        <div className="bg-[#083D57] h-40 w-40 rounded-full p-3 flex items-center justify-center">
+                    <div className="relative mb-8 self-center md:self-start">
+                        <div className="bg-[#083D57] h-32 w-32 md:h-40 md:w-40 rounded-full p-3 flex items-center justify-center">
                             <Image
                                 src="/assets/default-avatar.png"
                                 alt="avatar"
@@ -58,7 +58,7 @@ export default function ProfilePage() {
                             title="Edit avatar"
                             className="absolute bottom-1 right-1 bg-[#0A3917] p-2 rounded-full hover:bg-green-900 transition"
                         >
-                            <Pencil className="text-white w-7 h-7" />
+                            <Pencil className="text-white w-5 h-5 md:w-7 md:h-7" />
                         </button>
                     </div>
 
@@ -69,47 +69,47 @@ export default function ProfilePage() {
                     >
                         <div className="flex flex-col sm:flex-row gap-5">
                             <div className="flex flex-col w-full sm:w-1/2">
-                                <label className="text-lg mb-1 font-medium">First Name</label>
+                                <label className="text-base md:text-lg mb-1 font-medium">First Name</label>
                                 <input
                                     name="firstName"
                                     value={formData.firstName}
                                     onChange={handleChange}
                                     placeholder="First Name"
-                                    className="border border-gray-300 rounded-md p-4 w-full focus:outline-none focus:ring-1 focus:ring-gray-800"
+                                    className="border border-gray-300 rounded-md p-3 md:p-4 w-full focus:outline-none focus:ring-1 focus:ring-gray-800"
                                 />
                             </div>
                             <div className="flex flex-col w-full sm:w-1/2">
-                                <label className="text-lg mb-1 font-medium">Last Name</label>
+                                <label className="text-base md:text-lg mb-1 font-medium">Last Name</label>
                                 <input
                                     name="lastName"
                                     value={formData.lastName}
                                     onChange={handleChange}
                                     placeholder="Last Name"
-                                    className="border border-gray-300 rounded-md p-4 w-full focus:outline-none focus:ring-1 focus:ring-gray-800"
+                                    className="border border-gray-300 rounded-md p-3 md:p-4 w-full focus:outline-none focus:ring-1 focus:ring-gray-800"
                                 />
                             </div>
                         </div>
 
                         <div className="flex flex-col">
-                            <label className="text-lg mb-1 font-medium">Email</label>
+                            <label className="text-base md:text-lg mb-1 font-medium">Email</label>
                             <input
                                 name="email"
                                 type="email"
                                 value={formData.email}
                                 onChange={handleChange}
                                 placeholder="Email"
-                                className="border border-gray-300 rounded-md p-4 w-full focus:outline-none focus:ring-1 focus:ring-grey-800"
+                                className="border border-gray-300 rounded-md p-3 md:p-4 w-full focus:outline-none focus:ring-1 focus:ring-grey-800"
                             />
                         </div>
 
                         <div className="flex flex-col">
-                            <label className="text-lg mb-1 font-medium">Phone</label>
+                            <label className="text-base md:text-lg mb-1 font-medium">Phone</label>
                             <input
                                 name="phone"
                                 value={formData.phone}
                                 onChange={handleChange}
                                 placeholder="Phone"
-                                className="border border-gray-300 rounded-md p-4 w-full focus:outline-none focus:ring-1 focus:ring-grey-800"
+                                className="border border-gray-300 rounded-md p-3 md:p-4 w-full focus:outline-none focus:ring-1 focus:ring-grey-800"
                             />
                         </div>
 

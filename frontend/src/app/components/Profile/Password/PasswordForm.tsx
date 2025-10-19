@@ -10,7 +10,7 @@ export default function PasswordForm() {
 
             <button
                 type="submit"
-                className="bg-[#0A3917] text-white px-7 py-3 rounded-full hover:bg-green-900 transition text-ls"
+                className="w-full md:w-auto bg-[#0A3917] text-white px-7 py-3 rounded-full hover:bg-green-900 transition text-ls"
             >
                 Update Password
             </button>

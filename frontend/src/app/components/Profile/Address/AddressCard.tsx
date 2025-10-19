@@ -7,9 +7,9 @@ interface AddressCardProps {
 
 export default function AddressCard({ name, address }: AddressCardProps) {
     return (
-        <div className="border rounded-md p-4 shadow-sm flex justify-between items-center">
+        <div className="border rounded-md p-4 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-                <h2 className="font-bold text-2xl">{name}</h2>
+                <h2 className="font-bold text-xl md:text-2xl">{name}</h2>
                 <p className="text-sm font-bold text-[#595959]">{address}</p>
             </div>
             <div className="flex gap-4">
