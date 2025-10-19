@@ -6,6 +6,8 @@ import ToTop from "./components/Common/ToTop";
 import Footer from "./components/Common/Footer";
 import ConditionalFooter from "./components/Common/ConditionalFooter";
 import ConditionalHeader from "./components/Common/ConditionalHeader";
+import "leaflet/dist/leaflet.css";
+import "maplibre-gl/dist/maplibre-gl.css";
 
 const inter = Inter({
   variable: "--font-geist-inter",

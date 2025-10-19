@@ -5,6 +5,7 @@ import OrderConfirmationStatus from "@/app/components/Orders/OrderConfirmationSt
 import OrderSummaryBar from "@/app/components/Orders/OrderSummaryBar";
 import OrderDetailsCard from "@/app/components/Orders/OrderDetailsCard";
 import { IoIosArrowBack } from "react-icons/io";
+import BackButton from "@/app/components/Common/BackButton";
 
 // --- Mock Data ---
 // Biasanya data ini akan datang dari API
@@ -52,16 +53,7 @@ const Transaction = () => {
   return (
     <>
       <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 pb-8 sm:pb-12 lg:pb-16">
-        {/* Back Navigation */}
-        <nav className="my-3 sm:my-4 text-[#0A3917]">
-          <Link
-            href="/products"
-            className="text-base sm:text-lg lg:text-xl hover:text-black flex gap-1 items-center transition-colors"
-          >
-            <IoIosArrowBack className="text-xl sm:text-2xl" />
-            <span>Back to Shopping</span>
-          </Link>
-        </nav>
+        <BackButton />
 
         {/* Page Title */}
         <div className="flex justify-center">

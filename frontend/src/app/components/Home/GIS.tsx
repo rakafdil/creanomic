@@ -2,10 +2,9 @@
 
 import dynamic from "next/dynamic";
 import { FaSearch } from "react-icons/fa";
-import { useState } from "react"; // <-- Impor useState
-import { dummyLocations } from "./data/locations"; // <-- Impor data lokasi
+import { useState } from "react";
+import { dummyLocations } from "./data/locations";
 
-// Impor dinamis untuk komponen Peta
 const MapComponentWithNoSSR = dynamic(
   () => import("./ProductMap").then((mod) => mod.ProductMap),
   {
@@ -18,20 +17,16 @@ const MapComponentWithNoSSR = dynamic(
   }
 );
 
-export default function Home() {
-  // --- LOGIKA BARU DIMULAI DARI SINI ---
-
-  // 1. Buat state untuk menyimpan query pencarian
+export default function GIS() {
   const [searchQuery, setSearchQuery] = useState("");
 
-  // 2. Buat logika untuk memfilter lokasi
   const filteredLocations = dummyLocations.filter(
     (location) =>
       location.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       location.province.toLowerCase().includes(searchQuery.toLowerCase())
   );
   return (
-    <main className="flex flex-col h-[1044px] bg-neutral-900 text-neutral-200">
+    <main className="flex flex-col h-[1044px] bg-neutral-900 text-neutral-200 py-10">
       <div className="w-full max-w-7xl mx-auto p-4 md:p-8 space-y-4 z-20">
         <h1 className="text-3xl font-bold text-center text-lime-400">
           Persebaran Produk
@@ -43,8 +38,8 @@ export default function Home() {
             type="text"
             placeholder="Cari wilayah atau provinsi..."
             className="w-full px-4 py-3 pl-10 bg-neutral-800 border border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-500"
-            value={searchQuery} // <-- Hubungkan input ke state
-            onChange={(e) => setSearchQuery(e.target.value)} // <-- Update state saat diketik
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" />
         </div>
