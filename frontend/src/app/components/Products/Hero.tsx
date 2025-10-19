@@ -105,7 +105,7 @@ const Hero = () => {
       <div className="flex-1 relative flex items-center justify-center pb-6 lg:pb-0">
         {/* Background pattern */}
         <motion.div
-          className="absolute inset-0 z-0 left-0 sm:left-40 lg:left-80"
+          className="absolute inset-0 z-0 left-0 sm:left-35 lg:left-75"
           initial={{ opacity: 0, scale: 1.2 }}
           animate={{ opacity: 0.8, scale: 1 }}
           transition={{
@@ -125,9 +125,9 @@ const Hero = () => {
         </motion.div>
 
         {/* White circle and man image */}
-        <div className="relative z-10 flex items-center justify-center lg:justify-start lg:top-6">
+        <div className="relative z-10 flex items-center justify-center top-8 lg:justify-start lg:top-12">
           <motion.div
-            className="absolute w-48 h-48 sm:w-72 sm:h-72 lg:w-96 lg:h-96 bg-white rounded-full sm:top-10 lg:top-20"
+            className="absolute w-60 h-60 sm:w-72 sm:h-72 lg:w-96 lg:h-96 bg-white rounded-full top-20 sm:top-10 lg:top-20"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{
@@ -161,7 +161,7 @@ const Hero = () => {
               alt="man with vegetables"
               width={350}
               height={350}
-              className="object-contain relative z-20 w-44 h-44 sm:w-64 sm:h-64 lg:w-[350px] lg:h-[350px]"
+              className="object-contain relative z-20 w-64 h-64 sm:w-80 sm:h-80 lg:w-[350px] lg:h-[350px]"
             />
           </motion.div>
         </div>

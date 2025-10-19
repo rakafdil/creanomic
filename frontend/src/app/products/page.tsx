@@ -11,7 +11,7 @@ import Footer from "../components/Common/Footer";
 export default function ProductsPage() {
   return (
     <div className="flex flex-col gap-5 sm:gap-6 lg:gap-8">
-      <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 flex flex-col gap-5 sm:gap-6 lg:gap-8">
+      <div className="mx-5 sm:mx-12 md:mx-16 lg:mx-24 xl:mx-32 flex flex-col gap-5 sm:gap-6 lg:gap-8">
         <Hero />
         <Categories />
 

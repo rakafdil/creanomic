@@ -21,7 +21,7 @@ export default function QuantityControl({
       >
         <Minus size={14} className="sm:w-4 sm:h-4" />
       </button>
-      <span className="py-1.5 sm:py-2 px-3 sm:px-5 text-sm sm:text-base lg:text-lg text-center font-medium text-gray-800 border-b border-t border-gray-300 min-w-[40px] sm:min-w-[50px]">
+      <span className="py-0.25 px-3 sm:px-5 text-base lg:text-lg text-center font-medium text-gray-800 border-b border-t border-gray-300 min-w-[40px] sm:min-w-[50px]">
         {quantity}
       </span>
       <button

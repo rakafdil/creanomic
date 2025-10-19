@@ -37,11 +37,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
       </div>
 
       <div className="flex flex-col gap-2.5 mt-3 text-left">
-        <h3 className="text-green-950 text-2xl font-bold truncate">{name}</h3>
+        <h3 className="text-green-950 max-sm:text-lg text-2xl font-bold truncate">
+          {name}
+        </h3>
         <div className="flex justify-between text-neutral-400 text-base font-semibold">
-          <p className="">{quantity}</p>
-          <div className="flex items-center justify-center gap-1.5">
-            <FaStar className="text-[#FFC107]" />
+          <p className="truncate">{quantity}</p>
+          <div className="flex items-center align-middle justify-center gap-0.75 md:gap-1.5">
+            <FaStar className="text-[#FFC107] mt-1" />
             <span className="">({rating}/5)</span>
           </div>
         </div>

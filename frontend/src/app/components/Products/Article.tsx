@@ -17,7 +17,7 @@ const Article = () => {
       <div className="flex-1 relative flex items-center justify-center lg:justify-end order-2 lg:order-1 pb-6 lg:pb-0">
         {/* Background pattern */}
         <motion.div
-          className="absolute inset-0 z-0 left-0 sm:left-20 lg:right-40 lg:left-auto"
+          className="absolute inset-0 z-0 left-0 sm:left-10 lg:right-40 lg:left-auto"
           initial={{ opacity: 0, x: -50 }}
           animate={isInView ? { opacity: 0.8, x: 0 } : {}}
           transition={{
@@ -37,7 +37,7 @@ const Article = () => {
         </motion.div>
 
         {/* White circle and farmer image */}
-        <div className="relative z-10 flex items-center justify-center lg:top-10">
+        <div className="relative z-10 flex items-center justify-center top-6 sm:top-8 lg:top-10">
           <motion.div
             className="absolute w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 bg-white rounded-full blur-3xl sm:top-10 lg:top-20"
             initial={{ scale: 0, opacity: 0 }}

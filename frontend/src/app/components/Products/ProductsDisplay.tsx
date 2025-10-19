@@ -97,7 +97,7 @@ const ProductsDisplay: React.FC<ProductDisplayProps> = ({
       className={`${
         gridRow
           ? "flex overflow-x-auto space-x-6 scrollbar-hide snap-x snap-mandatory"
-          : "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+          : "grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
       } ${className}`}
     >
       {products.map((product) => (
