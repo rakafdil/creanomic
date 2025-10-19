@@ -57,7 +57,7 @@ export default function UnauthorizedPage() {
               </Link>
 
               <Link
-                href="/auth/login"
+                href="/auth?mode=login"
                 className="inline-flex items-center justify-center rounded-full px-5 py-3 bg-sky-500/95 hover:bg-sky-600 text-white text-sm font-medium transition shadow"
               >
                 Sign in

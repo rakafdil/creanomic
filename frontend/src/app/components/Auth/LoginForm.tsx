@@ -19,17 +19,20 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://api-growthwell.vercel.app/api/v1/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
+      const response = await fetch(
+        "https://api-growthwell.vercel.app/api/v1/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
 
       const data = await response.json();
 
@@ -62,7 +65,8 @@ export default function LoginPage() {
   const handleGoogleSignIn = async () => {
     try {
       // Redirect ke endpoint Google Sign-In backend
-      window.location.href = "https://api-growthwell.vercel.app/api/v1/auth/google-signin";
+      window.location.href =
+        "https://api-growthwell.vercel.app/api/v1/auth/google-signin";
     } catch (err: any) {
       setError(err.message || "Failed to initiate Google sign-in");
     }
@@ -216,7 +220,7 @@ export default function LoginPage() {
             type="button"
             onClick={handleGoogleSignIn}
             disabled={isLoading}
-            className="w-full border-2 border-gray-300 rounded-2xl py-4 flex items-center justify-center gap-3 hover:bg-gray-50 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
+            className="cursor-pointer w-full border-2 border-gray-300 rounded-2xl py-4 flex items-center justify-center gap-3 hover:bg-gray-50 transition-colors disabled:bg-gray-100"
           >
             <svg
               width="24"
