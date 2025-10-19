@@ -52,7 +52,6 @@ export interface LocationData {
   categories: ProductCategory[];
 }
 
-// --- DUMMY DATA ---
 export const dummyLocations: LocationData[] = [
   {
     id: "bdg",
@@ -97,11 +96,6 @@ export const dummyLocations: LocationData[] = [
           { name: "Babi", quantity: 20, icon: GiPig },
         ],
       },
-      {
-        categoryName: "Hasil Perikanan",
-        icon: FaFish,
-        products: [{ name: "Ikan Bandeng", quantity: 20, icon: FaFish }],
-      },
     ],
   },
   {
@@ -111,9 +105,9 @@ export const dummyLocations: LocationData[] = [
     position: [-5.1477, 119.4327],
     categories: [
       {
-        categoryName: "Hasil Perikanan",
-        icon: FaFish,
-        products: [{ name: "Ikan Tuna", quantity: 60, icon: FaFish }],
+        categoryName: "Hasil Pertanian",
+        icon: GiFarmer,
+        products: [{ name: "Jagung", quantity: 22, icon: GiCorn }],
       },
       {
         categoryName: "Hasil Peternakan",
@@ -122,6 +116,105 @@ export const dummyLocations: LocationData[] = [
           { name: "Kambing", quantity: 30, icon: GiGoat },
           { name: "Sapi", quantity: 10, icon: GiCow },
         ],
+      },
+    ],
+  },
+  {
+    id: "dps",
+    name: "Denpasar",
+    province: "Bali",
+    position: [-8.6705, 115.2126],
+    categories: [
+      {
+        categoryName: "Hasil Pertanian",
+        icon: GiFarmer,
+        products: [
+          { name: "Kopi", quantity: 50, icon: GiCoffeeBeans },
+          { name: "Wortel", quantity: 20, icon: GiCarrot },
+        ],
+      },
+      {
+        categoryName: "Hasil Peternakan",
+        icon: GiBarn,
+        products: [{ name: "Ayam", quantity: 30, icon: GiChicken }],
+      },
+    ],
+  },
+  {
+    id: "mdn",
+    name: "Medan",
+    province: "Sumatera Utara",
+    position: [3.5952, 98.6722],
+    categories: [
+      {
+        categoryName: "Hasil Pertanian",
+        icon: GiFarmer,
+        products: [
+          { name: "Jagung", quantity: 35, icon: GiCorn },
+          { name: "Kopi", quantity: 25, icon: GiCoffeeBeans },
+        ],
+      },
+      {
+        categoryName: "Hasil Peternakan",
+        icon: GiBarn,
+        products: [{ name: "Sapi", quantity: 40, icon: GiCow }],
+      },
+    ],
+  },
+  {
+    id: "plb",
+    name: "Palembang",
+    province: "Sumatera Selatan",
+    position: [-2.9909, 104.7566],
+    categories: [
+      {
+        categoryName: "Hasil Pertanian",
+        icon: GiFarmer,
+        products: [{ name: "Jagung", quantity: 20, icon: GiCorn }],
+      },
+      {
+        categoryName: "Hasil Peternakan",
+        icon: GiBarn,
+        products: [
+          { name: "Ayam", quantity: 25, icon: GiChicken },
+          { name: "Kambing", quantity: 15, icon: GiGoat },
+        ],
+      },
+    ],
+  },
+  {
+    id: "bjm",
+    name: "Banjarmasin",
+    province: "Kalimantan Selatan",
+    position: [-3.3186, 114.5944],
+    categories: [
+      {
+        categoryName: "Hasil Pertanian",
+        icon: GiFarmer,
+        products: [{ name: "Jagung", quantity: 18, icon: GiCorn }],
+      },
+      {
+        categoryName: "Hasil Peternakan",
+        icon: GiBarn,
+        products: [{ name: "Sapi", quantity: 22, icon: GiCow }],
+      },
+    ],
+  },
+  {
+    id: "jyp",
+    name: "Jayapura",
+    province: "Papua",
+    position: [-2.5337, 140.7181],
+    categories: [
+      {
+        categoryName: "Hasil Pertanian",
+        icon: GiFarmer,
+        products: [{ name: "Wortel", quantity: 10, icon: GiCarrot }],
+      },
+      {
+        categoryName: "Hasil Peternakan",
+        icon: GiBarn,
+        products: [{ name: "Kambing", quantity: 8, icon: GiGoat }],
       },
     ],
   },

@@ -13,7 +13,7 @@ class AuthService {
 
   async signup(
     userData,
-    redirectTo = "http://localhost:3000/v1/auth/callback"
+    redirectTo = "https://api-growthwell.vercel.app/v1/auth/callback"
   ) {
     const { email, password, confirmPassword, username, firstName, lastName } =
       userData;
@@ -56,7 +56,9 @@ class AuthService {
     };
   }
 
-  async loginWithGoogle(redirectTo = "http://localhost:3000/v1/auth/callback") {
+  async loginWithGoogle(
+    redirectTo = "https://api-growthwell.vercel.app/v1/auth/callback"
+  ) {
     const { data, error } = await this.supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -186,7 +188,7 @@ class AuthService {
     const { data, error } = await this.supabase.auth.resetPasswordForEmail(
       email,
       {
-        redirectTo: "http://localhost:3000/auth/reset-password",
+        redirectTo: "https://api-growthwell.vercel.app/auth/reset-password",
       }
     );
 

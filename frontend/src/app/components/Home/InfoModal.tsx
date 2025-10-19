@@ -7,6 +7,10 @@ interface InfoModalProps {
 }
 
 export const InfoModal: React.FC<InfoModalProps> = ({ location, onClose }) => {
+  const total = location.categories
+    .flatMap((cat) => cat.products)
+    .reduce((sum, p) => sum + p.quantity, 0);
+
   return (
     // Backdrop
     <div
@@ -44,14 +48,21 @@ export const InfoModal: React.FC<InfoModalProps> = ({ location, onClose }) => {
                 <h3 className="text-lg font-medium">{category.categoryName}</h3>
               </div>
               <div className="flex flex-wrap gap-2">
-                {category.products.map((product) => (
-                  <span
-                    key={product.name}
-                    className="px-3 py-1 text-sm font-medium bg-lime-400/20 text-lime-300 rounded-full"
-                  >
-                    {product.name}
-                  </span>
-                ))}
+                {category.products.map((product) => {
+                  const percent =
+                    total > 0
+                      ? Math.round((product.quantity / total) * 100)
+                      : 0;
+                  return (
+                    <span
+                      key={product.name}
+                      className="px-3 py-1 text-sm font-medium bg-lime-400/20 text-lime-300 rounded-full"
+                    >
+                      {product.name}{" "}
+                      <span className="text-lime-200">({percent}%)</span>
+                    </span>
+                  );
+                })}
               </div>
             </div>
           ))}

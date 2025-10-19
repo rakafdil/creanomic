@@ -25,7 +25,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   action,
 }) => {
   return (
-    <div className="bg-[#F0F0F0] rounded-2xl shadow-md py-7.5 px-5 flex flex-col h-80 gap-11">
+    <div className="bg-[#F0F0F0] rounded-2xl shadow-md py-7.5 px-5 flex flex-col h-80 gap-11 duration-105 transition-all hover:scale-105 cursor-pointer">
       <div className="flex relative w-full justify-center h-25">
         <Image
           src={imgUrl}

@@ -21,7 +21,7 @@ const products: Product[] = [
     unit: "4 pcs",
     price: 15000,
     rating: 4.8,
-    image: "assets/products/banana.svg",
+    image: "/assets/products/banana.svg",
   },
   {
     id: 2,
@@ -29,7 +29,7 @@ const products: Product[] = [
     unit: "100 gram",
     price: 18000,
     rating: 4.8,
-    image: "assets/products/broccoli.svg",
+    image: "/assets/products/broccoli.svg",
   },
   {
     id: 3,
@@ -37,7 +37,7 @@ const products: Product[] = [
     unit: "100 gram",
     price: 25000,
     rating: 4.8,
-    image: "assets/products/avocado.svg",
+    image: "/assets/products/avocado.svg",
     hotDeal: 1035,
   },
   {
@@ -46,7 +46,7 @@ const products: Product[] = [
     unit: "150 gram",
     price: 15000,
     rating: 4.8,
-    image: "assets/products/meat.svg",
+    image: "/assets/products/meat.svg",
   },
   {
     id: 5,
@@ -54,7 +54,7 @@ const products: Product[] = [
     unit: "200 gram",
     price: 10000,
     rating: 4.8,
-    image: "assets/products/cabbage.svg",
+    image: "/assets/products/cabbage.svg",
   },
   {
     id: 6,
@@ -62,7 +62,7 @@ const products: Product[] = [
     unit: "100 gram",
     price: 18000,
     rating: 4.8,
-    image: "assets/products/onion.svg",
+    image: "/assets/products/onion.svg",
   },
   {
     id: 7,
@@ -70,7 +70,7 @@ const products: Product[] = [
     unit: "200 gram",
     price: 55000,
     rating: 4.8,
-    image: "assets/products/salmon.svg",
+    image: "/assets/products/salmon.svg",
   },
   {
     id: 8,
@@ -78,7 +78,7 @@ const products: Product[] = [
     unit: "150 gram",
     price: 19000,
     rating: 4.8,
-    image: "assets/products/chili.svg",
+    image: "/assets/products/chili.svg",
   },
 ];
 
@@ -104,6 +104,7 @@ const ProductsDisplay: React.FC<ProductDisplayProps> = ({
         <div
           key={product.id}
           className={`${gridRow ? "flex-shrink-0 snap-start w-60 pb-3" : ""}`}
+          onClick={() => router.push(`/products/details/${product.id}`)}
         >
           <ProductCard
             imgUrl={product.image}

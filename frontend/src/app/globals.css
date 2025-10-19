@@ -94,13 +94,6 @@ body {
   border: none;
 }
 
-.map-tiles {
-  /* Filter ini akan mengubah:
-    - Abu-abu (daratan) menjadi biru-kehijauan (teal)
-    - Hitam (air) akan tetap hitam
-    - Teks label akan sedikit berwarna
-    Anda bisa menyesuaikan nilai-nilai ini untuk mendapatkan warna yang pas.
-  */
-  filter: grayscale(40%) hue-rotate(160deg) saturate(180%) brightness(0.7)
-    contrast(120%);
-}
+/* .map-tiles {
+  filter: sepia(100%) hue-rotate(180deg);
+} */

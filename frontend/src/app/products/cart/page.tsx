@@ -6,6 +6,7 @@ import ProductList from "../../components/Products/Cart/ProductList";
 import PaymentMethodSelector from "../../components/Products/Cart/PaymentMethodSelector";
 import OrderSummary from "../../components/Products/Cart/OrderSummary";
 import { Product } from "@/Types/Products";
+import BackButton from "@/app/components/Common/BackButton";
 
 export default function ShoppingCartPage() {
   const [products, setProducts] = useState<Product[]>([
@@ -83,6 +84,7 @@ export default function ShoppingCartPage() {
   return (
     <>
       <main className="px-4 sm:px-6 md:px-16 lg:px-32 pb-8 sm:pb-12 lg:pb-16">
+        <BackButton />
         {/* Page Title - Hidden on mobile, shown on desktop */}
         <h1 className="hidden lg:block text-3xl font-bold text-center mb-8">
           Shopping Cart

@@ -62,9 +62,7 @@ const Navbar = () => {
               key={item.id}
               href={`#${item.id}`}
               onClick={handleScroll(item.id)}
-              className={`transition-colors duration-300 ${
-                active === item.id ? "text-yellow-300" : "text-white"
-              } hover:text-yellow-300`}
+              className={`transition-colors duration-300 text-white hover:text-yellow-300`}
             >
               {item.label}
             </a>
