@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Hero from "./components/Home/Hero";
 import AboutUs from "./components/Home/AboutUs";
@@ -7,8 +8,16 @@ import Navbar from "./components/Common/Navbar";
 import ToTop from "./components/Common/ToTop";
 import Footer from "./components/Common/Footer";
 import GIS from "./components/Home/GIS";
-
+import React, { useEffect, useState } from "react";
 export default function Home() {
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const t =
+      localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+    setToken(t);
+    console.log(t);
+  }, []);
   return (
     <div className="font-inter">
       <Navbar />
