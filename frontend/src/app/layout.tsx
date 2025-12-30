@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Instrument_Sans, Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Common/Navbar";
-import ToTop from "./components/Common/ToTop";
-import Footer from "./components/Common/Footer";
-import ConditionalFooter from "./components/Common/ConditionalFooter";
-import ConditionalHeader from "./components/Common/ConditionalHeader";
+import Navbar from "@/components/Common/Navbar";
+import ToTop from "@/components/Common/ToTop";
+import Footer from "@/components/Common/Footer";
+import ConditionalFooter from "@/components/Common/ConditionalFooter";
+import ConditionalHeader from "@/components/Common/ConditionalHeader";
 import "leaflet/dist/leaflet.css";
 import "maplibre-gl/dist/maplibre-gl.css";
 

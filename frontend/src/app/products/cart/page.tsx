@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import Navbar from "../../components/Products/Navbar";
-import ProductList from "../../components/Products/Cart/ProductList";
-import PaymentMethodSelector from "../../components/Products/Cart/PaymentMethodSelector";
-import OrderSummary from "../../components/Products/Cart/OrderSummary";
+import Navbar from "@/components/Products/Navbar";
+import ProductList from "@/components/Products/Cart/ProductList";
+import PaymentMethodSelector from "@/components/Products/Cart/PaymentMethodSelector";
+import OrderSummary from "@/components/Products/Cart/OrderSummary";
 import { Product } from "@/Types/Products";
 import BackButton from "@/app/components/Common/BackButton";
 

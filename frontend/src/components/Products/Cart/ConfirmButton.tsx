@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { useAuthToken } from "@/app/Hook/auth";
+import { useAuthToken } from "@/Hook/auth";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 

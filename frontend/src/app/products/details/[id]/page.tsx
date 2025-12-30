@@ -1,7 +1,7 @@
 import React from "react";
-import Navbar from "../../../components/Products/Navbar";
-import ProductsDetail from "../../../components/Products/Details/ProductsDetails";
-import ProductTabs from "../../../components/Products/Details/index";
+import Navbar from "../@/components/Products/Navbar";
+import ProductsDetail from "../@/components/Products/Details/ProductsDetails";
+import ProductTabs from "../@/components/Products/Details/index";
 import Footer from "@/app/components/Common/Footer";
 import BackButton from "@/app/components/Common/BackButton";
 

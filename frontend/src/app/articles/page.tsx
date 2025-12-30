@@ -1,4 +1,4 @@
-import ArticlesPage from "../components/Articles/ArticlesPage";
+import ArticlesPage from "@/components/Articles/ArticlesPage";
 
 export default function Page() {
   return (
@@ -8,8 +8,7 @@ export default function Page() {
           Welcome to GrowthWell
         </div>
       </div>
-      <ArticlesPage />;
-      {/* <Footer /> */}
+      <ArticlesPage />;{/* <Footer /> */}
     </div>
   );
 }

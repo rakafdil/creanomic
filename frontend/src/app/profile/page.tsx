@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect } from "react";
-import ProfileContainer from "../components/Profile/ProfilePage";
-import Footer from "../components/Common/Footer";
-import { useAuthToken } from "../Hook/auth";
+import ProfileContainer from "@/components/Profile/ProfilePage";
+import Footer from "@/components/Common/Footer";
+import { useAuthToken } from "../../Hook/auth";
 import { useRouter } from "next/navigation";
 
 export default function ProductsPage() {

@@ -1,5 +1,5 @@
 import React from "react";
-import UnauthorizedPage from "../components/Auth/Unauothorized";
+import UnauthorizedPage from "@/components/Auth/Unauothorized";
 
 const page = () => {
   return (
