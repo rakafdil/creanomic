@@ -5,8 +5,8 @@ import Navbar from "@/components/Products/Navbar";
 import ProductList from "@/components/Products/Cart/ProductList";
 import PaymentMethodSelector from "@/components/Products/Cart/PaymentMethodSelector";
 import OrderSummary from "@/components/Products/Cart/OrderSummary";
-import { Product } from "@/Types/Products";
-import BackButton from "@/app/components/Common/BackButton";
+import { Product } from "@/types/Products";
+import BackButton from "@/components/Common/BackButton";
 
 export default function ShoppingCartPage() {
   const [products, setProducts] = useState<Product[]>([

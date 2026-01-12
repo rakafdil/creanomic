@@ -1,5 +1,5 @@
 import React from "react";
-import AddressSection from "@/app/components/Profile/Address/AddressSection";
+import AddressSection from "@/components/Profile/Address/AddressSection";
 import Footer from "@/components/Common/Footer";
 
 export default function ProductsPage() {

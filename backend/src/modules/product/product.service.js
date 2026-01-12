@@ -1,14 +1,15 @@
 // product.service.js
 class ProductService {
-    constructor(supabase) {
-        this.supabase = supabase
-    }
+  constructor(supabase) {
+    this.supabase = supabase;
+  }
 
-    // Get all products with seller and store information
-    async getAllProducts(filters = {}) {
-        let query = this.supabase
-            .from("products")
-            .select(`
+  // Get all products with seller and store information
+  async getAllProducts(filters = {}) {
+    let query = this.supabase
+      .from("products")
+      .select(
+        `
                 *,
                 seller:seller_id (
                     seller_id,
@@ -19,33 +20,44 @@ class ProductService {
                         description
                     )
                 )
-            `)
-
-        // Apply filters if provided
-        if (filters.minPrice) {
-            query = query.gte('price', filters.minPrice)
-        }
-        if (filters.maxPrice) {
-            query = query.lte('price', filters.maxPrice)
-        }
-        if (filters.sellerId) {
-            query = query.eq('seller_id', filters.sellerId)
-        }
-        if (filters.inStock) {
-            query = query.gt('stock_quantity', 0)
-        }
-
-        const { data, error } = await query
-
-        if (error) throw error
-        return data
+            `,
+        { count: "exact" }
+      )
+      .range(filters.start, filters.end);
+    // Apply filters if provided
+    if (filters.minPrice) {
+      query = query.gte("price", filters.minPrice);
+    }
+    if (filters.maxPrice) {
+      query = query.lte("price", filters.maxPrice);
+    }
+    if (filters.sellerId) {
+      query = query.eq("seller_id", filters.sellerId);
+    }
+    if (filters.inStock) {
+      query = query.gt("stock_quantity", 0);
     }
 
-    // Get product by ID
-    async getProductById(id) {
-        const { data, error } = await this.supabase
-            .from("products")
-            .select(`
+    const { data, error, count } = await query;
+
+    const totalPages = Math.ceil(count / filters.limit);
+
+    if (error) throw error;
+    return {
+      currentPage: filters.page,
+      perPage: filters.limit,
+      totalItems: count,
+      totalPages: totalPages,
+      data: data,
+    };
+  }
+
+  // Get product by ID
+  async getProductById(id) {
+    const { data, error } = await this.supabase
+      .from("products")
+      .select(
+        `
                 *,
                 seller:seller_id (
                     seller_id,
@@ -56,19 +68,21 @@ class ProductService {
                         description
                     )
                 )
-            `)
-            .eq('id', id)
-            .single()
+            `
+      )
+      .eq("id", id)
+      .single();
 
-        if (error) throw error
-        return data
-    }
+    if (error) throw error;
+    return data;
+  }
 
-    // Get products by store
-    async getProductsByStore(storeId) {
-        const { data, error } = await this.supabase
-            .from("store_products")
-            .select(`
+  // Get products by store
+  async getProductsByStore(storeId) {
+    const { data, error } = await this.supabase
+      .from("store_products")
+      .select(
+        `
                 product_id,
                 products:product_id (
                     *,
@@ -76,18 +90,20 @@ class ProductService {
                         seller_id
                     )
                 )
-            `)
-            .eq('store_id', storeId)
+            `
+      )
+      .eq("store_id", storeId);
 
-        if (error) throw error
-        return data.map(item => item.products)
-    }
+    if (error) throw error;
+    return data.map((item) => item.products);
+  }
 
-    // Search products
-    async searchProducts(searchTerm) {
-        const { data, error } = await this.supabase
-            .from("products")
-            .select(`
+  // Search products
+  async searchProducts(searchTerm) {
+    const { data, error } = await this.supabase
+      .from("products")
+      .select(
+        `
                 *,
                 seller:seller_id (
                     seller_id,
@@ -95,12 +111,13 @@ class ProductService {
                         store_name
                     )
                 )
-            `)
-            .or(`name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`)
+            `
+      )
+      .or(`name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
 
-        if (error) throw error
-        return data
-    }
+    if (error) throw error;
+    return data;
+  }
 }
 
-export default ProductService
+export default ProductService;

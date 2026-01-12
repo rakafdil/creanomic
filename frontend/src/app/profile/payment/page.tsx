@@ -1,6 +1,6 @@
 import React from "react";
 import Footer from "@/components/Common/Footer";
-import PaymentPage from "@/app/components/Profile/Payment/PaymentPage";
+import PaymentPage from "@/components/Profile/Payment/PaymentPage";
 
 export default function ProductsPage() {
   return (

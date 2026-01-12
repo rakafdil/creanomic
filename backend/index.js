@@ -12,7 +12,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["https://creanomic.vercel.app", "http://localhost:3000"],
+    origin: ["https://creanomic.vercel.app", "http://localhost:3000", "*"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -23,16 +23,34 @@ app.get("/", (req, res) => {
   res.send("API is running with CORS enabled");
 });
 
-const handler = async (req, res) => {
+// Development
+const startServer = async () => {
   try {
     const supabase = await dbConnection();
     bootstrap(app, supabase);
 
-    app(req, res);
+    const PORT = process.env.PORT || 5050;
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
   } catch (error) {
-    console.error("Handler error:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error("Failed to start server:", error);
   }
 };
 
-export default handler;
+startServer();
+
+// Production serverless
+// const handler = async (req, res) => {
+//   try {
+//     const supabase = await dbConnection();
+//     bootstrap(app, supabase);
+
+//     app(req, res);
+//   } catch (error) {
+//     console.error("Handler error:", error);
+//     res.status(500).json({ message: "Internal Server Error" });
+//   }
+// };
+
+// export default handler;

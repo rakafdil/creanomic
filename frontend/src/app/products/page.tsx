@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Navbar from "@/components/Products/Navbar";
 import Hero from "@/components/Products/Hero";
@@ -7,8 +8,11 @@ import Link from "next/link";
 import ProductsDisplay from "@/components/Products/ProductsDisplay";
 import Article from "@/components/Products/Article";
 import Footer from "@/components/Common/Footer";
+import { useProduct } from "@/hook/useProduct";
 
 export default function ProductsPage() {
+  const { data, products, isLoading, error, limit, page } = useProduct();
+
   return (
     <div className="flex flex-col gap-5 sm:gap-6 lg:gap-8">
       <div className="mx-5 sm:mx-12 md:mx-16 lg:mx-24 xl:mx-32 flex flex-col gap-5 sm:gap-6 lg:gap-8">
@@ -24,14 +28,19 @@ export default function ProductsPage() {
             All Products
           </span>
           <Link
-            className="text-neutral-400 text-base sm:text-xl lg:text-2xl font-bold duration-200 transition-all hover:border-b-1"
-            href="/products/all/all"
+            className="text-neutral-400 text-base sm:text-xl lg:text-2xl font-bold duration-200 transition-all hover:border-b-1 hover:text-green-500"
+            href="/products/all"
           >
             View All
           </Link>
         </div>
 
-        <ProductsDisplay />
+        <ProductsDisplay
+          limit={limit}
+          products={products}
+          isLoading={isLoading}
+          error={error ?? undefined}
+        />
 
         <Article />
 
@@ -42,12 +51,18 @@ export default function ProductsPage() {
           </span>
           <Link
             className="text-neutral-400 text-base sm:text-xl lg:text-2xl font-bold duration-200 transition-all hover:border-b-1"
-            href="/products/all/nearby-available"
+            href="/products/nearby-available"
           >
             View All
           </Link>
         </div>
-        <ProductsDisplay gridRow={true} />
+        <ProductsDisplay
+          limit={limit}
+          products={products}
+          isLoading={isLoading}
+          error={error ?? undefined}
+          gridRow={true}
+        />
 
         {/* Popular in Your Area Section */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
@@ -56,12 +71,19 @@ export default function ProductsPage() {
           </span>
           <Link
             className="text-neutral-400 text-base sm:text-xl lg:text-2xl font-bold duration-200 transition-all hover:border-b-1"
-            href="/products/all/popular"
+            href="/products/popular"
           >
             View All
           </Link>
         </div>
-        <ProductsDisplay gridRow={true} className="" />
+        <ProductsDisplay
+          limit={limit}
+          products={products}
+          isLoading={isLoading}
+          error={error ?? undefined}
+          gridRow={true}
+          className=""
+        />
       </div>
     </div>
   );

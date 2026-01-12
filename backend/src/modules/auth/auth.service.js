@@ -119,7 +119,7 @@ class AuthService {
 
     const userId = authData.user.id;
 
-    const { data: profile, error: profileError } = await this.supabase
+    const { data: profile, error: profileError } = await this.adminClient
       .from("users")
       .select("*")
       .eq("id", userId)
@@ -149,15 +149,8 @@ class AuthService {
     };
   }
 
-  async getUserProfile() {
-    const {
-      data: { session },
-      error: errorSession,
-    } = await this.supabase.auth.getSession();
-    if (errorSession) throw errorSession;
-
-    const userId = session?.user?.id;
-    const { data: user, error } = await this.supabase
+  async getUserProfile(userId) {
+    const { data: user, error } = await this.adminClient
       .from("users")
       .select("*")
       .eq("id", userId)

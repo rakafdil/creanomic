@@ -1,5 +1,5 @@
 import QuantityControl from "./QuantityControl";
-import { Product } from "@/Types/Products";
+import { Product } from "@/types/Products";
 
 type ProductItemProps = {
   product: Product;

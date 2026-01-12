@@ -4,7 +4,7 @@ import { IoIosArrowBack } from "react-icons/io";
 
 const BackButton: React.FC = () => {
   return (
-    <nav className="my-3 sm:my-4 text-[#0A3917]">
+    <nav className="my-3 sm:my-4 text-[#0A3917] w-fit">
       <Link
         href="/products"
         className="text-base sm:text-lg lg:text-xl hover:text-black flex gap-1 items-center transition-colors"

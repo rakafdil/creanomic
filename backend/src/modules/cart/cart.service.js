@@ -1,92 +1,103 @@
+import { createClient } from "@supabase/supabase-js";
+
 //cart.service.js
 class CartService {
-    constructor(supabase) {
-        this.supabase = supabase
+  constructor(supabase) {
+    this.supabase = supabase;
+
+    this.adminClient = createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY
+    );
+  }
+
+  // Get or create cart for user
+  async getOrCreateCart(userId) {
+    let { data: cart, error: cartError } = await this.adminClient
+      .from("carts")
+      .select("*")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (cartError && cartError.code !== "PGRST116") {
+      throw cartError;
     }
 
-    // Get or create cart for user
-    async getOrCreateCart(userId) {
-        let { data: cart, error: cartError } = await this.supabase
-            .from("carts")
-            .select("*")
-            .eq("user_id", userId)
-            .maybeSingle()
+    if (!cart) {
+      const { data: newCart, error: newCartError } = await this.adminClient
+        .from("carts")
+        .insert([
+          {
+            user_id: userId,
+            total_price: 0,
+            coupon: "",
+          },
+        ])
+        .select()
+        .single();
 
-        if (cartError && cartError.code !== "PGRST116") {
-            throw cartError
-        }
-
-        if (!cart) {
-            const { data: newCart, error: newCartError } = await this.supabase
-                .from("carts")
-                .insert([{
-                    user_id: userId,
-                    total_price: 0,
-                    coupon: ""
-                }])
-                .select()
-                .single()
-
-            if (newCartError) throw newCartError
-            cart = newCart
-        }
-
-        return cart
+      if (newCartError) throw newCartError;
+      cart = newCart;
     }
 
-    // Add item to cart
-    async addItem(userId, productId, quantity, price, sellerId) {
-        const cart = await this.getOrCreateCart(userId)
+    return cart;
+  }
 
-        // Check if item already exists
-        let { data: existingItem } = await this.supabase
-            .from("cart_items")
-            .select("*")
-            .eq("cart_id", cart.id)
-            .eq("product_id", productId)
-            .maybeSingle()
+  // Add item to cart
+  async addItem(userId, productId, quantity, price) {
+    const cart = await this.getOrCreateCart(userId);
 
-        if (existingItem) {
-            // Update quantity
-            const { data, error } = await this.supabase
-                .from("cart_items")
-                .update({
-                    quantity: existingItem.quantity + quantity,
-                    price: price
-                })
-                .eq("cart_id", cart.id)
-                .eq("product_id", productId)
-                .select()
-                .single()
+    // Check if item already exists
+    let { data: existingItem } = await this.adminClient
+      .from("cart_items")
+      .select("*")
+      .eq("cart_id", cart.id)
+      .eq("product_id", productId)
+      .maybeSingle();
 
-            if (error) throw error
-            await this.updateCartTotal(cart.id)
-            return data
-        } else {
-            // Insert new item
-            const { data, error } = await this.supabase
-                .from("cart_items")
-                .insert([{
-                    cart_id: cart.id,
-                    product_id: productId,
-                    seller_id: sellerId,
-                    quantity: quantity,
-                    price: price
-                }])
-                .select()
-                .single()
+    if (existingItem) {
+      // Update quantity
+      const { data, error } = await this.adminClient
+        .from("cart_items")
+        .update({
+          quantity: existingItem.quantity + quantity,
+          price: price,
+        })
+        .eq("cart_id", cart.id)
+        .eq("product_id", productId)
+        .select()
+        .single();
 
-            if (error) throw error
-            await this.updateCartTotal(cart.id)
-            return data
-        }
+      if (error) throw error;
+      await this.updateCartTotal(cart.id);
+      return data;
+    } else {
+      // Insert new item
+      const { data, error } = await this.adminClient
+        .from("cart_items")
+        .insert([
+          {
+            cart_id: cart.id,
+            product_id: productId,
+            quantity: quantity,
+            price: price,
+          },
+        ])
+        .select()
+        .single();
+
+      if (error) throw error;
+      await this.updateCartTotal(cart.id);
+      return data;
     }
+  }
 
-    // Get cart with items
-    async getCart(userId) {
-        const { data: cart, error } = await this.supabase
-            .from("carts")
-            .select(`
+  // Get cart with items
+  async getCart(userId) {
+    const { data: cart, error } = await this.adminClient
+      .from("carts")
+      .select(
+        `
                 *,
                 cart_items (
                     *,
@@ -94,113 +105,115 @@ class CartService {
                         id,
                         name,
                         img_url,
-                        stock_quantity
-                    ),
-                    seller:seller_id (
+                        stock_quantity,
+                        seller:seller_id (
                         seller_id,
                         stores:store_id (
                             store_name
                         )
                     )
+                    ),
                 )
-            `)
-            .eq("user_id", userId)
-            .maybeSingle()
+            `
+      )
+      .eq("user_id", userId)
+      .maybeSingle();
 
-        if (error) throw error
-        return cart
+    if (error) throw error;
+    return cart;
+  }
+
+  // Remove item from cart
+  async removeItem(userId, productId) {
+    const cart = await this.getOrCreateCart(userId);
+
+    const { error } = await this.adminClient
+      .from("cart_items")
+      .delete()
+      .eq("cart_id", cart.id)
+      .eq("product_id", productId);
+
+    if (error) throw error;
+    await this.updateCartTotal(cart.id);
+    return { message: "Item removed successfully" };
+  }
+
+  // Update item quantity
+  async updateItemQuantity(userId, productId, quantity) {
+    const cart = await this.getOrCreateCart(userId);
+
+    if (quantity <= 0) {
+      return await this.removeItem(userId, productId);
     }
 
-    // Remove item from cart
-    async removeItem(userId, productId) {
-        const cart = await this.getOrCreateCart(userId)
+    const { data, error } = await this.adminClient
+      .from("cart_items")
+      .update({ quantity })
+      .eq("cart_id", cart.id)
+      .eq("product_id", productId)
+      .select()
+      .single();
 
-        const { error } = await this.supabase
-            .from("cart_items")
-            .delete()
-            .eq("cart_id", cart.id)
-            .eq("product_id", productId)
+    if (error) throw error;
+    await this.updateCartTotal(cart.id);
+    return data;
+  }
 
-        if (error) throw error
-        await this.updateCartTotal(cart.id)
-        return { message: "Item removed successfully" }
-    }
+  // Update cart total price
+  async updateCartTotal(cartId) {
+    const { data: items, error: itemsError } = await this.adminClient
+      .from("cart_items")
+      .select("quantity, price")
+      .eq("cart_id", cartId);
 
-    // Update item quantity
-    async updateItemQuantity(userId, productId, quantity) {
-        const cart = await this.getOrCreateCart(userId)
+    if (itemsError) throw itemsError;
 
-        if (quantity <= 0) {
-            return await this.removeItem(userId, productId)
-        }
+    const totalPrice = items.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
 
-        const { data, error } = await this.supabase
-            .from("cart_items")
-            .update({ quantity })
-            .eq("cart_id", cart.id)
-            .eq("product_id", productId)
-            .select()
-            .single()
+    const { error: updateError } = await this.adminClient
+      .from("carts")
+      .update({ total_price: totalPrice })
+      .eq("id", cartId);
 
-        if (error) throw error
-        await this.updateCartTotal(cart.id)
-        return data
-    }
+    if (updateError) throw updateError;
+    return totalPrice;
+  }
 
-    // Update cart total price
-    async updateCartTotal(cartId) {
-        const { data: items, error: itemsError } = await this.supabase
-            .from("cart_items")
-            .select("quantity, price")
-            .eq("cart_id", cartId)
+  // Clear cart
+  async clearCart(userId) {
+    const cart = await this.getOrCreateCart(userId);
 
-        if (itemsError) throw itemsError
+    const { error } = await this.adminClient
+      .from("cart_items")
+      .delete()
+      .eq("cart_id", cart.id);
 
-        const totalPrice = items.reduce((acc, item) =>
-            acc + (item.price * item.quantity), 0
-        )
+    if (error) throw error;
 
-        const { error: updateError } = await this.supabase
-            .from("carts")
-            .update({ total_price: totalPrice })
-            .eq("id", cartId)
+    await this.adminClient
+      .from("carts")
+      .update({ total_price: 0, coupon: "" })
+      .eq("id", cart.id);
 
-        if (updateError) throw updateError
-        return totalPrice
-    }
+    return { message: "Cart cleared successfully" };
+  }
+  async applyCoupon(userId, couponCode) {
+    const cart = await this.getOrCreateCart(userId);
 
-    // Clear cart
-    async clearCart(userId) {
-        const cart = await this.getOrCreateCart(userId)
+    // TODO: Validate coupon from coupons table if exists
+    const { data, error } = await this.adminClient
+      .from("carts")
+      .update({ coupon: couponCode })
+      .eq("id", cart.id)
+      .select()
+      .single();
 
-        const { error } = await this.supabase
-            .from("cart_items")
-            .delete()
-            .eq("cart_id", cart.id)
-
-        if (error) throw error
-
-        await this.supabase
-            .from("carts")
-            .update({ total_price: 0, coupon: "" })
-            .eq("id", cart.id)
-
-        return { message: "Cart cleared successfully" }
-    }
-    async applyCoupon(userId, couponCode) {
-        const cart = await this.getOrCreateCart(userId)
-
-        // TODO: Validate coupon from coupons table if exists
-        const { data, error } = await this.supabase
-            .from("carts")
-            .update({ coupon: couponCode })
-            .eq("id", cart.id)
-            .select()
-            .single()
-
-        if (error) throw error
-        return data
-    }
+    if (error) throw error;
+    return data;
+  }
 }
 
-export default CartService
+export default CartService;

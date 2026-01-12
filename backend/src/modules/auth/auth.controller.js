@@ -1,6 +1,5 @@
 import { AuthService } from "./auth.service.js";
 import { catchAsyncError } from "../../utils/catchAsyncError.js";
-
 /**
  * @typedef {import("express").Request} Request
  * @typedef {import("express").Response} Response
@@ -59,6 +58,13 @@ export class AuthController {
 
     const result = await this.authService.login({ email, password });
 
+    res.cookie("authToken", result.token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
     res.status(200).json({
       status: "success",
       message: "Login successful",
@@ -109,7 +115,8 @@ export class AuthController {
   }
 
   async getProfile(req, res) {
-    const user = await this.authService.getUserProfile();
+    const { userId } = req.body;
+    const user = await this.authService.getUserProfile(userId);
     res.status(200).json({
       status: "success",
       message: "Profile retrieved successfully",

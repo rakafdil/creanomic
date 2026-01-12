@@ -23,7 +23,7 @@ const DescriptionTab = () => {
   return (
     <div className="text-gray-700 px-0 sm:px-6">
       {/* Deskripsi Panjang */}
-      <p className="self-stretch text-justify justify-start text-[#545454] text-lg sm:text-2xl md:text-3xl font-medium mb-10 lg:mb-20">
+      <p className="self-stretch text-justify justify-start text-[#545454] text-lg sm:text-xl font-medium mb-10 lg:mb-20">
         Pisang ini cocok dijadikan camilan sehat, pelengkap sarapan, atau bahan
         smoothie favorit Anda. Ditanam dengan perawatan terbaik, Sweet Banana
         bebas bahan pengawet dan dikemas dengan higienis untuk menjaga kualitas
@@ -32,7 +32,7 @@ const DescriptionTab = () => {
 
       {/* Button Keunggulan */}
       <div className="flex justify-center">
-        <button 
+        <button
           // Ukuran text dan padding lebih kecil di mobile
           className="bg-[#0A3917] text-white text-xl lg:text-2xl font-semibold px-10 py-2 rounded-xl lg:px-15 lg:py-3 lg:rounded-[20px] hover:bg-green-900 transition-all"
         >

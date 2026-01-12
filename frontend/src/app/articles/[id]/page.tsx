@@ -1,7 +1,7 @@
 // app/articles/[id]/page.tsx
 import { notFound } from "next/navigation";
 import ArticleDetail from "@/components/Articles/ArticleDetail";
-import { articles } from "@/app/data/articles";
+import { articles } from "@/data/articles";
 
 export default function ArticleDetailPage({
   params,

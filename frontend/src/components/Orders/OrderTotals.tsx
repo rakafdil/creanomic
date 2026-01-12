@@ -1,5 +1,5 @@
 import React from "react";
-import { Order } from "@/Types/Products";
+import { Order } from "@/types/Products";
 
 type OrderTotalsProps = Pick<Order, "shipping" | "taxes" | "total">;
 

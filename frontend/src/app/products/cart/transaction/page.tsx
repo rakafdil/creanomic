@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
-import { Order } from "@/Types/Products";
-import OrderConfirmationStatus from "@/app/components/Orders/OrderConfirmationStatus";
-import OrderSummaryBar from "@/app/components/Orders/OrderSummaryBar";
-import OrderDetailsCard from "@/app/components/Orders/OrderDetailsCard";
+import { Order } from "@/types/Products";
+import OrderConfirmationStatus from "@/components/Orders/OrderConfirmationStatus";
+import OrderSummaryBar from "@/components/Orders/OrderSummaryBar";
+import OrderDetailsCard from "@/components/Orders/OrderDetailsCard";
 import { IoIosArrowBack } from "react-icons/io";
-import BackButton from "@/app/components/Common/BackButton";
+import BackButton from "@/components/Common/BackButton";
 
 // --- Mock Data ---
 // Biasanya data ini akan datang dari API
