@@ -4,7 +4,6 @@ import SearchBar from "./SearchBar";
 import Image from "next/image";
 import Link from "next/link";
 
-// Contoh jumlah item di cart, bisa diganti dengan state/props
 const cartCount = 12;
 
 const Navbar = () => {
@@ -17,7 +16,7 @@ const Navbar = () => {
           href="/products"
           className="flex items-center h-auto cursor-pointer flex-shrink-0"
         >
-          <Logo width={36} height={36} className="lg:w-[40px] lg:h-[40px]" />
+          <Logo width={36} height={36} className="w-auto h-9 lg:h-10" />
         </Link>
 
         {/* Search Bar */}
@@ -28,21 +27,23 @@ const Navbar = () => {
         {/* Cart & Avatar */}
         <div className="flex items-center gap-3 lg:gap-4 flex-shrink-0">
           <Link href="/products/cart" className="cursor-pointer relative">
-            <div className="bg-[#0A3917] h-12 w-12 lg:h-15 lg:w-15 rounded-full p-2.5 lg:p-3 flex items-center justify-center relative">
-              <Image 
-                src="/assets/cart.svg" 
-                alt="cart" 
-                width={32} 
+            <div className="bg-[#0A3917] h-12 w-12 lg:h-15 lg:w-15 rounded-full p-2.5 lg:p-3 flex items-center justify-center relative hover:bg-green-800 hover:rotate-6 transition-all">
+              <Image
+                src="/assets/cart.svg"
+                alt="cart"
+                width={32}
                 height={32}
                 className="w-6 h-6 lg:w-8 lg:h-8"
               />
               {cartCount > 0 && (
-                <span className="absolute top-2 right-3 lg:top-2.5 lg:right-4 bg-[#F44336] text-white font-bold rounded-full w-3 h-3 flex items-center justify-center"></span>
+                <span className="absolute top-2 right-3 lg:top-2 lg:right-2.5 bg-[#F44336] text-white font-bold rounded-full w-4 h-4 flex items-center justify-center text-[8px]">
+                  {cartCount}
+                </span>
               )}
             </div>
           </Link>
           <Link href="/profile" className="cursor-pointer">
-            <div className="bg-[#083D57] h-12 w-12 lg:h-15 lg:w-15 rounded-full p-2.5 lg:p-3 flex items-center justify-center">
+            <div className="bg-[#083D57] h-12 w-12 lg:h-15 lg:w-15 rounded-full p-2.5 lg:p-3 flex items-center justify-center hover:-rotate-15 hover:bg-[#116d9b] transition-all">
               <Image
                 src="/assets/default-avatar.png"
                 alt="avatar"
@@ -71,10 +72,10 @@ const Navbar = () => {
           <div className="flex items-center gap-2.5">
             <Link href="/products/cart" className="cursor-pointer relative">
               <div className="bg-[#0A3917] h-10 w-10 rounded-full p-2 flex items-center justify-center relative">
-                <Image 
-                  src="/assets/cart.svg" 
-                  alt="cart" 
-                  width={20} 
+                <Image
+                  src="/assets/cart.svg"
+                  alt="cart"
+                  width={20}
                   height={20}
                   className="w-5 h-5"
                 />

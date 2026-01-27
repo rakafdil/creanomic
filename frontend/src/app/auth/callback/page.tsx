@@ -7,29 +7,55 @@ export default function OAuthCallback() {
   const router = useRouter();
 
   useEffect(() => {
-    // 1. Ambil token dari URL hash
-    if (window.location.hash) {
-      const params = new URLSearchParams(window.location.hash.slice(1));
-      const accessToken = params.get("access_token");
-      const refreshToken = params.get("refresh_token");
+    const hash = window.location.hash.slice(1);
+    const params = new URLSearchParams(hash);
 
-      // 2. Simpan token ke localStorage/sessionStorage
-      if (accessToken) {
-        localStorage.setItem("authToken", accessToken);
-      }
-      if (refreshToken) {
-        localStorage.setItem("refreshToken", refreshToken);
-      }
+    const accessToken = params.get("access_token");
+    const refreshToken = params.get("refresh_token");
+    const error = params.get("error");
+    const errorDescription = params.get("error_description");
 
-      // 3. Hapus token dari URL (agar aman)
-      window.history.replaceState(null, "", window.location.pathname);
+    console.log("Access token:", accessToken);
+    console.log("Refresh token:", refreshToken);
+    console.log("Error:", error);
 
-      // 4. Redirect ke halaman utama/products
-      router.push("/products");
-    } else {
-      // Jika tidak ada token, redirect ke login
+    if (error) {
+      console.error("OAuth error:", error, errorDescription);
       router.push("/auth?mode=login");
+      return;
     }
+
+    if (!accessToken) {
+      console.error("No access token found");
+      router.push("/auth?mode=login");
+      return;
+    }
+
+    fetch("http://localhost:5050/api/v1/auth/oauth/session", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        accessToken,
+        refreshToken,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to create session");
+        }
+        return response.json();
+      })
+      .then(() => {
+        window.history.replaceState(null, "", window.location.pathname);
+        router.push("/products");
+      })
+      .catch((error) => {
+        console.error("Session creation failed:", error);
+        router.push("/auth?mode=login");
+      });
   }, [router]);
 
   return (

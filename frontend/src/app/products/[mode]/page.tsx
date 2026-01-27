@@ -70,7 +70,7 @@ const AllProducts = () => {
 
               <button
                 onClick={() => goToPage(p)}
-                className={`flex justify-center items-center h-12 w-10 rounded-xl border
+                className={`flex justify-center items-center h-12 w-10 rounded-xl border cursor-pointer
             ${
               page === p
                 ? "bg-green-400 text-white"

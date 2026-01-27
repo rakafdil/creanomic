@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { ProductItem } from "@/services/product.service";
 
 const productsPath = [
   "banana-big.png",
@@ -10,7 +11,7 @@ const productsPath = [
   "banana-small-2.png",
   "banana-small-3.png",
 ];
-const ProductsDetail = () => {
+const ProductsDetail = ({ product }: { product?: ProductItem[] }) => {
   const [selectedWeight, setSelectedWeight] = useState("500 g");
   const [quantity, setQuantity] = useState(1);
   const weights = ["500 g", "1 Kg", "2 Kg", "5 Kg"];

@@ -9,9 +9,9 @@ import Link from "next/link";
 interface ProductDisplayProps {
   gridRow?: boolean;
   className?: string;
-  products: ProductItem[];
+  products?: ProductItem[];
   isLoading: boolean;
-  error?: string;
+  error?: Error;
   limit: number;
 }
 
@@ -47,7 +47,7 @@ const ProductsDisplay: React.FC<ProductDisplayProps> = ({
   if (error) {
     return (
       <div className="text-red-500 text-center py-10">
-        Gagal memuat produk: {error}
+        Gagal memuat produk: {error.message}
       </div>
     );
   }
@@ -80,7 +80,7 @@ const ProductsDisplay: React.FC<ProductDisplayProps> = ({
             imgHeight={150}
             name={product.name}
             quantity={`${product.unit_value} ${product.unit_label}`}
-            rating={product.review_summary?.average_rating || 0}
+            rating={product.review_summary || 0}
             price={product.price}
             action={(e) => {
               e?.stopPropagation();

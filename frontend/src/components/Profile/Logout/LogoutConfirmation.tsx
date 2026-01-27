@@ -10,9 +10,6 @@ export default function LogoutConfirmation() {
         method: "POST",
         credentials: "include",
       });
-      localStorage.removeItem("authToken");
-      sessionStorage.removeItem("authToken");
-      localStorage.removeItem("user");
     } catch (err) {
       console.error("Logout failed", err);
     }

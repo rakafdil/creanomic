@@ -2,20 +2,18 @@
 
 import React, { useEffect } from "react";
 import ProfileContainer from "@/components/Profile/ProfilePage";
-import Footer from "@/components/Common/Footer";
-import { useAuthToken } from "../../hook/auth";
+import { useAuth } from "../../hook/auth";
 import { useRouter } from "next/navigation";
 
 export default function ProductsPage() {
-  const { token, loading } = useAuthToken();
+  const { user, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !token) {
-      // redirect when we've finished checking and there's no token
+    if (!loading && !user) {
       router.push("/error");
     }
-  }, [loading, token, router]);
+  }, [loading, user, router]);
 
   if (loading) {
     return (
@@ -25,7 +23,6 @@ export default function ProductsPage() {
     );
   }
 
-  if (!token) router.push("/error");
   return (
     <div className="flex flex-col gap-8">
       <div className="w-full p-2.5 bg-gradient-to-r from-green-950 via-green-800 to-green-950 inline-flex justify-center items-center gap-2.5">

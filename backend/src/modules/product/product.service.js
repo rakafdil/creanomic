@@ -21,7 +21,7 @@ class ProductService {
                     )
                 )
             `,
-        { count: "exact" }
+        { count: "exact" },
       )
       .range(filters.start, filters.end);
     // Apply filters if provided
@@ -67,8 +67,17 @@ class ProductService {
                         store_name,
                         description
                     )
+                ),
+                reviews (
+                    rating, 
+                    comment,
+                    created_at,
+                    users:user_id (
+                      username, 
+                      profile_picture
+                    )
                 )
-            `
+            `,
       )
       .eq("id", id)
       .single();
@@ -90,7 +99,7 @@ class ProductService {
                         seller_id
                     )
                 )
-            `
+            `,
       )
       .eq("store_id", storeId);
 
@@ -111,7 +120,7 @@ class ProductService {
                         store_name
                     )
                 )
-            `
+            `,
       )
       .or(`name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
 

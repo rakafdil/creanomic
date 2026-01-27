@@ -3,6 +3,7 @@ import { useState, type MouseEvent, type FormEvent } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { BASE_URL } from "@/app/page";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,20 +20,17 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(
-        "https://api-growthwell.vercel.app/api/v1/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        }
-      );
+      const response = await fetch(`${BASE_URL}auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
 
       const data = await response.json();
 
@@ -42,13 +40,6 @@ export default function LoginPage() {
 
       if (!response.ok) {
         throw new Error(data.message || "Login failed");
-      }
-
-      // Simpan token jika diperlukan
-      if (rememberMe && data.data.token) {
-        localStorage.setItem("authToken", data.data.token);
-      } else if (data.data.token) {
-        sessionStorage.setItem("authToken", data.data.token);
       }
 
       // Simpan data user
@@ -65,8 +56,7 @@ export default function LoginPage() {
   const handleGoogleSignIn = async () => {
     try {
       // Redirect ke endpoint Google Sign-In backend
-      window.location.href =
-        "https://api-growthwell.vercel.app/api/v1/auth/google-signin";
+      window.location.href = `${BASE_URL}auth/google-signin`;
     } catch (err: any) {
       setError(err.message || "Failed to initiate Google sign-in");
     }

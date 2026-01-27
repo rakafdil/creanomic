@@ -7,13 +7,13 @@ class AuthService {
 
     this.adminClient = createClient(
       process.env.SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY
+      process.env.SUPABASE_SERVICE_ROLE_KEY,
     );
   }
 
   async signup(
     userData,
-    redirectTo = "https://creanomic.vercel.app/auth/callback"
+    redirectTo = "https://creanomic.vercel.app/auth/callback",
   ) {
     const { email, password, confirmPassword, username, firstName, lastName } =
       userData;
@@ -57,18 +57,13 @@ class AuthService {
   }
 
   async loginWithGoogle(
-    redirectTo = "https://creanomic.vercel.app/auth/callback"
+    redirectTo = "https://creanomic.vercel.app/auth/callback",
   ) {
     const { data, error } = await this.supabase.auth.signInWithOAuth({
       provider: "google",
-      options: {
-        redirectTo,
-      },
+      options: { redirectTo },
     });
-
     if (error) throw new AppError(error.message, error.status || 400);
-
-    // Return the URL to controller
     return { url: data.url };
   }
 
@@ -155,7 +150,7 @@ class AuthService {
       .select("*")
       .eq("id", userId)
       .single();
-
+    console.log(error);
     if (error) throw new AppError(error.message, error.status || 400);
 
     return {
@@ -164,7 +159,7 @@ class AuthService {
       username: user.username,
       first_name: user.first_name,
       last_name: user.last_name,
-      avatar_url: user.avatar_url,
+      profile_picture: user.profile_picture,
       phone: user.phone,
       address: user.address,
       is_seller: user.is_seller,
@@ -182,7 +177,7 @@ class AuthService {
       email,
       {
         redirectTo: "https://api-growthwell.vercel.app/auth/reset-password",
-      }
+      },
     );
 
     if (error) throw new AppError(error.message, error.status || 400);
@@ -198,10 +193,77 @@ class AuthService {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      }
+      },
     );
     if (error) throw new AppError(error.message, error.status || 400);
     return { message: "Password reset is succes" };
+  }
+
+  async handleOAuthUser(authUser) {
+    if (!authUser || !authUser.id) {
+      throw new AppError("Invalid user data from OAuth", 400);
+    }
+
+    const { data: existingUser, error: fetchError } = await this.adminClient
+      .from("users")
+      .select("id, username, first_name, last_name")
+      .eq("id", authUser.id)
+      .single();
+
+    if (existingUser && !fetchError) {
+      return {
+        user: existingUser,
+        isNewUser: false,
+      };
+    }
+
+    const userMetadata = authUser.user_metadata || {};
+    const email = authUser.email;
+
+    const username =
+      userMetadata.preferred_username ||
+      email?.split("@")[0] ||
+      `user_${authUser.id.slice(0, 8)}`;
+
+    const fullName = userMetadata.full_name || userMetadata.name || "";
+    const nameParts = fullName.split(" ");
+    const firstName = userMetadata.given_name || nameParts[0] || "User";
+    const lastName =
+      userMetadata.family_name || nameParts.slice(1).join(" ") || "";
+
+    const { data: newUser, error: insertError } = await this.adminClient
+      .from("users")
+      .insert({
+        id: authUser.id,
+        username,
+        first_name: firstName,
+        last_name: lastName,
+        profile_picture:
+          userMetadata.avatar_url || userMetadata.picture || null,
+        email_verified: authUser.email_confirmed_at ? true : false,
+      })
+      .select(
+        "id, username, first_name, last_name, profile_picture, created_at",
+      )
+      .single();
+
+    if (insertError) {
+      if (insertError.code === "23505") {
+        const { data: user } = await this.adminClient
+          .from("users")
+          .select("id, username, first_name, last_name")
+          .eq("id", authUser.id)
+          .single();
+
+        return { user, isNewUser: false };
+      }
+      throw new AppError(insertError.message, 500);
+    }
+
+    return {
+      user: newUser,
+      isNewUser: true,
+    };
   }
 
   async logout() {

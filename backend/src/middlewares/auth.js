@@ -4,7 +4,7 @@ export async function supabaseAuth(req, res, next) {
   const authHeader = req.headers.authorization;
   // const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
 
-  const token = req.cookies.authToken;
+  const token = req.cookies?.authToken;
 
   if (!token) {
     return res.status(401).json({ error: "Unauthorized: No token provided" });
@@ -20,7 +20,7 @@ export async function supabaseAuth(req, res, next) {
             Authorization: `Bearer ${token}`,
           },
         },
-      }
+      },
     );
 
     const { data: user, error } = await supabase.auth.getUser();

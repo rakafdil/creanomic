@@ -10,7 +10,6 @@ export default function UnauthorizedPage() {
         <div className="flex flex-col md:flex-row items-center gap-8">
           <div className="flex-shrink-0">
             <div className="w-40 h-40 rounded-full bg-gradient-to-tr from-sky-500 via-indigo-500 to-violet-600 flex items-center justify-center shadow-lg ring-1 ring-white/10">
-              {/* lock icon */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -63,25 +62,8 @@ export default function UnauthorizedPage() {
                 Sign in
               </Link>
             </div>
-
-            <div className="mt-6 text-xs text-slate-300/80">
-              <p>
-                Tips: kalau kamu admin, cek token di{" "}
-                <code className="bg-white/5 px-1 rounded">localStorage</code>{" "}
-                atau hub admin untuk update permission.
-              </p>
-            </div>
           </div>
         </div>
-
-        <footer className="mt-8 pt-6 border-t border-white/6 text-center text-xs text-slate-400">
-          <span>
-            Need help?{" "}
-            <Link href="/support" className="underline">
-              Contact support
-            </Link>
-          </span>
-        </footer>
       </div>
     </main>
   );

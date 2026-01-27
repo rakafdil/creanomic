@@ -3,6 +3,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useState, type MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { BASE_URL } from "@/app/page";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -45,7 +46,7 @@ export default function RegisterPage() {
 
   // Function to split full name into first and last name
   const splitFullName = (
-    fullName: string
+    fullName: string,
   ): { firstName: string; lastName: string } => {
     const nameParts = fullName.trim().split(/\s+/);
 
@@ -116,17 +117,14 @@ export default function RegisterPage() {
         lastName: lastName,
       };
 
-      const response = await fetch(
-        "https://api-growthwell.vercel.app/api/v1/auth/signup",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(requestData),
-        }
-      );
+      const response = await fetch(`${BASE_URL}auth/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(requestData),
+      });
 
       const data = await response.json();
 
@@ -136,13 +134,8 @@ export default function RegisterPage() {
 
       // Show success message
       setSuccessMessage(
-        "Registration successful! Please check your email to verify your account."
+        "Registration successful! Please check your email to verify your account.",
       );
-
-      // Optional: Save token if remember me is checked
-      if (rememberMe && data.data.token) {
-        localStorage.setItem("authToken", data.data.token);
-      }
 
       // Redirect to login after 2 seconds
       setTimeout(() => {
@@ -157,8 +150,7 @@ export default function RegisterPage() {
 
   const handleGoogleSignIn = async () => {
     try {
-      window.location.href =
-        "https://api-growthwell.vercel.app/api/v1/auth/google-signin";
+      window.location.href = `${BASE_URL}/auth/google-signin`;
     } catch (err: any) {
       setError(err.message || "Failed to initiate Google sign-in");
     }

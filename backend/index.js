@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { dbConnection } from "./src/database/dbConnection.js";
 import { bootstrap } from "./src/bootstrap.js";
@@ -9,14 +10,15 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(
   cors({
     origin: ["https://creanomic.vercel.app", "http://localhost:3000", "*"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
     credentials: true,
-  })
+  }),
 );
 
 app.get("/", (req, res) => {

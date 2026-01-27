@@ -8,6 +8,7 @@ import ConditionalFooter from "@/components/Common/ConditionalFooter";
 import ConditionalHeader from "@/components/Common/ConditionalHeader";
 import "leaflet/dist/leaflet.css";
 import "maplibre-gl/dist/maplibre-gl.css";
+import Providers from "@/components/tanstackProvider";
 
 const inter = Inter({
   variable: "--font-geist-inter",
@@ -37,11 +38,13 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${instrumentSans.variable} antialiased min-h-screen`}
       >
-        <div className="max-w-[1920px] mx-auto w-full flex flex-col min-h-screen">
-          <ConditionalHeader />
-          {children}
-          <ConditionalFooter />
-        </div>
+        <Providers>
+          <div className="max-w-[1920px] mx-auto w-full flex flex-col min-h-screen">
+            <ConditionalHeader />
+            {children}
+            <ConditionalFooter />
+          </div>
+        </Providers>
       </body>
     </html>
   );

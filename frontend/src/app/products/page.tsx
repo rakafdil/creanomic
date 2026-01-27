@@ -11,7 +11,7 @@ import Footer from "@/components/Common/Footer";
 import { useProduct } from "@/hook/useProduct";
 
 export default function ProductsPage() {
-  const { data, products, isLoading, error, limit, page } = useProduct();
+  const { data, isLoading, error, limit, page } = useProduct();
 
   return (
     <div className="flex flex-col gap-5 sm:gap-6 lg:gap-8">
@@ -37,7 +37,7 @@ export default function ProductsPage() {
 
         <ProductsDisplay
           limit={limit}
-          products={products}
+          products={data?.data}
           isLoading={isLoading}
           error={error ?? undefined}
         />
@@ -58,7 +58,7 @@ export default function ProductsPage() {
         </div>
         <ProductsDisplay
           limit={limit}
-          products={products}
+          products={data?.data}
           isLoading={isLoading}
           error={error ?? undefined}
           gridRow={true}
@@ -78,7 +78,7 @@ export default function ProductsPage() {
         </div>
         <ProductsDisplay
           limit={limit}
-          products={products}
+          products={data?.data}
           isLoading={isLoading}
           error={error ?? undefined}
           gridRow={true}

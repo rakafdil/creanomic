@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { FaStar } from "react-icons/fa";
 import { AiFillPlusCircle } from "react-icons/ai";
@@ -24,15 +24,22 @@ const ProductCard: React.FC<ProductCardProps> = ({
   price,
   action,
 }) => {
+  const [src, setSrc] = useState(imgUrl);
   return (
-    <div className="bg-[#fafafa] rounded-2xl hover:shadow-md flex flex-col h-80 gap-4 duration-300 transition-all hover:scale-101 cursor-pointer border-1 border-gray-300/20">
+    <div
+      className="bg-[#fafafa] rounded-2xl hover:shadow-md flex flex-col h-80 gap-4 duration-300 transition-all hover:scale-101 cursor-pointer border-1 border-gray-300/20"
+      title={name}
+    >
       <div className="flex relative w-full justify-center h-40 bg-[#f6fff6] rounded-t-2xl">
         <Image
-          src={imgUrl}
+          src={src}
+          onError={() => setSrc("/assets/placeholder.png")}
           alt={name}
           width={imgWidth}
           height={imgHeight}
-          className={`object-cover rounded-xl h-40 w-full`}
+          className={`${
+            src !== imgUrl ? "object-contain" : "object-cover"
+          } rounded-xl h-40 w-full`}
         />
       </div>
 

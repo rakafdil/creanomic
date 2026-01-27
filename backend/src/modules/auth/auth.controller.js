@@ -15,6 +15,10 @@ export class AuthController {
   constructor(supabase) {
     this.supabase = supabase;
     this.authService = new AuthService(supabase);
+    this.directUrl =
+      process.env.NODE_ENV === "production"
+        ? null
+        : "http://localhost:3000/auth/callback";
 
     const methods = [
       "signup",
@@ -25,6 +29,7 @@ export class AuthController {
       "getProfile",
       "logout",
       "loginWithGoogle",
+      "oauthSession",
     ];
 
     methods.forEach((method) => {
@@ -37,14 +42,16 @@ export class AuthController {
     const { email, password, confirmPassword, username, firstName, lastName } =
       req.body;
 
-    const result = await this.authService.signup({
+    const userData = {
       email,
       password,
       confirmPassword,
       username,
       firstName,
       lastName,
-    });
+    };
+
+    const result = await this.authService.signup(userData, this.directUrl);
 
     res.status(201).json({
       status: "success",
@@ -73,16 +80,8 @@ export class AuthController {
   }
 
   async loginWithGoogle(req, res) {
-    const { url } = await this.authService.loginWithGoogle();
-    // Option 1: Return URL to frontend
-    // res.status(200).json({
-    //   status: "success",
-    //   message: "Google OAuth URL generated",
-    //   data: { url },
-    // });
-
-    // Option 2: Redirect directly (uncomment if you want redirect from backend)
-    if (url) return res.redirect(url);
+    const { url } = await this.authService.loginWithGoogle(this.directUrl);
+    return res.redirect(url);
   }
 
   async confirmEmail(req, res) {
@@ -106,7 +105,7 @@ export class AuthController {
     const { newPassword, accessToken } = req.body;
     const result = await this.authService.handleResetPassword(
       newPassword,
-      accessToken
+      accessToken,
     );
     res.status(200).json({
       status: "success",
@@ -115,7 +114,7 @@ export class AuthController {
   }
 
   async getProfile(req, res) {
-    const { userId } = req.body;
+    const userId = req.user.id;
     const user = await this.authService.getUserProfile(userId);
     res.status(200).json({
       status: "success",
@@ -133,30 +132,78 @@ export class AuthController {
   }
 
   async callback(req, res) {
-    const code = req.query.code;
-    const next = req.query.next ?? "/";
-    if (code) {
-      const supabase = createServerClient(
-        process.env.SUPABASE_URL,
-        process.env.SUPABASE_PUBLISHABLE_KEY,
-        {
-          cookies: {
-            getAll() {
-              return parseCookieHeader(context.req.headers.cookie ?? "");
-            },
-            setAll(cookiesToSet) {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                context.res.appendHeader(
-                  "Set-Cookie",
-                  serializeCookieHeader(name, value, options)
-                )
-              );
-            },
-          },
-        }
-      );
-      await supabase.auth.exchangeCodeForSession(code);
+    const { code } = req.query;
+
+    if (!code) {
+      return res.status(400).json({ message: "Missing OAuth code" });
     }
-    res.redirect(303, `/${next.slice(1)}`);
+
+    const { data, error } =
+      await this.supabase.auth.exchangeCodeForSession(code);
+
+    if (error || !data.session) {
+      return res.status(401).json({ message: "OAuth failed" });
+    }
+
+    await this.authService.handleOAuthUser(data.user);
+
+    const accessToken = data.session.access_token;
+
+    res.cookie("authToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    return res.redirect(
+      process.env.NODE_ENV === "production"
+        ? "https://creanomic.vercel.app/profile"
+        : "http://localhost:3000/profile",
+    );
+  }
+
+  async oauthSession(req, res) {
+    const { accessToken, refreshToken } = req.body;
+
+    if (!accessToken) {
+      return res.status(400).json({ message: "Missing access token" });
+    }
+
+    try {
+      const {
+        data: { user },
+        error: userError,
+      } = await this.supabase.auth.getUser(accessToken);
+
+      if (userError || !user) {
+        return res.status(401).json({ message: "Invalid access token" });
+      }
+
+      const result = await this.authService.handleOAuthUser(user);
+
+      res.cookie("authToken", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+
+      return res.status(200).json({
+        status: "success",
+        message: result.isNewUser
+          ? "User created successfully"
+          : "User logged in successfully",
+        data: {
+          user: result.user,
+          isNewUser: result.isNewUser,
+        },
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: "error",
+        message: error.message || "Failed to process OAuth session",
+      });
+    }
   }
 }
