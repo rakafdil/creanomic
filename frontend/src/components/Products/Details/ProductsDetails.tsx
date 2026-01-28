@@ -1,26 +1,125 @@
 "use client";
+import axios, { AxiosError } from "axios";
 import Image from "next/image";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { ProductItem } from "@/services/product.service";
+import { formatRupiah } from "@/helper/currencyFormat";
+import { useMutation } from "@tanstack/react-query";
+import { BASE_URL } from "@/app/page";
+import { FaSpinner } from "react-icons/fa";
 
-const productsPath = [
-  "banana-big.png",
-  "banana-small-1.png",
-  "banana-small-2.png",
-  "banana-small-3.png",
-];
-const ProductsDetail = ({ product }: { product?: ProductItem[] }) => {
-  const [selectedWeight, setSelectedWeight] = useState("500 g");
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import ErrorModal from "@/components/Common/ErrorModal";
+import { StarRating } from "@/components/Common/StarRating";
+
+export function useAddToCart() {
+  return useMutation({
+    mutationFn: async ({
+      productId,
+      quantity,
+    }: {
+      productId?: number;
+      quantity?: number;
+    }) => {
+      const res = await axios.post(
+        `${BASE_URL}cart`,
+        { productId, quantity },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      return res.data;
+    },
+  });
+}
+
+const ProductsDetail = ({ product }: { product?: ProductItem }) => {
+  const productsPath = [product?.img_url];
+
+  const weights = [`${product?.unit_value} ${product?.unit_label}`];
+  const [selectedWeight, setSelectedWeight] = useState(weights[0]);
   const [quantity, setQuantity] = useState(1);
-  const weights = ["500 g", "1 Kg", "2 Kg", "5 Kg"];
   const [bigImage, setBigImage] = useState(productsPath[0]);
-
+  const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
+
+  const { mutate: addToCart, error, isPending, isSuccess } = useAddToCart();
+
   return (
-    // Default: grid-cols-1. lg:grid-cols-2: dua kolom di desktop. py-8 (mobile) vs py-12 (desktop)
     <section className="w-full mx-auto py-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 font-sans">
+      {modalOpen && (
+        <AlertDialog defaultOpen>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Are You Sure To Add {product?.name} to Your Cart?
+              </AlertDialogTitle>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogAction
+                className="cursor-pointer !bg-[#0A3917] !hover:bg-green-900"
+                onClick={() => {
+                  addToCart({ productId: product?.id, quantity: quantity });
+                  setModalOpen(false);
+                }}
+              >
+                Yes
+              </AlertDialogAction>
+              <AlertDialogAction
+                className="cursor-pointer !bg-red-500 !hover:bg-green-900"
+                onClick={() => setModalOpen(false)}
+              >
+                No
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
+      {error && <ErrorModal error={error} />}
+      {isSuccess && (
+        <AlertDialog defaultOpen>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Item Has Been Added To Your Cart
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                {product?.name} {quantity} x {selectedWeight}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogAction
+                className="cursor-pointer !bg-[#ffffff] !text-black border-2"
+                onClick={() => router.push("/products/")}
+              >
+                Back Shopping
+              </AlertDialogAction>
+              <AlertDialogAction
+                className="cursor-pointer !bg-[#0A3917] !hover:bg-green-900"
+                onClick={() => router.push("/products/cart")}
+              >
+                Go To Cart
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
       <div>
         <div className="w-full aspect-square rounded-xl lg:rounded-2xl border border-gray-200 overflow-hidden flex items-center justify-center">
           <motion.div
@@ -31,11 +130,11 @@ const ProductsDetail = ({ product }: { product?: ProductItem[] }) => {
             className="w-full h-full flex items-center justify-center"
           >
             <Image
-              src={`/assets/products/${bigImage}`}
-              alt="Sweet Banana"
+              src={`${bigImage}`}
+              alt="product"
               width={500}
               height={500}
-              className="object-contain w-full h-full"
+              className="w-full h-full object-cover"
               priority
             />
           </motion.div>
@@ -53,8 +152,8 @@ const ProductsDetail = ({ product }: { product?: ProductItem[] }) => {
               onClick={() => setBigImage(img)}
             >
               <Image
-                src={`/assets/products/${img}`}
-                alt={`Banana ${i + 1}`}
+                src={`${img}`}
+                alt={`product ${i + 1}`}
                 width={100}
                 height={100}
                 className="object-cover w-full h-full"
@@ -65,49 +164,34 @@ const ProductsDetail = ({ product }: { product?: ProductItem[] }) => {
       </div>
 
       <div className="flex flex-col justify-start">
-        {/* Kategori */}
         <p className="text-[#0A3917] font-medium text-lg lg:text-2xl mb-2 lg:mb-5">
-          Fruits
+          {product?.categories.name}
         </p>
-        {/* Nama Produk */}
         <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-3 lg:mb-5">
-          Sweet Banana
+          {product?.name}
         </h1>
 
-        {/* Rating */}
         <div className="flex items-center gap-2 mb-4 lg:mb-5">
-          {/* Ukuran SVG bintang lebih kecil di mobile */}
-          {Array.from({ length: 5 }).map((_, i) => (
-            <svg
-              key={i}
-              xmlns="http://www.w3.org/2000/svg"
-              fill="#FFD700"
-              viewBox="0 0 24 24"
-              width="20" // Mobile
-              height="20" // Mobile
-              className="lg:w-[30px] lg:h-[30px]" // Desktop
-            >
-              <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.781 1.402 8.176L12 18.896l-7.336 3.857 1.402-8.176L.132 9.21l8.2-1.192z" />
-            </svg>
-          ))}
+          <div className="relative flex">
+            <StarRating rating={product?.review_summary} className="!gap-1" />
+          </div>
           <span className="text-gray-700 font-medium text-base lg:text-xl">
-            5.0
+            {product?.review_summary?.toFixed(1) || "0.0"}
           </span>
-          <span className="text-gray-400 text-sm lg:text-lg">(255 Review)</span>
+          <span className="text-gray-400 text-sm lg:text-lg">
+            ({product?.reviews?.length || 0} Review
+            {product?.reviews?.length !== 1 ? "s" : ""})
+          </span>
         </div>
 
-        {/* Harga */}
         <p className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4 lg:mb-3">
-          Rp 15.000
+          {formatRupiah(product?.price)}
         </p>
 
-        {/* Deskripsi Singkat */}
         <p className="text-sm lg:text-base text-[#595959] leading-relaxed mb-6 lg:mb-15">
-          Pisang Cavendish premium dengan rasa manis pas dan tekstur lembut.
-          Pilihan tepat untuk camilan sehat dan penambah energi instan.
+          {product?.description}
         </p>
 
-        {/* Pilihan Berat */}
         <div className="mb-6">
           <p className="font-semibold text-gray-800 text-sm lg:text-base mb-2">
             Weight
@@ -117,7 +201,6 @@ const ProductsDetail = ({ product }: { product?: ProductItem[] }) => {
               <motion.button
                 key={w}
                 onClick={() => setSelectedWeight(w)}
-                // Ukuran padding/text lebih kecil di mobile
                 className={`px-4 py-1.5 lg:px-5 lg:py-2 rounded-full border text-xs lg:text-sm font-medium transition-all cursor-pointer ${
                   selectedWeight === w
                     ? "bg-[#0A3917] text-white border-green-700"
@@ -155,18 +238,21 @@ const ProductsDetail = ({ product }: { product?: ProductItem[] }) => {
             </motion.button>
           </div>
 
-          {/* Add To Cart Button */}
           <motion.button
-            // Padding/text lebih kecil di mobile
-            className="bg-[#0A3917] hover:bg-green-900 text-white font-semibold py-2 px-6 lg:py-3 lg:px-8 rounded-full text-sm lg:text-base transition-all cursor-pointer"
+            className={`bg-[#0A3917] hover:bg-green-900 text-white font-semibold py-2 px-6 lg:py-3 lg:px-8 rounded-full text-sm lg:text-base transition-all ${isPending ? "cursor-not-allowed" : "cursor-pointer"}`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
+            onClick={() => {
+              setModalOpen(true);
+            }}
           >
-            Add To Cart
+            {isPending ? (
+              <FaSpinner className="animate-spin w-full" />
+            ) : (
+              "Add To Cart"
+            )}
           </motion.button>
-          {/* Buy Now Button */}
           <motion.button
-            // Padding/text lebih kecil di mobile
             className="bg-[#D0F348] hover:bg-[#B3E03B] text-black font-semibold py-2 px-6 lg:py-3 lg:px-8 rounded-full text-sm lg:text-base transition-all cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
@@ -176,15 +262,14 @@ const ProductsDetail = ({ product }: { product?: ProductItem[] }) => {
           </motion.button>
         </div>
 
-        {/* SKU & Tags */}
         <div className="text-sm lg:text-lg text-gray-600 space-y-1 lg:space-y-2">
           <p>
             <span className="font-semibold text-gray-800">SKU:</span>{" "}
             BNFR93748PQR
           </p>
           <p>
-            <span className="font-semibold text-gray-800">Tags:</span> Pisang,
-            Kuning, Manis, Buah
+            <span className="font-semibold text-gray-800">Tags:</span>{" "}
+            {product?.categories.description}
           </p>
         </div>
       </div>

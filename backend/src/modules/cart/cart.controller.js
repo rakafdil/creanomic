@@ -1,4 +1,3 @@
-//cart.controller.js
 import { catchAsyncError } from "../../utils/catchAsyncError.js";
 import { AppError } from "../../utils/AppError.js";
 import CartService from "./cart.service.js";
@@ -9,24 +8,20 @@ const addToCart = (supabase) =>
     const cartService = new CartService(supabase);
     const productService = new ProductService(supabase);
 
-    const { userId, product } = req.body;
+    const { productId, quantity } = req.body;
+    const userId = req.user.id;
 
-    const productData = await productService.getProductById(product.productId);
+    const productData = await productService.getProductById(productId);
 
-    if (
-      !userId ||
-      !product.productId ||
-      !product.quantity ||
-      !productData.price
-    ) {
+    if (!userId || !productData.price) {
       return next(new AppError("Missing required fields", 400));
     }
 
     const data = await cartService.addItem(
       userId,
-      product.productId,
-      product.quantity,
-      productData.price
+      productId,
+      quantity,
+      productData.price,
     );
     res.status(201).json({
       message: "Item added to cart successfully",
@@ -37,7 +32,7 @@ const addToCart = (supabase) =>
 const getCart = (supabase) =>
   catchAsyncError(async (req, res, next) => {
     const cartService = new CartService(supabase);
-    const { userId } = req.query;
+    const userId = req.user.id;
 
     if (!userId) {
       return next(new AppError("UserId is required", 400));
@@ -50,7 +45,8 @@ const getCart = (supabase) =>
 const removeFromCart = (supabase) =>
   catchAsyncError(async (req, res, next) => {
     const cartService = new CartService(supabase);
-    const { userId, productId } = req.body;
+    const { productId } = req.body;
+    const userId = req.user.id;
 
     if (!userId) {
       return next(new AppError("UserId is required", 400));
@@ -63,16 +59,17 @@ const removeFromCart = (supabase) =>
 const updateCartItem = (supabase) =>
   catchAsyncError(async (req, res, next) => {
     const cartService = new CartService(supabase);
-    const { userId } = req.body;
+    const userId = req.user.id;
+    const { productId, quantity } = req.body;
 
-    if (!userId || product.quantity === undefined) {
+    if (!userId || quantity === undefined) {
       return next(new AppError("UserId and quantity are required", 400));
     }
 
     const data = await cartService.updateItemQuantity(
       userId,
-      product.productId,
-      product.quantity
+      productId,
+      quantity,
     );
     res.json({ message: "Cart item updated successfully", data });
   });
@@ -80,7 +77,7 @@ const updateCartItem = (supabase) =>
 const clearCart = (supabase) =>
   catchAsyncError(async (req, res, next) => {
     const cartService = new CartService(supabase);
-    const { userId } = req.body;
+    const userId = req.user.id;
 
     if (!userId) {
       return next(new AppError("UserId is required", 400));
@@ -93,7 +90,8 @@ const clearCart = (supabase) =>
 const applyCoupon = (supabase) =>
   catchAsyncError(async (req, res, next) => {
     const cartService = new CartService(supabase);
-    const { userId, couponCode } = req.body;
+    const { couponCode } = req.body;
+    const userId = req.user.id;
 
     if (!userId || !couponCode) {
       return next(new AppError("UserId and couponCode are required", 400));

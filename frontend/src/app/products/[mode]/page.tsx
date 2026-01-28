@@ -16,7 +16,8 @@ const AllProducts = () => {
   const params = useParams<{ mode: string }>();
   const title = modeTitleMap[params.mode];
 
-  const { data, products, isLoading, error, limit, page } = useProduct();
+  const { data, isLoading, error, limit, page } = useProduct();
+  const products = data?.data ?? [];
 
   const totalPages = data?.totalPages ?? 0;
   const isMany = totalPages > 6;

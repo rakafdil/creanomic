@@ -31,17 +31,22 @@ export default function OAuthCallback() {
       return;
     }
 
-    fetch("http://localhost:5050/api/v1/auth/oauth/session", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
+    fetch(
+      process.env.NODE_ENV === "production"
+        ? "https://api-growthwell.vercel.app/api/v1/"
+        : "http://localhost:5050/api/v1/",
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          accessToken,
+          refreshToken,
+        }),
       },
-      body: JSON.stringify({
-        accessToken,
-        refreshToken,
-      }),
-    })
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to create session");

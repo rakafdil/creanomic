@@ -1,7 +1,12 @@
-// product.service.js
+import { createClient } from "@supabase/supabase-js";
+
 class ProductService {
   constructor(supabase) {
     this.supabase = supabase;
+    this.adminClient = createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY,
+    );
   }
 
   // Get all products with seller and store information
@@ -19,6 +24,10 @@ class ProductService {
                         store_name,
                         description
                     )
+                ),
+                categories (
+                  name,
+                  description
                 )
             `,
         { count: "exact" },
@@ -54,7 +63,7 @@ class ProductService {
 
   // Get product by ID
   async getProductById(id) {
-    const { data, error } = await this.supabase
+    const { data, error } = await this.adminClient
       .from("products")
       .select(
         `
@@ -72,10 +81,16 @@ class ProductService {
                     rating, 
                     comment,
                     created_at,
-                    users:user_id (
-                      username, 
-                      profile_picture
+                    users!reviews_user_id_fkey (
+                        username,
+                        profile_picture,
+                        first_name,
+                        last_name
                     )
+                ),
+                categories (
+                  name,
+                  description
                 )
             `,
       )
@@ -83,6 +98,7 @@ class ProductService {
       .single();
 
     if (error) throw error;
+    // console.log(data);
     return data;
   }
 

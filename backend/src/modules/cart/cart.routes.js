@@ -9,11 +9,11 @@ import {
   clearCart,
   applyCoupon,
 } from "./cart.controller.js";
-import { supabaseAuth, verifyUser } from "../../middlewares/auth.js";
+import { supabaseAuth } from "../../middlewares/auth.js";
 
 export default (supabase) => {
   const router = express.Router();
-  router.use(supabaseAuth, verifyUser);
+  router.use(supabaseAuth);
 
   router.post("/", addToCart(supabase));
   router.get("/", getCart(supabase));

@@ -5,6 +5,10 @@ import TabsHeader from "./TabsHeader";
 import DescriptionTab from "./DescriptionTab";
 import AdditionalInfoTab from "./AdditionalInfoTab";
 import ReviewTab from "./ReviewTab";
+import { ProductItem } from "@/services/product.service";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { BASE_URL } from "@/app/page";
 
 const tabVariants = {
   initial: { opacity: 0, y: 20 },
@@ -12,19 +16,36 @@ const tabVariants = {
   exit: { opacity: 0, y: -20 },
 };
 
-const ProductTabs = () => {
+export interface ReviewPayload {
+  rating: number;
+  comment?: string;
+}
+
+const ProductTabs = ({ product }: { product?: ProductItem }) => {
   const [activeTab, setActiveTab] = useState<"description" | "info" | "review">(
-    "description"
+    "description",
   );
 
+  const insertReview = useMutation({
+    mutationFn: async (data: ReviewPayload) => {
+      const res = await axios.post(
+        `${BASE_URL}reviews/${product?.id}`,
+        { rating: data.rating, comment: data.comment },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      return res.data;
+    },
+  });
+
   return (
-    // Menggunakan padding vertikal lebih kecil (py-4) di mobile, dan py-6 untuk desktop (md:py-6)
     <section className="w-full mx-auto py-4 md:py-6 px-4 sm:px-6 md:px-0">
-      {/* Header Tabs (asumsi TabsHeader sudah responsif berdasarkan modifikasi sebelumnya) */}
       <TabsHeader activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      {/* Content */}
-      {/* Margin top lebih kecil (mt-4) di mobile, dan mt-6 untuk desktop (md:mt-6) */}
       <div className="mt-4 md:mt-6 min-h-[200px]">
         <AnimatePresence mode="wait">
           {activeTab === "description" && (
@@ -60,7 +81,11 @@ const ProductTabs = () => {
               exit="exit"
               transition={{ duration: 0.3 }}
             >
-              <ReviewTab />
+              <ReviewTab
+                add_review={insertReview}
+                reviews={product?.reviews}
+                review_sum={product?.review_summary}
+              />
             </motion.div>
           )}
         </AnimatePresence>

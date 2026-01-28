@@ -23,6 +23,10 @@ export interface ProductItem {
   unit_label: string;
   seller: Seller;
   reviews?: Review[];
+  categories: {
+    name: string;
+    description: string;
+  };
 }
 
 export interface ProductListResponse {
@@ -38,19 +42,25 @@ export interface ProductListResponse {
 
 export interface Review {
   rating: number;
-  comment: string;
+  comment?: string;
   created_at: string;
   users: {
     username: string;
     profile_picture: string;
+    first_name: string;
+    last_name: string;
   };
+}
+
+export interface ProductResponse {
+  message: string;
+  data: ProductItem;
 }
 
 export const productService = {
   getAllProduct: (q?: string) =>
     api.get<ProductListResponse>(`/products${q ? `?${q}` : ""}`),
-  getProductById: (id: string) =>
-    api.get<ProductListResponse>(`/products/${id}`),
+  getProductById: (id: string) => api.get<ProductResponse>(`/products/${id}`),
   searchProduct: (q: string) =>
     api.get<ProductListResponse>(`/products/search?q=${q}`),
 };
