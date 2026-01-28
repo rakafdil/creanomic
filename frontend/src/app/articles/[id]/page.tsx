@@ -1,4 +1,3 @@
-// app/articles/[id]/page.tsx
 import { notFound } from "next/navigation";
 import ArticleDetail from "@/components/Articles/ArticleDetail";
 import { articles } from "@/data/articles";
@@ -19,7 +18,7 @@ export default function ArticleDetailPage({
           Welcome to GrowthWell
         </div>
       </div>
-      <ArticleDetail article={article} />;{/* <Footer /> */}
+      <ArticleDetail article={article} />;
     </div>
   );
 }

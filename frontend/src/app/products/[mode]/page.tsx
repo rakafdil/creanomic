@@ -3,7 +3,7 @@
 import BackButton from "@/components/Common/BackButton";
 import ProductsDisplay from "@/components/Products/ProductsDisplay";
 import { useProduct } from "@/hook/useProduct";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import React from "react";
 
 const modeTitleMap: Record<string, string> = {
