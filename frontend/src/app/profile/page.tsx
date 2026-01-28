@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import ProfileContainer from "@/components/Profile/ProfilePage";
-import { useAuth } from "../../hook/auth";
+import { useAuth } from "@/hook/auth";
 import { useRouter } from "next/navigation";
 
 export default function ProductsPage() {
