@@ -4,7 +4,7 @@ import BackButton from "@/components/Common/BackButton";
 import ProductsDisplay from "@/components/Products/ProductsDisplay";
 import { useProduct } from "@/hook/useProduct";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 
 const modeTitleMap: Record<string, string> = {
   "nearby-available": "Nearest Products",
@@ -12,7 +12,7 @@ const modeTitleMap: Record<string, string> = {
   popular: "Popular",
 };
 
-const AllProducts = () => {
+function AllProductsContent() {
   const params = useParams<{ mode: string }>();
   const title = modeTitleMap[params.mode];
 
@@ -48,7 +48,7 @@ const AllProducts = () => {
   };
 
   return (
-    <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 flex flex-col gap-5 sm:gap-6 lg:gap-8">
+    <>
       <BackButton />
       <h1 className="text-2xl font-bold mb-4 self-center">
         {title} {`(${data?.totalItems})`}
@@ -85,6 +85,16 @@ const AllProducts = () => {
           );
         })}
       </div>
+    </>
+  );
+}
+
+const AllProducts = () => {
+  return (
+    <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 flex flex-col gap-5 sm:gap-6 lg:gap-8">
+      <Suspense fallback={<div>Loading...</div>}>
+        <AllProductsContent />
+      </Suspense>
     </div>
   );
 };

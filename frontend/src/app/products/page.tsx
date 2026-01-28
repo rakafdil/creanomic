@@ -1,16 +1,13 @@
 "use client";
-import React from "react";
-import Navbar from "@/components/Products/Navbar";
+import React, { Suspense } from "react";
 import Hero from "@/components/Products/Hero";
 import Categories from "@/components/Products/Categories";
-import ProductCard from "@/components/Common/ProductCard";
 import Link from "next/link";
 import ProductsDisplay from "@/components/Products/ProductsDisplay";
 import Article from "@/components/Products/Article";
-import Footer from "@/components/Common/Footer";
 import { useProduct } from "@/hook/useProduct";
 
-export default function ProductsPage() {
+function ProductContent() {
   const { data, isLoading, error, limit, page } = useProduct();
 
   return (
@@ -86,5 +83,13 @@ export default function ProductsPage() {
         />
       </div>
     </div>
+  );
+}
+
+export default function ProductPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProductContent />
+    </Suspense>
   );
 }
