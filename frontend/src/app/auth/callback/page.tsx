@@ -33,8 +33,8 @@ export default function OAuthCallback() {
 
     fetch(
       process.env.NODE_ENV === "production"
-        ? "https://api-growthwell.vercel.app/api/v1/"
-        : "http://localhost:5050/api/v1/",
+        ? "https://api-growthwell.vercel.app/api/v1/auth/oauth/session"
+        : "http://localhost:5050/api/v1/auth/oauth/session",
       {
         method: "POST",
         credentials: "include",

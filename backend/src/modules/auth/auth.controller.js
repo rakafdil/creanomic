@@ -125,6 +125,14 @@ export class AuthController {
 
   async logout(req, res) {
     await this.authService.logout();
+
+    res.clearCookie("authToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      path: "/",
+    });
+
     res.status(200).json({
       status: "success",
       message: "Logout successful",

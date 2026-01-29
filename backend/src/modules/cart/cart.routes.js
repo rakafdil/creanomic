@@ -1,5 +1,3 @@
-// cart.router.js
-
 import express from "express";
 import {
   addToCart,
@@ -17,7 +15,7 @@ export default (supabase) => {
 
   router.post("/", addToCart(supabase));
   router.get("/", getCart(supabase));
-  router.delete("/", removeFromCart(supabase));
+  router.delete("/:productId", removeFromCart(supabase));
   router.put("/", updateCartItem(supabase));
   router.post("/clear", clearCart(supabase));
   router.post("/apply-coupon", applyCoupon(supabase));

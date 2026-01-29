@@ -9,6 +9,7 @@ import ConditionalHeader from "@/components/Common/ConditionalHeader";
 import "leaflet/dist/leaflet.css";
 import "maplibre-gl/dist/maplibre-gl.css";
 import Providers from "@/components/tanstackProvider";
+import { cookies } from "next/headers";
 
 const inter = Inter({
   variable: "--font-geist-inter",
@@ -25,11 +26,14 @@ export const metadata: Metadata = {
   description: "Marketplace for farmers",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("authToken");
+  const isLoggedIn = !!token;
   return (
     <html lang="en">
       <head>
@@ -40,7 +44,7 @@ export default function RootLayout({
       >
         <Providers>
           <div className="max-w-[1920px] mx-auto w-full flex flex-col min-h-screen">
-            <ConditionalHeader />
+            <ConditionalHeader isLoggedIn={isLoggedIn} />
             {children}
             <ConditionalFooter />
           </div>

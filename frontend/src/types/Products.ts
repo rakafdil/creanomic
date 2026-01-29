@@ -1,18 +1,32 @@
-export type Product = {
-  id: number;
-  name: string;
-  image: string;
-  weight?: string;
+export interface CartItem {
   price: number;
-  quantity: number | string;
-};
+  cart_id: string;
+  quantity: number;
+  product_id: number;
+  products: {
+    name: string;
+    price: number;
+    img_url: string;
+    unit_label: string;
+    unit_value: number;
+  };
+}
+
+export interface Cart {
+  id: string;
+  user_id: string;
+  total_price: number;
+  coupon: string;
+  created_at: string;
+  cart_items: CartItem[];
+}
 
 export interface Order {
   orderId: string;
   paymentMethod: string;
   transactionId: string;
   estimatedDelivery: string;
-  products: Product[];
+  products: Cart[];
   shipping: number;
   taxes: number;
   total: number;

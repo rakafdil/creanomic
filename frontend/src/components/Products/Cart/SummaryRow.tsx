@@ -1,6 +1,6 @@
 type Props = {
   label: string;
-  value: number;
+  value?: number;
   className?: string;
 };
 
@@ -9,12 +9,18 @@ export default function SummaryRow({
   value,
   className = "py-1",
 }: Props) {
-  const formattedValue = `Rp ${value.toLocaleString("id-ID")}`;
+  const formattedValue = value ? `Rp ${value.toLocaleString("id-ID")}` : "";
 
   return (
-    <div className={`flex justify-between items-center text-base sm:text-lg ${className}`}>
+    <div
+      className={`flex justify-between items-center text-base sm:text-lg ${className} ${value ?? "animate-pulse"}`}
+    >
       <span className="font-light">{label}</span>
-      <span className="font-medium">{formattedValue}</span>
+      {value ? (
+        <span className="font-medium">{formattedValue}</span>
+      ) : (
+        <div className="h-4 w-32 rounded-md bg-gray-200" />
+      )}
     </div>
   );
 }

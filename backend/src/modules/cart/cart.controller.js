@@ -45,7 +45,7 @@ const getCart = (supabase) =>
 const removeFromCart = (supabase) =>
   catchAsyncError(async (req, res, next) => {
     const cartService = new CartService(supabase);
-    const { productId } = req.body;
+    const { productId } = req.params;
     const userId = req.user.id;
 
     if (!userId) {

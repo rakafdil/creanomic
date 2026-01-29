@@ -1,12 +1,12 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-    const token = request.cookies.get('authToken')
-    
-    if (!token && request.nextUrl.pathname.startsWith('/dashboard')) {
-        return NextResponse.redirect(new URL('/auth', request.url))
-    }
-    
-    return NextResponse.next()
+  const token = request.cookies.get("authToken");
+
+  if (!token && request.nextUrl.pathname.startsWith("/products/card")) {
+    return NextResponse.redirect(new URL("/auth", request.url));
+  }
+
+  return NextResponse.next();
 }

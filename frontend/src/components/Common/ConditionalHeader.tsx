@@ -2,7 +2,11 @@
 import Navbar from "../Products/Navbar";
 import { usePathname } from "next/navigation";
 
-export default function ConditionalHeader() {
+export default function ConditionalHeader({
+  isLoggedIn,
+}: {
+  isLoggedIn: boolean;
+}) {
   const pathname = usePathname();
 
   // Pastikan pathname sudah ada (hindari render saat undefined/null)
@@ -15,7 +19,7 @@ export default function ConditionalHeader() {
           Welcome to GrowthWell
         </div>
         <div className="py-4 px-4 md:px-16 lg:px-32">
-          <Navbar />
+          <Navbar isLoggedIn={isLoggedIn} />
         </div>
       </>
     );

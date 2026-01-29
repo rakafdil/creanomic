@@ -24,6 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import ErrorModal from "@/components/Common/ErrorModal";
 import { StarRating } from "@/components/Common/StarRating";
+import { useCart } from "@/hook/useCart";
 
 export function useAddToCart() {
   return useMutation({
@@ -50,6 +51,7 @@ export function useAddToCart() {
 }
 
 const ProductsDetail = ({ product }: { product?: ProductItem }) => {
+  const { addItem: addToCart } = useCart();
   const productsPath = [product?.img_url];
 
   const weights = [`${product?.unit_value} ${product?.unit_label}`];
@@ -58,8 +60,6 @@ const ProductsDetail = ({ product }: { product?: ProductItem }) => {
   const [bigImage, setBigImage] = useState(productsPath[0]);
   const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
-
-  const { mutate: addToCart, error, isPending, isSuccess } = useAddToCart();
 
   return (
     <section className="w-full mx-auto py-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 font-sans">
@@ -75,8 +75,13 @@ const ProductsDetail = ({ product }: { product?: ProductItem }) => {
               <AlertDialogAction
                 className="cursor-pointer !bg-[#0A3917] !hover:bg-green-900"
                 onClick={() => {
-                  addToCart({ productId: product?.id, quantity: quantity });
-                  setModalOpen(false);
+                  if (product?.id) {
+                    addToCart.mutate({
+                      productId: product.id,
+                      quantity: quantity,
+                    });
+                    setModalOpen(false);
+                  }
                 }}
               >
                 Yes
@@ -91,8 +96,8 @@ const ProductsDetail = ({ product }: { product?: ProductItem }) => {
           </AlertDialogContent>
         </AlertDialog>
       )}
-      {error && <ErrorModal error={error} />}
-      {isSuccess && (
+      {addToCart.error && <ErrorModal error={addToCart.error} />}
+      {addToCart.isSuccess && (
         <AlertDialog defaultOpen>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -132,8 +137,9 @@ const ProductsDetail = ({ product }: { product?: ProductItem }) => {
             <Image
               src={`${bigImage}`}
               alt="product"
-              width={500}
-              height={500}
+              width={1000}
+              height={1000}
+              quality={100}
               className="w-full h-full object-cover"
               priority
             />
@@ -239,14 +245,14 @@ const ProductsDetail = ({ product }: { product?: ProductItem }) => {
           </div>
 
           <motion.button
-            className={`bg-[#0A3917] hover:bg-green-900 text-white font-semibold py-2 px-6 lg:py-3 lg:px-8 rounded-full text-sm lg:text-base transition-all ${isPending ? "cursor-not-allowed" : "cursor-pointer"}`}
+            className={`bg-[#0A3917] hover:bg-green-900 text-white font-semibold py-2 px-6 lg:py-3 lg:px-8 rounded-full text-sm lg:text-base transition-all ${addToCart.isPending ? "cursor-not-allowed" : "cursor-pointer"}`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => {
               setModalOpen(true);
             }}
           >
-            {isPending ? (
+            {addToCart.isPending ? (
               <FaSpinner className="animate-spin w-full" />
             ) : (
               "Add To Cart"

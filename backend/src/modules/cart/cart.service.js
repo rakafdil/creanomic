@@ -7,7 +7,7 @@ class CartService {
 
     this.adminClient = createClient(
       process.env.SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY
+      process.env.SUPABASE_SERVICE_ROLE_KEY,
     );
   }
 
@@ -92,29 +92,23 @@ class CartService {
     }
   }
 
-  // Get cart with items
   async getCart(userId) {
     const { data: cart, error } = await this.adminClient
       .from("carts")
       .select(
         `
-                *,
-                cart_items (
-                    *,
-                    products:product_id (
-                        id,
-                        name,
-                        img_url,
-                        stock_quantity,
-                        seller:seller_id (
-                        seller_id,
-                        stores:store_id (
-                            store_name
-                        )
-                    )
-                    ),
-                )
-            `
+        *,
+        cart_items (
+            *,
+            products:product_id (
+                name,
+                img_url,
+                unit_value,
+                unit_label,
+                price
+            )
+        )
+       `,
       )
       .eq("user_id", userId)
       .maybeSingle();
@@ -170,7 +164,7 @@ class CartService {
 
     const totalPrice = items.reduce(
       (acc, item) => acc + item.price * item.quantity,
-      0
+      0,
     );
 
     const { error: updateError } = await this.adminClient
