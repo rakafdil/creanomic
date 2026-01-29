@@ -8,9 +8,9 @@ type OrderDetailsProps = {
 };
 
 const OrderDetailsCard = ({ order }: OrderDetailsProps) => {
-  const subTotal = order.products.reduce(
+  const subTotal = order.cart?.cart_items.reduce(
     (acc, product) => acc + product.price,
-    0
+    0,
   );
 
   return (
@@ -23,8 +23,8 @@ const OrderDetailsCard = ({ order }: OrderDetailsProps) => {
       </div>
 
       <div className="px-4 sm:px-6 lg:px-8">
-        {order.products.map((product) => (
-          <ProductListItem key={product.id} {...product} />
+        {order.cart?.cart_items.map((product) => (
+          <ProductListItem key={product.product_id} {...product} />
         ))}
       </div>
 
@@ -32,7 +32,7 @@ const OrderDetailsCard = ({ order }: OrderDetailsProps) => {
       <OrderTotals
         shipping={order.shipping}
         taxes={order.taxes}
-        total={order.total}
+        total={order?.total}
       />
     </div>
   );

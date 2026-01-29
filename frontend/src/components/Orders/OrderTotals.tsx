@@ -14,7 +14,7 @@ const formatRupiah = (amount: number) => {
 };
 
 const TotalRow = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex justify-between text-base sm:text-lg lg:text-2xl text-black">
+  <div className="flex justify-between text-base sm:text-lg lg:text-xl text-black">
     <p>{label}</p>
     <p className="font-semibold">{value}</p>
   </div>

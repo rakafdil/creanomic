@@ -26,7 +26,7 @@ export interface Order {
   paymentMethod: string;
   transactionId: string;
   estimatedDelivery: string;
-  products: Cart[];
+  cart?: Cart;
   shipping: number;
   taxes: number;
   total: number;
