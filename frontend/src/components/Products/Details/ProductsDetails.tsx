@@ -52,7 +52,7 @@ export function useAddToCart() {
 
 const ProductsDetail = ({ product }: { product?: ProductItem }) => {
   const { addItem: addToCart } = useCart();
-  const productsPath = [product?.img_url];
+  const productsPath = [product?.img_url || "/assets/placeholder.png"];
 
   const weights = [`${product?.unit_value} ${product?.unit_label}`];
   const [selectedWeight, setSelectedWeight] = useState(weights[0]);
@@ -136,6 +136,7 @@ const ProductsDetail = ({ product }: { product?: ProductItem }) => {
           >
             <Image
               src={`${bigImage}`}
+              onError={() => setBigImage("/assets/placeholder.png")}
               alt="product"
               width={1000}
               height={1000}
@@ -155,10 +156,10 @@ const ProductsDetail = ({ product }: { product?: ProductItem }) => {
                   ? "border-green-700"
                   : "border-gray-200 hover:border-green-700"
               }`}
-              onClick={() => setBigImage(img)}
+              onClick={() => setBigImage(img || "/assets/placeholder.png")}
             >
               <Image
-                src={`${img}`}
+                src={img || "/assets/placeholder.png"}
                 alt={`product ${i + 1}`}
                 width={100}
                 height={100}

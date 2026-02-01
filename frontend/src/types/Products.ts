@@ -9,6 +9,12 @@ export interface CartItem {
     img_url: string;
     unit_label: string;
     unit_value: number;
+    seller_id: string;
+    seller: {
+      stores: {
+        store_name: string;
+      };
+    };
   };
 }
 

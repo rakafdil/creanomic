@@ -6,6 +6,7 @@ import Link from "next/link";
 import ProductsDisplay from "@/components/Products/ProductsDisplay";
 import Article from "@/components/Products/Article";
 import { useProduct } from "@/hook/useProduct";
+import Loading from "@/components/Common/Loading";
 
 function ProductContent() {
   const { data, isLoading, error, limit, page } = useProduct();
@@ -16,7 +17,6 @@ function ProductContent() {
         <Hero />
         <Categories />
 
-        {/* All Products Section */}
         <div
           className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0"
           id="product"
@@ -41,7 +41,6 @@ function ProductContent() {
 
         <Article />
 
-        {/* Nearby Available Section */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
           <span className="text-black text-2xl sm:text-3xl lg:text-4xl font-bold">
             Nearby Available
@@ -61,7 +60,6 @@ function ProductContent() {
           gridRow={true}
         />
 
-        {/* Popular in Your Area Section */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
           <span className="text-black text-2xl sm:text-3xl lg:text-4xl font-bold">
             Popular in your area
@@ -88,7 +86,7 @@ function ProductContent() {
 
 export default function ProductPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading text={"Fetching the data..."} />}>
       <ProductContent />
     </Suspense>
   );

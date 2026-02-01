@@ -16,6 +16,19 @@ export default function ProductList({
   handleDelete,
   isLoading,
 }: Props) {
+  const groupedByStoreName = products?.reduce<Record<string, CartItem[]>>(
+    (acc, item) => {
+      const storeName = item.products.seller.stores.store_name;
+      if (!acc[storeName]) {
+        acc[storeName] = [];
+      }
+      acc[storeName].push(item);
+      return acc;
+    },
+    {},
+  );
+
+  console.log(groupedByStoreName);
   return (
     <div className="bg-white rounded-xl">
       <div className="hidden lg:grid lg:grid-cols-4 font-semibold text-left text-xl text-black bg-[#D0F348] rounded-2xl py-3 px-6">
@@ -33,8 +46,10 @@ export default function ProductList({
 
       <div className="py-2 px-0 lg:px-0">
         <div className="lg:py-0 px-4 lg:px-0">
-          {isLoading
-            ? (products && products.length > 0
+          {isLoading ? (
+            <div>
+              <div className="font-semibold animate-pulse text-2xl p-4 h-6 w-32 rounded-md bg-gray-200" />
+              {(products && products.length > 0
                 ? products
                 : Array.from({ length: 4 })
               ).map((_, i) => (
@@ -50,17 +65,14 @@ export default function ProductList({
                         <div className="h-3 w-20 rounded-md bg-gray-100" />
                       </div>
                     </div>
-
                     <div className="flex items-center gap-3">
                       <div className="h-9 w-9 rounded-full bg-gray-200" />
                       <div className="h-9 w-9 rounded-full bg-gray-200" />
                     </div>
                   </div>
-
                   <div className="flex justify-center">
                     <div className="h-4 w-16 rounded-md bg-gray-200" />
                   </div>
-
                   <div className="flex justify-center">
                     <div className="flex items-center overflow-hidden rounded-xl border border-gray-200">
                       <div className="h-9 w-9 bg-gray-100" />
@@ -68,21 +80,31 @@ export default function ProductList({
                       <div className="h-9 w-9 bg-gray-100" />
                     </div>
                   </div>
-
                   <div className="flex justify-end pr-11">
                     <div className="h-4 w-20 rounded-md bg-gray-200" />
                   </div>
                 </div>
-              ))
-            : products?.map((p) => (
-                <ProductItem
-                  key={p.product_id}
-                  product={p}
-                  onIncrease={onIncrease}
-                  onDecrease={onDecrease}
-                  handleDelete={handleDelete}
-                />
               ))}
+            </div>
+          ) : (
+            groupedByStoreName &&
+            Object.entries(groupedByStoreName).map(
+              ([storeName, sellerProducts]) => (
+                <div key={storeName}>
+                  <div className="font-semibold text-2xl p-2">{storeName}</div>
+                  {sellerProducts.map((p) => (
+                    <ProductItem
+                      key={p.product_id}
+                      product={p}
+                      onIncrease={onIncrease}
+                      onDecrease={onDecrease}
+                      handleDelete={handleDelete}
+                    />
+                  ))}
+                </div>
+              ),
+            )
+          )}
         </div>
       </div>
     </div>

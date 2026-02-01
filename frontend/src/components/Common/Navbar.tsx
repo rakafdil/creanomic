@@ -23,7 +23,7 @@ const Navbar = () => {
           if (e.isIntersecting) setActive(e.target.id);
         });
       },
-      { root: null, threshold: 0.35 }
+      { root: null, threshold: 0.35 },
     );
 
     navItems.forEach((n) => {
@@ -44,7 +44,6 @@ const Navbar = () => {
   return (
     <nav className="absolute top-0 left-0 w-full px-6 md:px-[7.5rem] py-6 z-[100] text-white font-semibold font-inter text-lg">
       <div className="max-w-[1920px] mx-auto flex items-center justify-between h-16">
-        {/* Logo */}
         <div className="flex items-center">
           <Image
             src="/assets/logo.svg"
@@ -55,7 +54,6 @@ const Navbar = () => {
           />
         </div>
 
-        {/* Menu desktop */}
         <div className="hidden md:flex gap-10 items-center">
           {navItems.map((item) => (
             <a
@@ -69,7 +67,6 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Button desktop */}
         <div className="hidden md:flex gap-8 items-center">
           <Link
             href="/auth?mode=signup"
@@ -85,7 +82,6 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Hamburger (mobile only) */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="md:hidden text-white"
@@ -94,7 +90,6 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile menu */}
       {menuOpen && (
         <div className="md:hidden mt-4 bg-black bg-opacity-80 backdrop-blur-md rounded-lg py-4 px-6 flex flex-col gap-4 text-center text-white text-base">
           {navItems.map((item) => (

@@ -19,10 +19,10 @@ export default function ProductDetailPage() {
     error,
   } = useQuery({
     queryKey: ["product", params.id],
-
     queryFn: () => productService.getProductById(params.id as string),
 
     select: (response) => response.data,
+    staleTime: 30 * 60 * 1000,
   });
 
   if (isLoading) {

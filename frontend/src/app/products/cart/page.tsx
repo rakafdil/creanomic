@@ -8,41 +8,6 @@ import { Cart } from "@/types/Products";
 import BackButton from "@/components/Common/BackButton";
 import { useCart } from "@/hook/useCart";
 
-// const [products, setProducts] = useState<Cart[]>([
-//   {
-//     id: 1,
-//     name: "Sweet Banana",
-//     weight: "500 gram",
-//     price: 15000,
-//     quantity: 1,
-//     image: "/assets/products/banana.svg",
-//   },
-//   {
-//     id: 2,
-//     name: "Fresh Broccoli",
-//     weight: "100 gram",
-//     price: 18000,
-//     quantity: 2,
-//     image: "/assets/products/broccoli.svg",
-//   },
-//   {
-//     id: 3,
-//     name: "Fresh Garlic",
-//     weight: "500 gram",
-//     price: 18000,
-//     quantity: 1,
-//     image: "/assets/products/onion.svg",
-//   },
-//   {
-//     id: 4,
-//     name: "Green Cabbage",
-//     weight: "500 gram",
-//     price: 10000,
-//     quantity: 3,
-//     image: "/assets/products/cabbage.svg",
-//   },
-// ]);
-
 export default function ShoppingCartPage() {
   const {
     isLoading,
@@ -92,9 +57,6 @@ export default function ShoppingCartPage() {
     total: (cart?.total_price || 0) + 3000 + 3000,
   };
 
-  // console.log(cart?.total_price);
-
-  // if (error) return <div>ERROR {error.message}</div>;
   return (
     <>
       <main className="px-4 sm:px-6 md:px-16 lg:px-32 pb-8 sm:pb-12 lg:pb-16">

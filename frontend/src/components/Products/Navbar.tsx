@@ -102,24 +102,43 @@ const Navbar = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
           <SearchBar className="w-full" />
         </div>
 
-        <div className="flex items-center gap-3 lg:gap-4 flex-shrink-0">
-          <Link href="/products/cart" className="cursor-pointer relative">
-            <div className="bg-[#0A3917] h-12 w-12 lg:h-15 lg:w-15 rounded-full p-2.5 lg:p-3 flex items-center justify-center relative hover:bg-green-800 hover:rotate-6 transition-all">
-              <Image
-                src="/assets/cart.svg"
-                alt="cart"
-                width={32}
-                height={32}
-                className="w-6 h-6 lg:w-8 lg:h-8"
-              />
-              {cartCount > 0 && (
-                <span className="absolute top-2 right-3 lg:top-2 lg:right-2.5 bg-[#F44336] text-white font-bold rounded-full w-4 h-4 flex items-center justify-center text-[8px]">
-                  {cartCount}
-                </span>
-              )}
-            </div>
-          </Link>
-          <DropdownMenuIcons isLoggedIn={isLoggedIn} />
+        <div className="flex items-center gap-3 lg:gap-4 flex-shrink-0 font-medium">
+          {isLoggedIn ? (
+            <>
+              <Link href="/products/cart" className="cursor-pointer relative">
+                <div className="bg-[#0A3917] h-12 w-12 lg:h-15 lg:w-15 rounded-full p-2.5 lg:p-3 flex items-center justify-center relative hover:bg-green-800 hover:rotate-6 transition-all">
+                  <Image
+                    src="/assets/cart.svg"
+                    alt="cart"
+                    width={32}
+                    height={32}
+                    className="w-6 h-6 lg:w-8 lg:h-8"
+                  />
+                  {cartCount > 0 && (
+                    <span className="absolute top-2 right-3 lg:top-2 lg:right-2.5 bg-[#F44336] text-white font-bold rounded-full w-4 h-4 flex items-center justify-center text-[8px]">
+                      {cartCount}
+                    </span>
+                  )}
+                </div>
+              </Link>
+              <DropdownMenuIcons isLoggedIn={isLoggedIn} />
+            </>
+          ) : (
+            <>
+              <Link
+                href="/auth?mode=signup"
+                className="cursor-pointer relative hover:text-green-800"
+              >
+                Sign Up
+              </Link>
+              <Link
+                href="/auth?mode=login"
+                className="cursor-pointer relative bg-[#0A3917] hover:bg-green-800 px-5 py-3 rounded-2xl transition-all text-white"
+              >
+                Login
+              </Link>
+            </>
+          )}
         </div>
       </div>
 

@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import ProfileContainer from "@/components/Profile/ProfilePage";
 import { useAuth } from "@/hook/auth";
 import { useRouter } from "next/navigation";
+import Loading from "@/components/Common/Loading";
 
 export default function ProductsPage() {
   const { user, loading } = useAuth();
@@ -16,11 +17,7 @@ export default function ProductsPage() {
   }, [loading, user, router]);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <span className="text-gray-500">Checking authentication...</span>
-      </div>
-    );
+    return <Loading text={"Checking user..."} />;
   }
 
   return (

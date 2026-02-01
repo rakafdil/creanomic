@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import LoginForm from "@/components/Auth/LoginForm";
 import RegisterForm from "@/components/Auth/RegisterForm";
+import Loading from "@/components/Common/Loading";
 
 function AuthContent() {
   const searchParams = useSearchParams();
@@ -13,7 +14,7 @@ function AuthContent() {
 
 export default function AuthPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading text={"Processing Authentication..."} />}>
       <AuthContent />
     </Suspense>
   );

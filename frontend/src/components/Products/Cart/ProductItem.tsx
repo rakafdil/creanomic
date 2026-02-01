@@ -14,6 +14,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 type ProductItemProps = {
   product: CartItem;
@@ -31,6 +32,7 @@ export default function ProductItem({
   const formatCurrency = (value: number) =>
     `Rp ${value.toLocaleString("id-ID")}`;
 
+  const [img, setImg] = useState(product.products.img_url);
   return (
     <>
       <div className="hidden lg:grid lg:grid-cols-4 items-center py-4 text-lg">
@@ -38,7 +40,8 @@ export default function ProductItem({
           <div className="flex items-center gap-4">
             <div className="h-14 w-14 overflow-hidden rounded-xl bg-gray-200">
               <Image
-                src={product.products.img_url}
+                src={img}
+                onError={() => setImg("/assets/placeholder.png")}
                 alt={product.products.name}
                 width={56}
                 height={56}

@@ -44,6 +44,7 @@ export function useCart() {
   const { data: cart, ...queryRest } = useQuery({
     queryKey: ["cart"],
     queryFn: getCart,
+    staleTime: 30 * 60 * 1000,
   });
 
   const addItem = useMutation({

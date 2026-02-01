@@ -1,6 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
 
-//cart.service.js
 class CartService {
   constructor(supabase) {
     this.supabase = supabase;
@@ -11,7 +10,6 @@ class CartService {
     );
   }
 
-  // Get or create cart for user
   async getOrCreateCart(userId) {
     let { data: cart, error: cartError } = await this.adminClient
       .from("carts")
@@ -43,11 +41,9 @@ class CartService {
     return cart;
   }
 
-  // Add item to cart
   async addItem(userId, productId, quantity, price) {
     const cart = await this.getOrCreateCart(userId);
 
-    // Check if item already exists
     let { data: existingItem } = await this.adminClient
       .from("cart_items")
       .select("*")
@@ -56,7 +52,6 @@ class CartService {
       .maybeSingle();
 
     if (existingItem) {
-      // Update quantity
       const { data, error } = await this.adminClient
         .from("cart_items")
         .update({
@@ -72,7 +67,6 @@ class CartService {
       await this.updateCartTotal(cart.id);
       return data;
     } else {
-      // Insert new item
       const { data, error } = await this.adminClient
         .from("cart_items")
         .insert([
@@ -101,11 +95,17 @@ class CartService {
         cart_items (
             *,
             products:product_id (
+                seller_id,
                 name,
                 img_url,
                 unit_value,
                 unit_label,
-                price
+                price,
+                seller:seller_id (
+                    stores:store_id (
+                    store_name
+                    )
+                )
             )
         )
        `,
@@ -114,10 +114,18 @@ class CartService {
       .maybeSingle();
 
     if (error) throw error;
+
+    if (cart && cart.cart_items) {
+      cart.cart_items.sort((a, b) => {
+        const nameA = a.products?.name?.toLowerCase() || "";
+        const nameB = b.products?.name?.toLowerCase() || "";
+        return nameA.localeCompare(nameB);
+      });
+    }
+
     return cart;
   }
 
-  // Remove item from cart
   async removeItem(userId, productId) {
     const cart = await this.getOrCreateCart(userId);
 
@@ -132,7 +140,6 @@ class CartService {
     return { message: "Item removed successfully" };
   }
 
-  // Update item quantity
   async updateItemQuantity(userId, productId, quantity) {
     const cart = await this.getOrCreateCart(userId);
 
@@ -153,7 +160,6 @@ class CartService {
     return data;
   }
 
-  // Update cart total price
   async updateCartTotal(cartId) {
     const { data: items, error: itemsError } = await this.adminClient
       .from("cart_items")
@@ -176,7 +182,6 @@ class CartService {
     return totalPrice;
   }
 
-  // Clear cart
   async clearCart(userId) {
     const cart = await this.getOrCreateCart(userId);
 
@@ -197,7 +202,6 @@ class CartService {
   async applyCoupon(userId, couponCode) {
     const cart = await this.getOrCreateCart(userId);
 
-    // TODO: Validate coupon from coupons table if exists
     const { data, error } = await this.adminClient
       .from("carts")
       .update({ coupon: couponCode })

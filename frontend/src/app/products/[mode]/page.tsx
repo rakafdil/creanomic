@@ -1,6 +1,7 @@
 "use client";
 
 import BackButton from "@/components/Common/BackButton";
+import Loading from "@/components/Common/Loading";
 import ProductsDisplay from "@/components/Products/ProductsDisplay";
 import { useProduct } from "@/hook/useProduct";
 import { useParams } from "next/navigation";
@@ -92,7 +93,7 @@ function AllProductsContent() {
 const AllProducts = () => {
   return (
     <div className="mx-4 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32 flex flex-col gap-5 sm:gap-6 lg:gap-8">
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading text={"Fetching the data..."} />}>
         <AllProductsContent />
       </Suspense>
     </div>
