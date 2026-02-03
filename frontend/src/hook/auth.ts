@@ -20,7 +20,7 @@ export function useAuth() {
   });
 
   return {
-    user: query.data?.user,
+    user: query.data?.userData,
     loading: query.isLoading,
     ...query,
   };

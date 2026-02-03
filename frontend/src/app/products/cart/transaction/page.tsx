@@ -37,8 +37,8 @@ const Transaction = () => {
           <OrderSummaryBar
             orderId={orderData.orderId}
             paymentMethod={orderData.paymentMethod}
-            transactionId={orderData.transactionId}
-            estimatedDelivery={orderData.estimatedDelivery}
+            id={orderData.transactionId}
+            updatedAt={orderData.estimatedDelivery}
           />
           <OrderDetailsCard order={orderData} />
         </main>

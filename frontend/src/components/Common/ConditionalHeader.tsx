@@ -4,18 +4,26 @@ import Navbar from "../Products/Navbar";
 import { usePathname } from "next/navigation";
 
 export default function ConditionalHeader({
-  isLoggedIn,
+  isLoggedIn: serverIsLoggedIn,
 }: {
   isLoggedIn: boolean;
 }) {
   const pathname = usePathname();
-  const [apiLoggedIn, setApiLoggedIn] = useState<boolean | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(serverIsLoggedIn);
 
   useEffect(() => {
-    fetch("api/auth/me")
+    fetch("/api/auth/me")
       .then((res) => res.json())
-      .then((data) => setApiLoggedIn(data.isLoggedIn));
-  });
+      .then((data) => {
+        if (data.isLoggedIn !== isLoggedIn) {
+          setIsLoggedIn(data.isLoggedIn);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to check auth:", err);
+        setIsLoggedIn(false);
+      });
+  }, [pathname]);
 
   if (!pathname) return null;
 
@@ -26,7 +34,7 @@ export default function ConditionalHeader({
           Welcome to GrowthWell
         </div>
         <div className="py-4 px-4 md:px-16 lg:px-32">
-          <Navbar isLoggedIn={Boolean(isLoggedIn || apiLoggedIn)} />
+          <Navbar isLoggedIn={isLoggedIn} />
         </div>
       </>
     );

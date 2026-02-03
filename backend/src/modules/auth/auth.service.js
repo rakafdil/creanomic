@@ -144,31 +144,31 @@ class AuthService {
     };
   }
 
-  async getUserProfile(userId) {
-    const { data: user, error } = await this.adminClient
+  async getUserProfile(user) {
+    const { data: userData, error } = await this.adminClient
       .from("users")
       .select("*")
-      .eq("id", userId)
+      .eq("id", user.id)
       .single();
     console.log(error);
     if (error) throw new AppError(error.message, error.status || 400);
 
     return {
-      id: user.id,
-      email: user.email_verified,
-      username: user.username,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      profile_picture: user.profile_picture,
-      phone: user.phone,
-      address: user.address,
-      is_seller: user.is_seller,
-      seller_rating: user.seller_rating,
-      buyer_rating: user.buyer_rating,
-      is_active: user.is_active,
-      last_login: user.last_login,
-      created_at: user.created_at,
-      updated_at: user.updated_at,
+      id: userData.id,
+      email: user.email,
+      username: userData.username,
+      first_name: userData.first_name,
+      last_name: userData.last_name,
+      profile_picture: userData.profile_picture,
+      phone: userData.phone,
+      address: userData.address,
+      is_seller: userData.is_seller,
+      seller_rating: userData.seller_rating,
+      buyer_rating: userData.buyer_rating,
+      is_active: userData.is_active,
+      last_login: userData.last_login,
+      created_at: userData.created_at,
+      updated_at: userData.updated_at,
     };
   }
 

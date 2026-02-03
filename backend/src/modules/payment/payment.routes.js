@@ -15,7 +15,7 @@ export default (supabase) => {
 
   router.post("/checkout", supabaseAuth, checkout(supabase));
   router.get("/status/:transactionId", getStatus(supabase));
-  router.get("/history/:userId", getHistory(supabase));
+  router.get("/history", supabaseAuth, getHistory(supabase));
   router.patch("/status/:transactionId", updateStatus(supabase));
   router.post("/refund/:transactionId", refund(supabase));
   router.post("/webhook", webhook(supabase));

@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOutIcon, UserIcon } from "lucide-react";
+import { CreditCard, LogOutIcon, UserIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 import axios from "axios";
 import { BASE_URL } from "@/app/page";
@@ -43,6 +43,13 @@ function DropdownMenuIcons({ isLoggedIn }: { isLoggedIn: boolean }) {
           >
             <UserIcon />
             Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => redirect("/profile/orders")}
+            className="cursor-pointer"
+          >
+            <CreditCard />
+            Orders
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

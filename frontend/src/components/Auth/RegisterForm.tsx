@@ -150,7 +150,7 @@ export default function RegisterPage() {
 
   const handleGoogleSignIn = async () => {
     try {
-      window.location.href = `${BASE_URL}/auth/google-signin`;
+      window.location.href = `${BASE_URL}auth/google-signin`;
     } catch (err: any) {
       setError(err.message || "Failed to initiate Google sign-in");
     }

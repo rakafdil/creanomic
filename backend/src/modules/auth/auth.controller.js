@@ -114,12 +114,12 @@ export class AuthController {
   }
 
   async getProfile(req, res) {
-    const userId = req.user.id;
-    const user = await this.authService.getUserProfile(userId);
+    const user = req.user;
+    const userData = await this.authService.getUserProfile(user);
     res.status(200).json({
       status: "success",
       message: "Profile retrieved successfully",
-      data: { user },
+      data: { userData },
     });
   }
 

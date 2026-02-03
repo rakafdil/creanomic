@@ -1,75 +1,83 @@
 "use client";
 import React from "react";
-import Link from "next/link";
-import { IoIosArrowBack } from "react-icons/io";
-import ProfileSidebar from "../ProfileSidebar";
-
-// Komponen modular dari folder Orders
 import OrderDetailsCard from "@/components/Profile/Orders/MyOrdersDetails";
-import { Order } from "@/types/Products";
+import { OrderResponse } from "@/types/Products";
+import axios from "axios";
+import { BASE_URL } from "@/app/page";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "@/components/Common/Loading";
+import { ShoppingBag } from "lucide-react";
 
-// --- Mock Data ---
-const orderData: Order = {
-  orderId: "#PSNG12341",
-  paymentMethod: "OVO",
-  transactionId: "TRSNF1243RE",
-  estimatedDelivery: "20 Oktober 2025",
-  products: [
-    {
-      id: 1,
-      name: "Sweet Banana",
-      quantity: "500 gram",
-      price: 15000,
-      image: "/assets/products/banana.svg",
-    },
-    {
-      id: 2,
-      name: "Fresh Broccoli",
-      quantity: "100 gram",
-      price: 36000,
-      image: "/assets/products/broccoli.svg",
-    },
-    {
-      id: 3,
-      name: "Fresh Garlic",
-      quantity: "500 gram",
-      price: 18000,
-      image: "/assets/products/onion.svg",
-    },
-    {
-      id: 4,
-      name: "Green Cabbage",
-      quantity: "500 gram",
-      price: 30000,
-      image: "/assets/products/cabbage.svg",
-    },
-  ],
-  shipping: 3000,
-  taxes: 3000,
-  total: 105000,
-};
+export async function getOrder(): Promise<OrderResponse> {
+  const response = await axios.get(`${BASE_URL}payment/history`, {
+    withCredentials: true,
+  });
+  return response.data;
+}
+
+export async function getOrderById(id: string) {
+  const response = await axios.get(`${BASE_URL}payment/status/${id}`, {
+    withCredentials: true,
+  });
+  return response.data;
+}
 
 export default function MyOrdersPage() {
-  return (
-    <div className="min-h-screen bg-white text-[#0A3917] flex justify-center py-8 md:py-12 px-4 md:px-0">
-      <div className="flex flex-col md:flex-row w-full max-w-6xl gap-8 md:gap-40">
-        {/* Sidebar */}
-        <div className="w-full md:w-[240px]">
-          <Link
-            href="/products"
-            className="text-base md:text-lg mb-4 font-semibold inline-block hover:underline"
-          >
-            <IoIosArrowBack className="inline-block mr-2" />
-            Back to Shopping
-          </Link>
-          <ProfileSidebar activeItem="My Orders" />
-        </div>
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["payment_history"],
+    queryFn: getOrder,
+  });
 
-        {/* Main Content */}
-        <div className="flex flex-col flex-1">
-          {/* Komponen status dan summary */}
-          <OrderDetailsCard order={orderData} />
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loading text="Loading your orders..." />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 px-4">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md">
+          <p className="text-red-700 text-lg font-semibold text-center">
+            Failed to load orders
+          </p>
+          <p className="text-red-600 text-sm mt-2 text-center">
+            Please try again later
+          </p>
         </div>
+      </div>
+    );
+  }
+
+  if (!data?.data || data.data.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 px-4">
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 max-w-md text-center">
+          <ShoppingBag className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+          <p className="text-gray-700 text-xl font-semibold">No orders yet</p>
+          <p className="text-gray-500 text-sm mt-2">
+            Your order history will appear here once you make a purchase
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col flex-1 w-full max-h-[calc(100vh)]">
+      <div className="mb-6 flex-shrink-0">
+        <h2 className="text-2xl font-bold text-[#0A3917]">My Orders</h2>
+        <p className="text-gray-600 text-sm mt-1">
+          {data.results} {data.results === 1 ? "order" : "orders"} found
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-6 pb-6 overflow-y-auto pr-4 custom-scrollbar">
+        {data.data.map((order) => (
+          <OrderDetailsCard key={order.id} order={order} />
+        ))}
       </div>
     </div>
   );

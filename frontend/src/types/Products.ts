@@ -37,3 +37,31 @@ export interface Order {
   taxes: number;
   total: number;
 }
+
+export interface OrderResponse {
+  data: {
+    id: number;
+    buyer_id: string;
+    seller_id: string;
+    total_amount: number;
+    payment_method: string;
+    status: string;
+    created_at: string;
+    updated_at: string;
+    order_id: string;
+    redirect_url: string;
+    buyer: {
+      id: string;
+      username: string;
+      last_name: string;
+      first_name: string;
+    };
+    seller: {
+      stores: { store_name: string };
+      seller_id: string;
+    };
+  }[];
+
+  message: string;
+  results: number;
+}

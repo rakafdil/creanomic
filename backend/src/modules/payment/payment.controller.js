@@ -38,9 +38,9 @@ const getStatus = (supabase) =>
 const getHistory = (supabase) =>
   catchAsyncError(async (req, res, next) => {
     const paymentService = new PaymentService(supabase);
-    const { userId } = req.params;
+    const userId = req.user.id;
     const { role } = req.query;
-
+    console.log(userId);
     if (!userId) {
       return next(new AppError("User ID is required", 400));
     }

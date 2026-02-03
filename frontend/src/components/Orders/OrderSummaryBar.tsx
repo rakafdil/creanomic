@@ -1,47 +1,71 @@
 import React from "react";
-import { Order } from "@/types/Products";
-
-type OrderSummaryProps = Pick<
-  Order,
-  "orderId" | "paymentMethod" | "transactionId" | "estimatedDelivery"
->;
-
-const InfoItem = ({ label, value }: { label: string; value: string }) => (
-  <div className="text-left text-xs sm:text-sm lg:text-xl lg:pl-10">
-    <p className="text-gray-700 mb-0.5 sm:mb-1">{label}</p>
-    <p className="font-medium">{value}</p>
-  </div>
-);
+import { Order, OrderResponse } from "@/types/Products";
 
 const OrderSummaryBar = ({
   orderId,
   paymentMethod,
-  transactionId,
-  estimatedDelivery,
-}: OrderSummaryProps) => {
+  id,
+  updatedAt,
+}: {
+  orderId: string;
+  paymentMethod: string;
+  id: string;
+  updatedAt: string;
+}) => {
   return (
-    <>
-      {/* Desktop View */}
-      <div className="hidden lg:grid lg:grid-cols-[auto_1px_auto_1px_auto_1px_auto] gap-4 bg-[#D0F348] p-4 rounded-lg items-start">
-        <InfoItem label="Order ID" value={orderId} />
-        <div className="border-l border-gray-400 h-full" />
-        <InfoItem label="Payment Method" value={paymentMethod} />
-        <div className="border-l border-gray-400 h-full" />
-        <InfoItem label="Transaction ID" value={transactionId} />
-        <div className="border-l border-gray-400 h-full" />
-        <InfoItem label="Estimated Delivery Date" value={estimatedDelivery} />
-      </div>
+    <div className="bg-[#D0F348] rounded-lg overflow-hidden">
+      <table className="w-full">
+        <thead>
+          <tr className="border-b border-[#9ABF37]">
+            <th className="text-left p-3 sm:p-4 text-xs sm:text-sm lg:text-base font-semibold text-gray-700">
+              Order ID
+            </th>
+            <th className="text-left p-3 sm:p-4 text-xs sm:text-sm lg:text-base font-semibold text-gray-700">
+              Payment Method
+            </th>
+            <th className="text-left p-3 sm:p-4 text-xs sm:text-sm lg:text-base font-semibold text-gray-700 hidden sm:table-cell">
+              Transaction ID
+            </th>
+            <th className="text-left p-3 sm:p-4 text-xs sm:text-sm lg:text-base font-semibold text-gray-700 hidden lg:table-cell">
+              Estimated Delivery
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td className="p-3 sm:p-4 text-xs sm:text-sm lg:text-base font-medium">
+              {orderId}
+            </td>
+            <td className="p-3 sm:p-4 text-xs sm:text-sm lg:text-base font-medium">
+              {paymentMethod}
+            </td>
+            <td className="p-3 sm:p-4 text-xs sm:text-sm lg:text-base font-medium hidden sm:table-cell">
+              {id}
+            </td>
+            <td className="p-3 sm:p-4 text-xs sm:text-sm lg:text-base font-medium hidden lg:table-cell">
+              {updatedAt}
+            </td>
+          </tr>
 
-      {/* Mobile & Tablet View */}
-      <div className="lg:hidden bg-[#D0F348] p-3 sm:p-4 rounded-lg">
-        <div className="grid grid-cols-2 gap-3 sm:gap-4">
-          <InfoItem label="Order ID" value={orderId} />
-          <InfoItem label="Payment Method" value={paymentMethod} />
-          <InfoItem label="Transaction ID" value={transactionId} />
-          <InfoItem label="Estimated Delivery" value={estimatedDelivery} />
-        </div>
-      </div>
-    </>
+          <tr className="sm:hidden border-t border-[#9ABF37]">
+            <td className="p-3 text-xs font-semibold text-gray-700">
+              Transaction ID
+            </td>
+            <td className="p-3 text-xs font-medium" colSpan={3}>
+              {id}
+            </td>
+          </tr>
+          <tr className="lg:hidden border-t border-[#9ABF37]">
+            <td className="p-3 text-xs sm:text-sm font-semibold text-gray-700">
+              Estimated Delivery
+            </td>
+            <td className="p-3 text-xs sm:text-sm font-medium" colSpan={3}>
+              {updatedAt}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   );
 };
 

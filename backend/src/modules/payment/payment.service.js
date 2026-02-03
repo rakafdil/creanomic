@@ -117,7 +117,17 @@ class PaymentService {
   async getTransactionStatus(transactionId) {
     const { data, error } = await this.adminClient
       .from("transactions")
-      .select("*")
+      .select(
+        `
+        *,
+        transaction_items:id(
+          *,
+          products:product_id(
+            *
+          )
+        )
+        `,
+      )
       .eq("id", transactionId)
       .single();
 
