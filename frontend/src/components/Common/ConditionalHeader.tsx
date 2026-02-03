@@ -12,7 +12,10 @@ export default function ConditionalHeader({
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(serverIsLoggedIn);
 
   useEffect(() => {
-    fetch("/api/auth/me")
+    fetch("/api/auth/me", {
+      credentials: "include",
+      cache: "no-store",
+    })
       .then((res) => res.json())
       .then((data) => {
         if (data.isLoggedIn !== isLoggedIn) {
