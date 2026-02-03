@@ -17,7 +17,7 @@ export class AuthController {
     this.authService = new AuthService(supabase);
     this.directUrl =
       process.env.NODE_ENV === "production"
-        ? null
+        ? "https://creanomic.vercel.app/auth/callback"
         : "http://localhost:3000/auth/callback";
 
     const methods = [
