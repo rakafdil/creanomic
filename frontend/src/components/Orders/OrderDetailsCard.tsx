@@ -29,7 +29,7 @@ type OrderDetailsProps = {
 };
 
 const OrderDetailsCard = ({ order }: { order: OrderDetailsProps }) => {
-  console.log(order);
+  // console.log(order);
   return (
     <div className="flex flex-col bg-white rounded-lg shadow-sm mt-4 sm:mt-5 lg:mt-6 border-[#8C8C8C] border-2 text-base sm:text-lg lg:text-2xl">
       <h2 className="font-semibold p-4 sm:p-6 lg:p-8">Order Details</h2>

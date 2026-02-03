@@ -84,7 +84,7 @@ const ProductsDisplay: React.FC<ProductDisplayProps> = ({
             price={product.price}
             action={(e) => {
               e?.stopPropagation();
-              console.log("Add to cart", product.id);
+              // console.log("Add to cart", product.id);
             }}
           />
         </Link>

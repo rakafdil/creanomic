@@ -1,25 +1,48 @@
 "use client";
 import React from "react";
-import { Order } from "@/types/Products";
 import OrderConfirmationStatus from "@/components/Orders/OrderConfirmationStatus";
 import OrderSummaryBar from "@/components/Orders/OrderSummaryBar";
 import OrderDetailsCard from "@/components/Orders/OrderDetailsCard";
-import { IoIosArrowBack } from "react-icons/io";
 import BackButton from "@/components/Common/BackButton";
-import { useCart } from "@/hook/useCart";
+import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getOrderById } from "@/components/Profile/Orders/MyOrdersPage";
+import Loading from "@/components/Common/Loading";
 
 const Transaction = () => {
-  const { cart } = useCart();
-  const orderData: Order = {
-    orderId: "#PSNG12341",
-    paymentMethod: "OVO",
-    transactionId: "TRSNF1243RE",
-    estimatedDelivery: "20 Oktober 2025",
-    cart: cart,
-    shipping: 3000,
-    taxes: 3000,
-    total: cart?.total_price || 0,
-  };
+  const params = useParams();
+  const orderId = params.id as string;
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["order", orderId],
+    queryFn: () => getOrderById(orderId),
+    enabled: !!orderId,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loading text="Loading order details..." />
+      </div>
+    );
+  }
+
+  if (error || !data?.data) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 px-4">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md">
+          <p className="text-red-700 text-lg font-semibold text-center">
+            Failed to load order details
+          </p>
+          <p className="text-red-600 text-sm mt-2 text-center">
+            Please try again later
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const order = data.data;
 
   return (
     <>
@@ -35,12 +58,12 @@ const Transaction = () => {
         <main>
           <OrderConfirmationStatus />
           <OrderSummaryBar
-            orderId={orderData.orderId}
-            paymentMethod={orderData.paymentMethod}
-            id={orderData.transactionId}
-            updatedAt={orderData.estimatedDelivery}
+            orderId={order.orderId}
+            paymentMethod={order.paymentMethod}
+            id={order.transactionId}
+            updatedAt={order.estimatedDelivery}
           />
-          <OrderDetailsCard order={orderData} />
+          <OrderDetailsCard order={order} />
         </main>
       </div>
     </>

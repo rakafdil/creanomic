@@ -150,7 +150,7 @@ class AuthService {
       .select("*")
       .eq("id", user.id)
       .single();
-    console.log(error);
+    // console.log(error);
     if (error) throw new AppError(error.message, error.status || 400);
 
     return {

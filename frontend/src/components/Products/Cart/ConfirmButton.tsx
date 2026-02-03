@@ -66,16 +66,16 @@ export default function ConfirmButton() {
       if (window.snap && data.token) {
         window.snap.pay(data.token, {
           onSuccess: function (result: any) {
-            console.log("Success!", result);
+            // console.log("Success!", result);
             alert("Pembayaran Berhasil!");
             router.push("/products/cart/transaction");
           },
           onPending: function (result: any) {
-            console.log("Pending...", result);
+            // console.log("Pending...", result);
             alert("Menunggu Pembayaran!");
           },
           onError: function (result: any) {
-            console.log("Error!!", result);
+            // console.log("Error!!", result);
             alert("Pembayaran Gagal!");
           },
           onClose: function () {

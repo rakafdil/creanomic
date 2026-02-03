@@ -98,7 +98,7 @@ class ProductService {
       .single();
 
     if (error) throw error;
-    // console.log(data);
+    // // console.log(data);
     return data;
   }
 

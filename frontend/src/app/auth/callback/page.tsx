@@ -16,9 +16,9 @@ export default function OAuthCallback() {
     const error = params.get("error");
     const errorDescription = params.get("error_description");
 
-    console.log("Access token:", accessToken);
-    console.log("Refresh token:", refreshToken);
-    console.log("Error:", error);
+    // console.log("Access token:", accessToken);
+    // console.log("Refresh token:", refreshToken);
+    // console.log("Error:", error);
 
     if (error) {
       console.error("OAuth error:", error, errorDescription);

@@ -21,20 +21,20 @@ class SellerService {
     /** @type {SupabaseClient} */
     this.adminClient = createClient(
       process.env.SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY
+      process.env.SUPABASE_SERVICE_ROLE_KEY,
     );
   }
 
   async getProducts(sellerId) {
     // await this.accessDatabaseWithSellerId(sellerId)
-    console.log("DEBUG sellerId:", sellerId, typeof sellerId, sellerId.length);
+    // console.log("DEBUG sellerId:", sellerId, typeof sellerId, sellerId.length);
 
     const { data: products, error: productsError } = await this.supabase
       .from("products")
       .select("*")
       .eq("seller_id", sellerId)
       .order("created_at", { ascending: false });
-    console.log(products);
+    // console.log(products);
     if (productsError)
       throw new AppError(productsError.message, productsError?.status || 500);
 
@@ -73,7 +73,7 @@ class SellerService {
   async changeRoleToSeller(userId, reqData) {
     const { ktp_url, nik } = reqData;
 
-    console.log("DEBUG userId:", userId, typeof userId, userId.length);
+    // console.log("DEBUG userId:", userId, typeof userId, userId.length);
 
     const { data: dataUser, error: errorGet } = await this.adminClient
       .from("users")
@@ -87,7 +87,7 @@ class SellerService {
     if (!dataUser)
       throw new AppError(
         "User not found" + errorGet.message,
-        errorGet.status || 404
+        errorGet.status || 404,
       );
 
     if (!dataUser.email_verified && !dataUser.phone_verified) {
@@ -120,7 +120,7 @@ class SellerService {
     if (updateError)
       throw new AppError(
         "Failed to create seller profile: " + updateError.message,
-        500
+        500,
       );
 
     return {
@@ -178,14 +178,14 @@ class SellerService {
         created_at: new Date().toISOString(),
       })
       .select(
-        "id, name, description, price, stock_quantity, category, img_url, created_at"
+        "id, name, description, price, stock_quantity, category, img_url, created_at",
       )
       .single();
 
     if (insertError) {
       throw new AppError(
         "Failed to create product: " + insertError.message,
-        insertError?.status || 500
+        insertError?.status || 500,
       );
     }
 

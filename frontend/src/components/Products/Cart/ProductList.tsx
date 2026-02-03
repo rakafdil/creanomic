@@ -28,7 +28,7 @@ export default function ProductList({
     {},
   );
 
-  console.log(groupedByStoreName);
+  // console.log(groupedByStoreName);
   return (
     <div className="bg-white rounded-xl">
       <div className="hidden lg:grid lg:grid-cols-4 font-semibold text-left text-xl text-black bg-[#D0F348] rounded-2xl py-3 px-6">
