@@ -18,6 +18,8 @@ export default function authRouter(supabase) {
   router.post("/oauth/session", (req, res) =>
     controller.oauthSession(req, res),
   );
+  router.get("/user/:userId", controller.getUser);
+  router.get("/search/:searchQuery", controller.searchUser);
 
   return router;
 }

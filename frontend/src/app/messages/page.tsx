@@ -1,22 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Send, Circle } from "lucide-react";
-
-// Types
-interface User {
+import { Send, Circle, Search } from "lucide-react";
+import UserListItem from "@/components/Messages/UserListItem";
+import MessageBubble from "@/components/Messages/MessageBubble";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import { BASE_URL } from "../page";
+import { Field } from "@/components/ui/field";
+import { useDebouncedCallback } from "@tanstack/react-pacer";
+import { FaSpinner } from "react-icons/fa";
+export interface User {
   id: string;
-  name: string;
-  avatar: string;
+  username: string;
+  profile_picture: string;
   status: "online" | "offline";
-  lastSeen?: string;
+  last_login?: string;
 }
 
-interface Message {
+export interface Message {
   id: string;
   userId: string;
   text: string;
@@ -28,40 +34,40 @@ interface Message {
 const users: User[] = [
   {
     id: "1",
-    name: "Elena Rodriguez",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elena",
+    username: "Elena Rodriguez",
+    profile_picture: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elena",
     status: "online",
   },
   {
     id: "2",
-    name: "Marcus Chen",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Marcus",
+    username: "Marcus Chen",
+    profile_picture: "https://api.dicebear.com/7.x/avataaars/svg?seed=Marcus",
     status: "online",
   },
   {
     id: "3",
-    name: "Sophie Laurent",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sophie",
+    username: "Sophie Laurent",
+    profile_picture: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sophie",
     status: "offline",
-    lastSeen: "2 hours ago",
+    last_login: "2 hours ago",
   },
   {
     id: "4",
-    name: "James O'Brien",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=James",
+    username: "James O'Brien",
+    profile_picture: "https://api.dicebear.com/7.x/avataaars/svg?seed=James",
     status: "online",
   },
   {
     id: "5",
-    name: "Aisha Patel",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Aisha",
+    username: "Aisha Patel",
+    profile_picture: "https://api.dicebear.com/7.x/avataaars/svg?seed=Aisha",
     status: "offline",
-    lastSeen: "1 day ago",
+    last_login: "1 day ago",
   },
   {
     id: "6",
-    name: "Leo Martinez",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Leo",
+    username: "Leo Martinez",
+    profile_picture: "https://api.dicebear.com/7.x/avataaars/svg?seed=Leo",
     status: "online",
   },
 ];
@@ -193,81 +199,64 @@ const messagesByUser: Record<string, Message[]> = {
   ],
 };
 
-// Components
-const UserListItem = ({
-  user,
-  isActive,
-  onClick,
-}: {
-  user: User;
-  isActive: boolean;
-  onClick: () => void;
-}) => (
-  <button
-    onClick={onClick}
-    className={`w-full flex items-center gap-3 p-4 transition-all duration-300 border-l-2 cursor-pointer ${
-      isActive
-        ? "bg-amber-50/50 border-l-amber-600"
-        : "border-l-transparent hover:bg-slate-50"
-    }`}
-  >
-    <div className="relative">
-      <Avatar className="h-12 w-12 border-2 border-white shadow-sm">
-        <AvatarImage src={user.avatar} alt={user.name} />
-        <AvatarFallback>
-          {user.name
-            .split(" ")
-            .map((n) => n[0])
-            .join("")}
-        </AvatarFallback>
-      </Avatar>
-      <Circle
-        className={`absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 ${
-          user.status === "online"
-            ? "fill-emerald-500 text-emerald-500"
-            : "fill-slate-300 text-slate-300"
-        } stroke-white stroke-[2px]`}
-      />
-    </div>
-    <div className="flex-1 text-left min-w-0">
-      <p className="font-semibold text-slate-900 truncate tracking-tight">
-        {user.name}
-      </p>
-      <p className="text-xs text-slate-500 truncate">
-        {user.status === "online" ? "Active now" : `Last seen ${user.lastSeen}`}
-      </p>
-    </div>
-  </button>
-);
+async function fetchUserMesssages() {
+  try {
+    const response = await axios.get(`${BASE_URL}/messages/conversations/`);
+  } catch (error) {}
+}
 
-const MessageBubble = ({ message }: { message: Message }) => (
-  <div
-    className={`flex ${message.isSent ? "justify-end" : "justify-start"} mb-4 animate-fadeIn`}
-  >
-    <div
-      className={`max-w-[70%] ${message.isSent ? "items-end" : "items-start"} flex flex-col gap-1`}
-    >
-      <div
-        className={`px-4 py-2.5 rounded-2xl ${
-          message.isSent
-            ? "bg-gradient-to-br from-amber-600 to-amber-700 text-white shadow-sm shadow-sm-900/20"
-            : "bg-white border border-slate-200 text-slate-900 shadow-sm"
-        } transition-all duration-200 hover:shadow-sm`}
-      >
-        <p className="text-[15px] leading-relaxed">{message.text}</p>
-      </div>
-      <span className="text-xs text-slate-400 px-2">{message.timestamp}</span>
-    </div>
-  </div>
-);
+function useMessages() {
+  const queryClient = useQueryClient();
+  const queryKey = ["messages"];
 
-// Main Component
+  const query = useQuery({ queryKey, queryFn: fetchUserMesssages });
+}
+
 export default function MessagingPage() {
+  const controller = useRef(new AbortController());
   const [activeUserId, setActiveUserId] = useState<string>("1");
   const [messageInput, setMessageInput] = useState("");
-
   const activeUser = users.find((u) => u.id === activeUserId);
   const messages = messagesByUser[activeUserId] || [];
+
+  const [loading, setLoading] = useState(false);
+  const [searchResult, setSearchResult] = useState<User[]>([]);
+
+  const debouncedSearch = useDebouncedCallback(
+    async (query: string) => {
+      if (!query.trim()) {
+        setSearchResult([]);
+        return;
+      }
+
+      try {
+        controller.current.abort();
+        controller.current = new AbortController();
+
+        setLoading(true);
+
+        const res = await axios.get(`${BASE_URL}auth/search/${query}`, {
+          signal: controller.current.signal,
+        });
+
+        setSearchResult(res.data.data);
+      } catch (err) {
+        if (axios.isCancel(err)) {
+          return;
+        }
+        const error = err as AxiosError;
+
+        if (error.response?.status === 404) {
+          setSearchResult([]);
+        } else {
+          console.error(error);
+        }
+      } finally {
+        setLoading(false);
+      }
+    },
+    { wait: 500 },
+  );
 
   const handleSendMessage = () => {
     if (messageInput.trim()) {
@@ -312,30 +301,49 @@ export default function MessagingPage() {
       `}</style>
 
       <aside className="w-80 bg-white flex flex-col shadow-sm border-t border-r">
-        <div className="p-6 border-b bg-gradient-to-r from-slate-50 to-amber-50/30">
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-1">
-            Messages
-          </h1>
-          <p className="text-sm text-slate-500">
-            Connect with your clients/sellers
-          </p>
+        <div className="p-6 border-b bg-gradient-to-r from-slate-50 to-amber-50/30 flex flex-col gap-10">
+          <span>
+            <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-1">
+              Messages
+            </h1>
+            <p className="text-sm text-slate-500">
+              Connect with your clients/sellers
+            </p>
+          </span>
+          <Field orientation="horizontal">
+            <Input
+              type="search"
+              placeholder="Search..."
+              onChange={(e) => debouncedSearch(e.target.value)}
+            />
+            <Search />
+          </Field>
         </div>
 
         <ScrollArea className="flex-1">
           <div className="py-2">
-            {users.map((user, index) => (
-              <div
-                key={user.id}
-                className="animate-slideIn "
-                style={{ animationDelay: `${index * 0.05}s` }}
-              >
-                <UserListItem
-                  user={user}
-                  isActive={activeUserId === user.id}
-                  onClick={() => setActiveUserId(user.id)}
-                />
+            {loading ? (
+              <div className="flex gap-2 px-10 pt-4">
+                <FaSpinner className="animate-spin" />
+                Loading...
               </div>
-            ))}
+            ) : (
+              (searchResult.length === 0 ? users : searchResult).map(
+                (user, index) => (
+                  <div
+                    key={user.id}
+                    className="animate-slideIn "
+                    style={{ animationDelay: `${index * 0.05}s` }}
+                  >
+                    <UserListItem
+                      user={user}
+                      isActive={activeUserId === user.id}
+                      onClick={() => setActiveUserId(user.id)}
+                    />
+                  </div>
+                ),
+              )
+            )}
           </div>
         </ScrollArea>
       </aside>
@@ -348,11 +356,11 @@ export default function MessagingPage() {
                 <div className="relative">
                   <Avatar className="h-14 w-14 border-2 border-amber-200 shadow-sm cursor-pointer">
                     <AvatarImage
-                      src={activeUser.avatar}
-                      alt={activeUser.name}
+                      src={activeUser.profile_picture}
+                      alt={activeUser.username}
                     />
                     <AvatarFallback>
-                      {activeUser.name
+                      {activeUser.username
                         .split(" ")
                         .map((n) => n[0])
                         .join("")}
@@ -368,7 +376,7 @@ export default function MessagingPage() {
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
-                    {activeUser.name}
+                    {activeUser.username}
                   </h2>
                   <p className="text-sm text-slate-500">
                     {activeUser.status === "online" ? (
@@ -376,7 +384,7 @@ export default function MessagingPage() {
                         ● Active now
                       </span>
                     ) : (
-                      `Last seen ${activeUser.lastSeen}`
+                      `Last seen `
                     )}
                   </p>
                 </div>
