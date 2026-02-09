@@ -14,9 +14,9 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  // Form state - hanya 3 input: fullName, email, password, confirmPassword
   const [formData, setFormData] = useState({
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -27,46 +27,23 @@ export default function RegisterPage() {
       ...prev,
       [field]: value,
     }));
-    // Clear error when user types
     if (error) setError("");
   };
 
-  // Function to generate username from email
   const generateUsername = (email: string): string => {
-    // Ambil bagian sebelum @ dan bersihkan karakter khusus
     const username = email
       .split("@")[0]
       .toLowerCase()
       .replace(/[^a-z0-9]/g, "");
 
-    // Tambahkan random number untuk uniqueness
     const randomNum = Math.floor(Math.random() * 1000);
     return `${username}${randomNum}`;
   };
 
-  // Function to split full name into first and last name
-  const splitFullName = (
-    fullName: string,
-  ): { firstName: string; lastName: string } => {
-    const nameParts = fullName.trim().split(/\s+/);
-
-    if (nameParts.length === 1) {
-      return {
-        firstName: nameParts[0],
-        lastName: nameParts[0], // Jika hanya satu kata, gunakan untuk keduanya
-      };
-    }
-
-    // First name adalah kata pertama, last name adalah gabungan sisanya
-    const firstName = nameParts[0];
-    const lastName = nameParts.slice(1).join(" ");
-
-    return { firstName, lastName };
-  };
-
   const validateForm = () => {
     if (
-      !formData.fullName ||
+      !formData.firstName ||
+      !formData.lastName ||
       !formData.email ||
       !formData.password ||
       !formData.confirmPassword
@@ -103,18 +80,15 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      // Split full name dan generate username
-      const { firstName, lastName } = splitFullName(formData.fullName);
       const username = generateUsername(formData.email);
 
-      // Prepare data sesuai format backend
       const requestData = {
         email: formData.email,
         password: formData.password,
         confirmPassword: formData.confirmPassword,
         username: username,
-        firstName: firstName,
-        lastName: lastName,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
       };
 
       const response = await fetch(`${BASE_URL}auth/signup`, {
@@ -132,12 +106,10 @@ export default function RegisterPage() {
         throw new Error(data.message || "Registration failed");
       }
 
-      // Show success message
       setSuccessMessage(
         "Registration successful! Please check your email to verify your account.",
       );
 
-      // Redirect to login after 2 seconds
       setTimeout(() => {
         router.push("/auth?mode=login");
       }, 2000);
@@ -158,7 +130,6 @@ export default function RegisterPage() {
 
   return (
     <section className="relative w-full h-screen flex items-center overflow-hidden font-sans">
-      {/* LEFT SIDE - Branding with Background Image */}
       <div className="hidden lg:flex lg:w-1/2 items-center justify-center relative bg-cover bg-center min-h-screen">
         <img
           src="/assets/auth1.png"
@@ -184,10 +155,8 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      {/* RIGHT SIDE - Register Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center px-12 py-12 bg-white scale-90">
         <div className="w-full max-w-md">
-          {/* Header */}
           <div className="mb-8">
             <h2 className="text-4xl font-bold text-gray-900 mb-2">
               Create a New Account
@@ -197,30 +166,37 @@ export default function RegisterPage() {
             </p>
           </div>
 
-          {/* Success Message */}
           {successMessage && (
             <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-2xl">
               <p className="text-green-600 text-sm">{successMessage}</p>
             </div>
           )}
 
-          {/* Error Message */}
           {error && (
             <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-2xl">
               <p className="text-red-600 text-sm">{error}</p>
             </div>
           )}
 
-          {/* Form */}
           <div className="space-y-4">
-            <input
-              type="text"
-              placeholder="Full name"
-              value={formData.fullName}
-              onChange={(e) => handleInputChange("fullName", e.target.value)}
-              disabled={isLoading}
-              className="w-full border-2 border-gray-300 rounded-2xl px-6 py-4 text-base focus:outline-none focus:border-gray-400 transition-colors placeholder:text-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
-            />
+            <span className="flex gap-2 justify-between">
+              <input
+                type="text"
+                placeholder="First name"
+                value={formData.firstName}
+                onChange={(e) => handleInputChange("firstName", e.target.value)}
+                disabled={isLoading}
+                className="w-full border-2 border-gray-300 rounded-2xl px-6 py-4 text-base focus:outline-none focus:border-gray-400 transition-colors placeholder:text-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
+              />
+              <input
+                type="text"
+                placeholder="Last name"
+                value={formData.lastName}
+                onChange={(e) => handleInputChange("lastName", e.target.value)}
+                disabled={isLoading}
+                className="w-full border-2 border-gray-300 rounded-2xl px-6 py-4 text-base focus:outline-none focus:border-gray-400 transition-colors placeholder:text-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
+              />
+            </span>
 
             <input
               type="email"
@@ -306,7 +282,6 @@ export default function RegisterPage() {
             </button>
           </div>
 
-          {/* Terms and Conditions */}
           <div className="flex items-center justify-start mt-5">
             <label className="flex items-start cursor-pointer">
               <input
@@ -328,14 +303,12 @@ export default function RegisterPage() {
             </label>
           </div>
 
-          {/* Divider */}
           <div className="flex items-center gap-4 my-6">
             <div className="flex-1 h-px bg-gray-300"></div>
             <span className="text-gray-500 font-medium">or</span>
             <div className="flex-1 h-px bg-gray-300"></div>
           </div>
 
-          {/* Continue with Google */}
           <button
             type="button"
             onClick={handleGoogleSignIn}
@@ -370,7 +343,6 @@ export default function RegisterPage() {
             </span>
           </button>
 
-          {/* Login Link */}
           <div className="text-center mt-8">
             <span className="text-black font-bold">
               Already have an account?{" "}

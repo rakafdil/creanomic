@@ -7,6 +7,7 @@ import cartRouter from "./modules/cart/cart.routes.js";
 import sellerRouter from "./modules/seller/seller.routes.js";
 import categoryRoutes from "./modules/category/category.routes.js";
 import reviewRouters from "./modules/review/review.routes.js";
+import messageRouter from "./modules/messages/message.routes.js";
 
 function bootstrap(app, supabase) {
   app.get("/cek", (req, res) => res.send("API is running"));
@@ -17,6 +18,7 @@ function bootstrap(app, supabase) {
   app.use("/api/v1/cart", cartRouter(supabase));
   app.use("/api/v1/seller", sellerRouter(supabase));
   app.use("/api/v1/reviews", reviewRouters(supabase));
+  app.use("/api/v1/messages", messageRouter(supabase));
 
   app.use((req, res, next) => {
     next(new AppError("Endpoint was not found", 404));

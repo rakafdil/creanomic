@@ -13,7 +13,7 @@ class AuthService {
 
   async signup(
     userData,
-    redirectTo = "https://creanomic.vercel.app/auth/callback",
+    redirectTo = "https://growthwell.vercel.app/auth/callback",
   ) {
     const { email, password, confirmPassword, username, firstName, lastName } =
       userData;
@@ -57,7 +57,7 @@ class AuthService {
   }
 
   async loginWithGoogle(
-    redirectTo = "https://creanomic.vercel.app/auth/callback",
+    redirectTo = "https://growthwell.vercel.app/auth/callback",
   ) {
     const { data, error } = await this.supabase.auth.signInWithOAuth({
       provider: "google",
@@ -162,7 +162,7 @@ class AuthService {
       profile_picture: userData.profile_picture,
       phone: userData.phone,
       address: userData.address,
-      is_seller: userData.is_seller,
+      role: userData.role,
       seller_rating: userData.seller_rating,
       buyer_rating: userData.buyer_rating,
       is_active: userData.is_active,

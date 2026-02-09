@@ -30,7 +30,7 @@ export default function ConditionalHeader({
 
   if (!pathname) return null;
 
-  if (pathname.startsWith("/products")) {
+  if (pathname.startsWith("/products") || pathname.startsWith("/messages")) {
     return (
       <>
         <div className="w-full p-2.5 bg-gradient-to-r from-green-950 via-green-800 to-green-950 text-center text-white text-sm font-bold">

@@ -1,11 +1,8 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import React from "react";
-import Navbar from "@/components/Products/Navbar";
 import ProductsDetail from "@/components/Products/Details/ProductsDetails";
 import ProductTabs from "@/components/Products/Details/index";
-import Footer from "@/components/Common/Footer";
 import BackButton from "@/components/Common/BackButton";
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "@/services/product.service";

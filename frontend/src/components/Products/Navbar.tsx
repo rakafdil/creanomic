@@ -12,7 +12,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CreditCard, LogOutIcon, UserIcon } from "lucide-react";
+import {
+  CreditCard,
+  LogOutIcon,
+  MessageCircleMore,
+  UserIcon,
+} from "lucide-react";
 import { redirect } from "next/navigation";
 import axios from "axios";
 import { BASE_URL } from "@/app/page";
@@ -38,7 +43,7 @@ function DropdownMenuIcons({ isLoggedIn }: { isLoggedIn: boolean }) {
       {isLoggedIn ? (
         <DropdownMenuContent>
           <DropdownMenuItem
-            onClick={() => redirect("/profile")}
+            onClick={() => redirect("/profile/personal")}
             className="cursor-pointer"
           >
             <UserIcon />
@@ -112,6 +117,16 @@ const Navbar = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         <div className="flex items-center gap-3 lg:gap-4 flex-shrink-0 font-medium">
           {isLoggedIn ? (
             <>
+              <Link href="/messages" className="cursor-pointer relative">
+                <div className="bg-[#0A3917] h-12 w-12 lg:h-15 lg:w-15 rounded-full p-2.5 lg:p-3 flex items-center justify-center relative hover:bg-green-800 hover:rotate-6 transition-all">
+                  <MessageCircleMore className="w-6 h-6 lg:w-8 lg:h-8 text-white" />
+                  {cartCount > 0 && (
+                    <span className="absolute top-2 right-3 lg:top-2 lg:right-2.5 bg-[#F44336] text-white font-bold rounded-full w-4 h-4 flex items-center justify-center text-[8px]">
+                      {cartCount}
+                    </span>
+                  )}
+                </div>
+              </Link>
               <Link href="/products/cart" className="cursor-pointer relative">
                 <div className="bg-[#0A3917] h-12 w-12 lg:h-15 lg:w-15 rounded-full p-2.5 lg:p-3 flex items-center justify-center relative hover:bg-green-800 hover:rotate-6 transition-all">
                   <Image

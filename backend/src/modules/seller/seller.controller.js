@@ -1,6 +1,6 @@
-import SellerService from "./seller.service.js"
-import { catchAsyncError } from "../../utils/catchAsyncError.js"
-import { AppError } from "../../utils/AppError.js"
+import SellerService from "./seller.service.js";
+import { catchAsyncError } from "../../utils/catchAsyncError.js";
+import { AppError } from "../../utils/AppError.js";
 
 /**
  * @typedef {import("express").Request} Request
@@ -10,128 +10,132 @@ import { AppError } from "../../utils/AppError.js"
  */
 
 export class SellerController {
-    /**
-     * @param {SupabaseClient} supabase
-     */
-    constructor(supabase) {
-        this.supabase = supabase
-        this.sellerService = new SellerService(supabase)
+  /**
+   * @param {SupabaseClient} supabase
+   */
+  constructor(supabase) {
+    this.supabase = supabase;
+    this.sellerService = new SellerService(supabase);
 
-        this.getProducts = catchAsyncError(this.getProducts.bind(this))
-        this.addProduct = catchAsyncError(this.addProduct.bind(this))
-        this.editProduct = catchAsyncError(this.editProduct.bind(this))
-        this.deleteProduct = catchAsyncError(this.deleteProduct.bind(this))
-        this.changeRole = catchAsyncError(this.changeRole.bind(this))
+    this.getProducts = catchAsyncError(this.getProducts.bind(this));
+    this.addProduct = catchAsyncError(this.addProduct.bind(this));
+    this.editProduct = catchAsyncError(this.editProduct.bind(this));
+    this.deleteProduct = catchAsyncError(this.deleteProduct.bind(this));
+    this.changeRole = catchAsyncError(this.changeRole.bind(this));
+  }
+
+  /**
+   * Get all products for a seller
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async getProducts(req, res) {
+    const { sellerId } = req.params;
+
+    if (!sellerId) {
+      throw new AppError("Seller ID is required", 400);
     }
 
-    /**
-     * Get all products for a seller
-     * @param {Request} req
-     * @param {Response} res
-     */
-    async getProducts(req, res) {
-        const { sellerId } = req.params
+    const products = await this.sellerService.getProducts(sellerId);
 
-        if (!sellerId) {
-            throw new AppError('Seller ID is required', 400)
-        }
+    res.status(200).json({
+      status: "success",
+      message: "Products retrieved successfully",
+      data: { products },
+    });
+  }
 
-        const products = await this.sellerService.getProducts(sellerId)
+  /**
+   * Add new product
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async addProduct(req, res) {
+    const { sellerId } = req.params;
+    const productData = req.body;
 
-        res.status(200).json({
-            status: 'success',
-            message: 'Products retrieved successfully',
-            data: { products }
-        })
+    if (!sellerId) {
+      throw new AppError("Seller ID is required", 400);
     }
 
-    /**
-     * Add new product
-     * @param {Request} req
-     * @param {Response} res
-     */
-    async addProduct(req, res) {
-        const { sellerId } = req.params
-        const productData = req.body
+    const result = await this.sellerService.addProduct(productData, sellerId);
 
-        if (!sellerId) {
-            throw new AppError('Seller ID is required', 400)
-        }
+    res.status(201).json({
+      status: "success",
+      message: result.message || "Product added successfully",
+      data: { product: result.newProduct },
+    });
+  }
 
-        const result = await this.sellerService.addProduct(productData, sellerId)
+  /**
+   * Edit existing product
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async editProduct(req, res) {
+    const { sellerId, productId } = req.params;
+    const changedData = req.body;
 
-        res.status(201).json({
-            status: 'success',
-            message: result.message || 'Product added successfully',
-            data: { product: result.newProduct }
-        })
+    if (!sellerId || !productId) {
+      throw new AppError("Seller ID and Product ID are required", 400);
     }
 
-    /**
-     * Edit existing product
-     * @param {Request} req
-     * @param {Response} res
-     */
-    async editProduct(req, res) {
-        const { sellerId, productId } = req.params
-        const changedData = req.body
+    const result = await this.sellerService.editProduct(
+      sellerId,
+      productId,
+      changedData,
+    );
 
-        if (!sellerId || !productId) {
-            throw new AppError('Seller ID and Product ID are required', 400)
-        }
+    res.status(200).json({
+      status: "success",
+      message: result.message || "Product updated successfully",
+      data: { product: result.newData },
+    });
+  }
 
-        const result = await this.sellerService.editProduct(sellerId, productId, changedData)
+  /**
+   * Delete product
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async deleteProduct(req, res) {
+    const { sellerId, productId } = req.params;
 
-        res.status(200).json({
-            status: 'success',
-            message: result.message || 'Product updated successfully',
-            data: { product: result.newData }
-        })
+    if (!sellerId || !productId) {
+      throw new AppError("Seller ID and Product ID are required", 400);
     }
 
-    /**
-     * Delete product
-     * @param {Request} req
-     * @param {Response} res
-     */
-    async deleteProduct(req, res) {
-        const { sellerId, productId } = req.params
+    const result = await this.sellerService.deleteProduct(sellerId, productId);
 
-        if (!sellerId || !productId) {
-            throw new AppError('Seller ID and Product ID are required', 400)
-        }
+    res.status(200).json({
+      status: "success",
+      message: result.message,
+      data: { deletedProduct: result.deletedProduct },
+    });
+  }
 
-        const result = await this.sellerService.deleteProduct(sellerId, productId)
+  /**
+   * Change user role to seller
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async changeRole(req, res) {
+    const userId = req.user.id;
+    const reqData = req.body;
 
-        res.status(200).json({
-            status: 'success',
-            message: result.message,
-            data: { deletedProduct: result.deletedProduct }
-        })
+    if (!userId) {
+      throw new AppError("User ID is required", 400);
     }
 
-    /**
-     * Change user role to seller
-     * @param {Request} req
-     * @param {Response} res
-     */
-    async changeRole(req, res) {
-        const { userId } = req.params
-        const reqData = req.body
+    const result = await this.sellerService.changeRoleToSeller(userId, reqData);
 
-        if (!userId) {
-            throw new AppError('User ID is required', 400)
-        }
-
-        const result = await this.sellerService.changeRoleToSeller(userId, reqData)
-
-        res.status(200).json({
-            status: 'success',
-            message: result.message,
-            data: {
-                user: result.user,
-                seller: result.seller
-            }
-        })
-    }
+    res.status(200).json({
+      status: "success",
+      message: result.message,
+      data: {
+        user: result.user,
+        seller: result.seller,
+      },
+    });
+  }
 }

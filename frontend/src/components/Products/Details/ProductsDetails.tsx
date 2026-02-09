@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import ErrorModal from "@/components/Common/ErrorModal";
 import { StarRating } from "@/components/Common/StarRating";
 import { useCart } from "@/hook/useCart";
+import ConfirmationPopUp from "@/components/Common/ConfirmationPopUp";
 
 export function useAddToCart() {
   return useMutation({
@@ -64,37 +65,19 @@ const ProductsDetail = ({ product }: { product?: ProductItem }) => {
   return (
     <section className="w-full mx-auto py-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 font-sans">
       {modalOpen && (
-        <AlertDialog defaultOpen>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>
-                Are You Sure To Add {product?.name} to Your Cart?
-              </AlertDialogTitle>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogAction
-                className="cursor-pointer !bg-[#0A3917] !hover:bg-green-900"
-                onClick={() => {
-                  if (product?.id) {
-                    addToCart.mutate({
-                      productId: product.id,
-                      quantity: quantity,
-                    });
-                    setModalOpen(false);
-                  }
-                }}
-              >
-                Yes
-              </AlertDialogAction>
-              <AlertDialogAction
-                className="cursor-pointer !bg-red-500 !hover:bg-green-900"
-                onClick={() => setModalOpen(false)}
-              >
-                No
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <ConfirmationPopUp
+          onAcc={() => {
+            if (product?.id) {
+              addToCart.mutate({
+                productId: product.id,
+                quantity: quantity,
+              });
+              setModalOpen(false);
+            }
+          }}
+          text={` Are You Sure To Add ${product?.name} to Your Cart?`}
+          setModal={setModalOpen}
+        />
       )}
       {addToCart.error && <ErrorModal error={addToCart.error} />}
       {addToCart.isSuccess && (

@@ -17,7 +17,7 @@ export class AuthController {
     this.authService = new AuthService(supabase);
     this.directUrl =
       process.env.NODE_ENV === "production"
-        ? "https://creanomic.vercel.app/auth/callback"
+        ? "https://growthwell.vercel.app/auth/callback"
         : "http://localhost:3000/auth/callback";
 
     const methods = [
@@ -70,6 +70,10 @@ export class AuthController {
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000,
+      domain:
+        process.env.NODE_ENV === "production"
+          ? "creanomic.vercel.app"
+          : undefined,
     });
 
     res.status(200).json({
@@ -131,6 +135,10 @@ export class AuthController {
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       path: "/",
+      domain:
+        process.env.NODE_ENV === "production"
+          ? "creanomic.vercel.app"
+          : undefined,
     });
 
     res.status(200).json({
@@ -162,11 +170,15 @@ export class AuthController {
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000,
+      domain:
+        process.env.NODE_ENV === "production"
+          ? "creanomic.vercel.app"
+          : undefined,
     });
 
     return res.redirect(
       process.env.NODE_ENV === "production"
-        ? "https://creanomic.vercel.app/profile"
+        ? "https://growthwell.vercel.app/profile"
         : "http://localhost:3000/profile",
     );
   }
@@ -195,6 +207,10 @@ export class AuthController {
         secure: process.env.NODE_ENV === "production",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         maxAge: 24 * 60 * 60 * 1000,
+        domain:
+          process.env.NODE_ENV === "production"
+            ? "creanomic.vercel.app"
+            : undefined,
       });
 
       return res.status(200).json({

@@ -1,4 +1,3 @@
-//product.controller.js
 import { catchAsyncError } from "../../utils/catchAsyncError.js";
 import { AppError } from "../../utils/AppError.js";
 import ProductService from "./product.service.js";

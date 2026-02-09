@@ -18,6 +18,7 @@
     "@supabase/supabase-js": "^2.90.0",
     "@tanstack/react-query": "^5.90.19",
     "@tanstack/react-query-devtools": "^5.91.2",
+    "add": "^2.0.6",
     "axios": "^1.13.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -27,13 +28,17 @@
     "lucide-react": "^0.545.0",
     "maplibre-gl": "^5.9.0",
     "motion": "^12.23.22",
-    "next": "^15.5.9",
+    "next": "^16.1.6",
+    "radix-ui": "^1.4.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-icons": "^5.5.0",
     "react-leaflet": "^5.0.0",
     "react-map-gl": "^8.1.0",
-    "tailwind-merge": "^3.4.0"
+    "shadcn": "^3.8.2",
+    "socket.io-client": "^4.8.3",
+    "tailwind-merge": "^3.4.0",
+    "textarea": "^0.3.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
