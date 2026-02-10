@@ -172,33 +172,36 @@ class AuthService {
     };
   }
 
-  async getUser(userId) {
+  async getUsers(userId) {
     const { data, error } = await this.adminClient
       .from("users")
       .select("*")
-      .eq("id", userId)
-      .single();
+      .neq("id", userId);
 
     if (error) throw new AppError(error.message, error.status || 400);
 
-    return {
-      username: data.username,
-      profile_picture: data.profile_picture,
-      role: data.role,
-      seller_rating: data.seller_rating,
-      buyer_rating: data.buyer_rating,
-      is_active: data.is_active,
-      last_login: data.last_login,
-    };
+    return data.map((user) => ({
+      id: user.id,
+      username: user.username,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      profile_picture: user.profile_picture,
+      role: user.role,
+      seller_rating: user.seller_rating,
+      buyer_rating: user.buyer_rating,
+      is_active: user.is_active,
+      last_login: user.last_login,
+    }));
   }
 
-  async searchUser(query) {
+  async searchUser(query, userId) {
     const { data, error } = await this.adminClient
       .from("users")
       .select("*")
       .or(
         `username.ilike.%${query}%,first_name.ilike.%${query}%,last_name.ilike.%${query}%`,
-      );
+      )
+      .neq("id", userId);
 
     if (error) throw new AppError(error.message, error.status || 400);
 

@@ -1,15 +1,19 @@
+import { createClient } from "@supabase/supabase-js";
 import { catchAsyncError } from "../../utils/catchAsyncError.js";
 
 export const getConversations = catchAsyncError(async (req, res, next) => {
   const userId = req.user.id;
-  const supabase = req.supabase;
+  const adminClient = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+  );
 
-  const { data, error } = await supabase.rpc("get_user_conversations", {
+  const { data, error } = await adminClient.rpc("get_user_conversations", {
     p_user_id: userId,
   });
 
   if (error) {
-    const { data: messages, error: msgError } = await supabase
+    const { data: messages, error: msgError } = await adminClient
       .from("messages")
       .select("sender_id, receiver_id, content, created_at")
       .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
@@ -24,7 +28,7 @@ export const getConversations = catchAsyncError(async (req, res, next) => {
       userIds.add(otherId);
     });
 
-    const { data: users, error: userError } = await supabase
+    const { data: users, error: userError } = await adminClient
       .from("users")
       .select("id, username, email")
       .in("id", Array.from(userIds));
@@ -40,15 +44,18 @@ export const getConversations = catchAsyncError(async (req, res, next) => {
 export const getConversationWith = catchAsyncError(async (req, res, next) => {
   const userId = req.user.id;
   const { otherUserId } = req.params;
-  const supabase = req.supabase;
+  const adminClient = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+  );
 
-  const { data, error } = await supabase
+  const { data, error } = await adminClient
     .from("messages")
     .select(
       `
       *,
-      sender:users!messages_sender_id_fkey(id, username, email),
-      receiver:users!messages_receiver_id_fkey(id, username, email)
+      sender:users!messages_sender_id_fkey(id, username, profile_picture),
+      receiver:users!messages_receiver_id_fkey(id, username, profile_picture)
     `,
     )
     .or(

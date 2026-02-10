@@ -1,4 +1,11 @@
+import { createClient } from "@supabase/supabase-js";
+
 export const messageHandler = (socket, io, supabase) => {
+  const adminClient = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+  );
+
   socket.on("send_message", async (data) => {
     try {
       const { content, receiver_id } = data;
@@ -9,7 +16,7 @@ export const messageHandler = (socket, io, supabase) => {
         return;
       }
 
-      const { data: message, error } = await supabase
+      const { data: message, error } = await adminClient
         .from("messages")
         .insert({ content, sender_id, receiver_id })
         .select()
@@ -33,7 +40,7 @@ export const messageHandler = (socket, io, supabase) => {
       const { message_id } = data;
       const sender_id = socket.data.userId;
 
-      const { error } = await supabase
+      const { error } = await adminClient
         .from("messages")
         .delete()
         .eq("id", message_id)
@@ -55,7 +62,7 @@ export const messageHandler = (socket, io, supabase) => {
       const { other_user_id } = data;
       const user_id = socket.data.userId;
 
-      const { data: messages, error } = await supabase
+      const { data: messages, error } = await adminClient
         .from("messages")
         .select("*")
         .or(

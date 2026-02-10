@@ -30,8 +30,8 @@ export class AuthController {
       "logout",
       "loginWithGoogle",
       "oauthSession",
-      "getUser",
       "searchUser",
+      "getUsers",
     ];
 
     methods.forEach((method) => {
@@ -129,21 +129,23 @@ export class AuthController {
     });
   }
 
-  async getUser(req, res) {
-    const { userId } = req.params;
+  async getUsers(req, res) {
+    const userId = req.user.id;
 
-    const userData = await this.authService.getUser(userId);
+    const userData = await this.authService.getUsers(userId);
+
     res.status(200).json({
       status: "success",
-      message: "Profile retrieved successfully",
+      message: "Users retrieved successfully",
       data: userData,
     });
   }
 
   async searchUser(req, res) {
     const { searchQuery } = req.params;
+    const userId = req.user.id;
 
-    const userData = await this.authService.searchUser(searchQuery);
+    const userData = await this.authService.searchUser(searchQuery, userId);
     res.status(200).json({
       status: "success",
       message: "Users retrieved successfully",
