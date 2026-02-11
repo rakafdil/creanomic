@@ -15,6 +15,7 @@ Creanomic is a comprehensive e-commerce solution that combines a powerful React-
 - **Store Locator** - Interactive maps to find physical store locations
 - **User Authentication** - Secure login and registration via Supabase
 - **Order Management** - Track orders and order history
+- **Payment Gateway** - Secure payments via Midtrans (QRIS, OVO, GoPay, PayPal)
 - **Real-time Messaging** - Chat with sellers and support via Socket.IO
 - **Real-time Updates** - Live inventory and product availability
 - **Responsive Design** - Optimized shopping experience across all devices
@@ -36,6 +37,7 @@ Creanomic is a comprehensive e-commerce solution that combines a powerful React-
 - **Framework:** Express.js 5
 - **Database:** Supabase (PostgreSQL)
 - **Authentication:** Supabase Auth
+- **Payment Gateway:** Midtrans (supports QRIS, e-wallets, bank transfers)
 - **Real-time Communication:** Socket.IO for messaging
 - **API Features:**
   - RESTful API endpoints
@@ -44,6 +46,7 @@ Creanomic is a comprehensive e-commerce solution that combines a powerful React-
   - User management
   - Inventory tracking
   - Real-time messaging system
+  - Payment processing and webhooks
 - **Utilities:** 
   - CORS for cross-origin requests
   - Slugify for SEO-friendly URLs
@@ -74,6 +77,7 @@ creanomic/
 - Node.js (v20 or higher)
 - npm or yarn
 - Supabase account (for database and authentication)
+- Midtrans account (for payment processing)
 - Docker (optional, for containerized deployment)
 
 ### Installation
@@ -89,7 +93,12 @@ creanomic/
    - Set up your database tables for products, orders, users, etc.
    - Get your API keys from project settings
 
-3. **Configure environment variables**
+3. **Set up Midtrans**
+   - Create a merchant account at [midtrans.com](https://midtrans.com)
+   - Get your Server Key and Client Key from the dashboard
+   - Use Sandbox credentials for development/testing
+
+4. **Configure environment variables**
    ```bash
    cp .env.example .env
    ```
@@ -101,6 +110,10 @@ creanomic/
    SUPABASE_ANON_KEY=your_supabase_anon_key_here
    SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key_here
    
+   # Midtrans Payment Gateway
+   MIDTRANS_SERVER=your_midtrans_server_key_here
+   NEXT_PUBLIC_MIDTRANS_CLIENT=your_midtrans_client_key_here
+   
    # Development Configuration
    NODE_ENV=development
    PORT=5000
@@ -109,7 +122,7 @@ creanomic/
    NEXT_PUBLIC_API_URL=http://localhost:5000
    ```
 
-4. **Install dependencies**
+5. **Install dependencies**
 
    For the frontend:
    ```bash
@@ -174,6 +187,7 @@ The backend provides RESTful API endpoints for:
 - User authentication and profiles
 - Store location data
 - Inventory management
+- Payment processing (Midtrans integration with webhooks)
 - Real-time messaging (REST endpoints and Socket.IO events)
 
 ## 🗺️ Key Features Breakdown
@@ -214,6 +228,26 @@ The backend provides RESTful API endpoints for:
   - `get_conversation` - Load conversation history
   - `delete_message` - Remove messages
   - `message_error` - Handle messaging errors
+
+### Payment Processing with Midtrans
+- **Midtrans Integration** - Secure payment gateway for Indonesian market
+- **Multiple Payment Methods:**
+  - QRIS - Quick Response Code Indonesian Standard
+  - E-wallets - OVO, GoPay, and other digital wallets
+  - Bank transfers - Various Indonesian banks
+  - PayPal - International payments
+- **Transaction Management:**
+  - Create payment transactions with Snap API
+  - Real-time payment status updates
+  - Transaction history tracking
+  - Webhook notifications for payment events
+  - Order fulfillment automation
+  - Refund processing
+- **Security Features:**
+  - Server-side transaction validation
+  - Fraud detection integration
+  - Secure payment redirect URLs
+  - PCI DSS compliant payment flow
 
 ## 🚢 Deployment
 
