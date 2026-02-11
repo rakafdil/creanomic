@@ -268,6 +268,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **rakafdil**
 - GitHub: [@rakafdil](https://github.com/rakafdil)
 
+**rakafdil**
+- GitHub: [@VeryFach](https://github.com/VeryFach)
+
 ## 🤝 Contributing
 
 Contributions, issues, and feature requests are welcome!
