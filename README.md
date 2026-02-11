@@ -15,6 +15,7 @@ Creanomic is a comprehensive e-commerce solution that combines a powerful React-
 - **Store Locator** - Interactive maps to find physical store locations
 - **User Authentication** - Secure login and registration via Supabase
 - **Order Management** - Track orders and order history
+- **Real-time Messaging** - Chat with sellers and support via Socket.IO
 - **Real-time Updates** - Live inventory and product availability
 - **Responsive Design** - Optimized shopping experience across all devices
 - **SEO Optimized** - Built with Next.js for better search engine visibility
@@ -35,12 +36,14 @@ Creanomic is a comprehensive e-commerce solution that combines a powerful React-
 - **Framework:** Express.js 5
 - **Database:** Supabase (PostgreSQL)
 - **Authentication:** Supabase Auth
+- **Real-time Communication:** Socket.IO for messaging
 - **API Features:**
   - RESTful API endpoints
   - Product catalog management
   - Order processing
   - User management
   - Inventory tracking
+  - Real-time messaging system
 - **Utilities:** 
   - CORS for cross-origin requests
   - Slugify for SEO-friendly URLs
@@ -171,6 +174,7 @@ The backend provides RESTful API endpoints for:
 - User authentication and profiles
 - Store location data
 - Inventory management
+- Real-time messaging (REST endpoints and Socket.IO events)
 
 ## 🗺️ Key Features Breakdown
 
@@ -197,6 +201,19 @@ The backend provides RESTful API endpoints for:
 - Supabase for real-time data sync
 - Type-safe development with TypeScript
 - Serverless-ready deployment
+
+### Real-time Messaging System
+- **Socket.IO Integration** - WebSocket-based real-time communication
+- **Authenticated Connections** - Secure messaging with token-based authentication
+- **Private Conversations** - One-to-one messaging between users and sellers
+- **Message Management** - Send, receive, and delete messages in real-time
+- **Conversation History** - Persistent message storage in Supabase
+- **Event-driven Architecture:**
+  - `send_message` - Send a new message
+  - `new_message` - Receive incoming messages
+  - `get_conversation` - Load conversation history
+  - `delete_message` - Remove messages
+  - `message_error` - Handle messaging errors
 
 ## 🚢 Deployment
 
